@@ -1,5 +1,7 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue'
+
 </script>
 
 <template>
@@ -13,6 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'
   </div>
   <h1 style="color: red;">Thanks for looking!</h1>
   <HelloWorld msg="Vite + Vue" />
+  <home-page/>
 </template>
 
 <style scoped>
