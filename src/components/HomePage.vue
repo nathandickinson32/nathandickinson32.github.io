@@ -8,7 +8,7 @@
       <p>
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
-      <a href="/public/NathanDickinson.pdf">
+      <a href="../../public/Resume 1 (1).pdf">
         <button>Résumé</button>
       </a>
       <div class="social-links">
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'Home'
+  name: 'HomePage'
 }
 </script>
 

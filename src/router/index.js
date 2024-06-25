@@ -9,7 +9,13 @@ const routes = [
     },
     {
         path: '/about',
-        name: 'About',
+        name: 'about',
         component: About,
     }
-]
+];
+const router = createRouter({
+    history: createWebHistory(),
+    routes: routes
+});
+
+export default router;

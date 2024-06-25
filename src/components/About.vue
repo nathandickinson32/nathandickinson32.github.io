@@ -1,16 +1,21 @@
 <template>
-  <home-page/>
+  <div class="main-content">
+    <!-- Your content for the About page -->
+  </div>
 </template>
 
 <script>
-import HomePage from './HomePage.vue'
-
 export default {
-name: 'About'
+  name: 'About'
 }
-
 </script>
 
 <style>
-
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7f7f7;
+}
 </style>

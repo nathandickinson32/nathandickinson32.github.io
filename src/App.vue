@@ -3,12 +3,14 @@ import HomePage from "./components/HomePage.vue";
 import NavBar from "./components/NavBar.vue"
 
 
+
 </script>
 
 <template>
 
 <div class="grid1">
   <nav-bar/>
+  
   <home-page/>
 </div>
 
@@ -24,7 +26,7 @@ import NavBar from "./components/NavBar.vue"
 
 body{
   background-image: url('/src/assets/images/port-background.jpg');
-    background-size: cover;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
