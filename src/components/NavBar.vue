@@ -6,9 +6,22 @@
     <nav>
       <ul>
         <div class="nav-image">
-          <li> <button><router-link to="/home"><img src="../assets/images/home.png" alt="Home"/></router-link> </button></li>
-          <li><button><router-link to="/about"><img src="../assets/images/information.png" alt="About"/></router-link></button></li>
+          <li>
+  <router-link :to="{name: home}">
+    <button>
+      <img src="../assets/images/home.png" alt="Home"/>
+    </button>
+  </router-link>
+</li>
+<li>
+  <router-link :to="{name: about}">
+    <button>
+      <img src="../assets/images/information.png" alt="About"/>
+    </button>
+  </router-link>
+</li>
           <li><router-link to="/projects"><img src="../assets/images/invention.png" alt="Projects"/></router-link></li>
+          <li><a class="about-btn" href="/about" img src="../assets/images/information.png"></a></li>
         </div>
       </ul>
     </nav>
@@ -16,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'NavBar'
 }
@@ -63,5 +77,9 @@ export default {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.about-btn{
+
 }
 </style>
