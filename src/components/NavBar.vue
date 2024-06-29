@@ -6,22 +6,25 @@
     <nav>
       <ul>
         <div class="nav-image">
+
+        
           <li>
-  <router-link :to="{name: home}">
-    <button>
+    <router-link class="home-btn" to="/">
       <img src="../assets/images/home.png" alt="Home"/>
-    </button>
-  </router-link>
-</li>
-<li>
-  <router-link :to="{name: about}">
-    <button>
+    </router-link>
+  </li>
+
+          <li>
+    <router-link class="about-btn" to="/about">
       <img src="../assets/images/information.png" alt="About"/>
-    </button>
-  </router-link>
-</li>
-          <li><router-link to="/projects"><img src="../assets/images/invention.png" alt="Projects"/></router-link></li>
-          <li><a class="about-btn" href="/about" img src="../assets/images/information.png"></a></li>
+    </router-link>
+  </li> 
+
+        <li>
+          <router-link class="projects-btn" to="/projects">
+            <img src="../assets/images/invention.png" alt="Projects" />
+          </router-link>
+        </li> 
         </div>
       </ul>
     </nav>
@@ -31,11 +34,13 @@
 <script>
 
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  
+  
 }
 </script>
 
-<style>
+<style scoped>
 .sidebar {
   width: 60px;
   background-color: #2A5D84;
@@ -44,6 +49,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
+  
 }
 
 .logo {
@@ -70,7 +76,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: 40px;
 }
 
 .sidebar nav ul li a img {
@@ -78,8 +84,24 @@ export default {
   max-height: 100%;
   object-fit: contain;
 }
-
-.about-btn{
-
+body{
+  background-image: url('/src/assets/images/port-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+/* .nav{
+  display: flex;
+
+  
+} */
+
+/* .content {
+  flex-grow: 1;
+  padding: 20px;
+ 
+} */
+
+
 </style>

@@ -1,17 +1,22 @@
 <template>
   <div class="main-content">
-    <!-- Your content for the About page -->
-     <h1>yeha yeah</h1>
+     <div><h1>HOME</h1></div>
+     <div><h1>WORK</h1></div>
+     <div><h1>FUN</h1></div>
+ 
+ 
+ 
+ <h1></h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'About'
+  name: 'about'
 }
 </script>
 
-<style>
+<style scoped>
 .main-content {
   flex-grow: 1;
   display: flex;

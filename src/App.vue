@@ -1,34 +1,44 @@
-<script setup>
-import HomePage from "./components/HomePage.vue";
-import NavBar from "./components/NavBar.vue"
+<script>
+import NavBar from "./components/NavBar.vue";
 
+export default {
+  components: {NavBar}
+};
 
 
 </script>
 
 <template>
 
-<div class="grid1">
-  <nav-bar/>
+<div id="app" class="nav">
   
-  <home-page/>
-</div>
-
+    <NavBar />
+ 
+    
+    <div class="content">
+      <router-view />
+    </div>
+  </div>
 
 </template>
 
 <style>
-.grid1{
-  display: grid;
-  grid-template-columns: 1fr 100%;
-
-}
-
-body{
+/* body{
   background-image: url('/src/assets/images/port-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+.nav{
+  display: flex;
+
+  
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+ 
+} */
 </style>

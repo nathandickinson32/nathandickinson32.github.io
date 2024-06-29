@@ -8,12 +8,15 @@
       <p>
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
-      <a href="../../public/Resume 1 (1).pdf">
-        <button>Résumé</button>
+      <div class="grid2">
+        <a href="../../public/Resume 1 (1).pdf">
+        <button class="resume-btn">Résumé</button>
       </a>
       <div class="social-links">
         <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
         <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
+      </div>
+     
       </div>
     </div>
   </div>
@@ -25,13 +28,14 @@ export default {
 }
 </script>
 
-<style>
+<style >
 .main-content {
   flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f7f7f7;
+  height: 105%
 }
 
 .profile img {
@@ -40,6 +44,7 @@ export default {
   border-radius: 50%;
   border: 5px solid #e6e6e6;
   margin-left: 20px;
+  
 }
 
 .info {
@@ -85,4 +90,38 @@ export default {
 li img {
   width: 50px;
 }
+
+.grid1{
+  display: grid;
+  grid-template-columns: 1fr 100%;
+
+}
+.grid2{
+  display: flex;
+margin-left: 34%;
+
+}
+.resume-btn{
+  height: 48px;
+}
+
+body{
+  background-image: url('/src/assets/images/port-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.nav{
+  display: flex;
+
+  
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+ 
+}
+
 </style>
