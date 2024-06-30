@@ -95,17 +95,7 @@ body{
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
-/* .nav{
-  display: flex;
 
-  
-} */
-
-/* .content {
-  flex-grow: 1;
-  padding: 20px;
- 
-} */
 
 
 </style>
