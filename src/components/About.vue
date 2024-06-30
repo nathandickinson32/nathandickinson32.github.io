@@ -88,6 +88,9 @@ import bugSmileyImage from '../assets/images/bugSmiley.jpg';
 import cleBugImage from '../assets/images/cleBug.jpg';
 import golfImage from '../assets/images/golf.png'
 import meMowImage from '../assets/images/me&mow.jpg'
+import fiencee2Image from '../assets/images/fiencee2.jpg'
+import famImage from '../assets/images/fam.jpg'
+
 
 
 
@@ -103,7 +106,9 @@ export default {
         bugSmileyImage,
         cleBugImage,
         golfImage,
-        meMowImage
+        meMowImage,
+        famImage,
+        fiencee2Image
         
         // Add more image variables as needed
       ],
