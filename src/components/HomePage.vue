@@ -35,8 +35,11 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #f7f7f7;
-  height: 105%
+  height: 128%;
+  margin-left: 55px;
+  
 }
+
 
 .profile img {
   width: 250px;
@@ -123,5 +126,42 @@ body{
   padding: 20px;
  
 }
+@media only screen and (max-width: 600px) {
+  .main-content {
+    image-rendering: auto;
+    /* height:50%;
+    width: 50%; */
+ 
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .media {
+    width: 100vh;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .media {
+    width: 100vh;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .media{
+    width: 100vh;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .media {
+    width: 100vh;
+  }
+}
+
 
 </style>

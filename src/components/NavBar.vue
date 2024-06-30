@@ -43,12 +43,16 @@ export default {
 <style scoped>
 .sidebar {
   width: 60px;
+  height: 325px;
   background-color: #2A5D84;
   color: white;
+  position: fixed;
   display: flex;
-  flex-direction: column;
+    flex-direction: column;
   align-items: center;
   padding-top: 20px;
+  margin: 15px 0 10px 0;
+ 
   
 }
 
@@ -67,12 +71,12 @@ export default {
 .sidebar nav ul li {
   width: 100%;
   margin: 20px 0;
-  display: flex;
+
   justify-content: center;
 }
 
 .sidebar nav ul li a {
-  display: flex;
+  
   justify-content: center;
   align-items: center;
   width: 100%;
