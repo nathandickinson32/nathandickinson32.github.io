@@ -2,6 +2,7 @@
     <div class="container">
       <h1>The current Player is: Player <span>{{ currentPlayer }}</span></h1>
       <h1>{{ result }}</h1>
+      <div class=bigGrid>
       <div class="grid">
         <div
           v-for="(square, index) in squares"
@@ -15,6 +16,14 @@
           @click="makeMove(index)"
         ></div>
       </div>
+      
+      <div class="scoreboard">
+      <h2>Player 1 Wins: {{ playerOneWins }}</h2>
+      <h2>Player 2 Wins: {{ playerTwoWins }}</h2>
+    </div>
+  </div>
+  <button class="clear-board-btn" @click="clearBoard">Clear Board</button>
+
     </div>
   </template>
   
@@ -42,9 +51,19 @@
           [36, 37, 38, 39], [40, 39, 38, 37], [7, 14, 21, 28], [8, 15, 22, 29], [9, 16, 23, 30], [10, 17, 24, 31],
           [11, 18, 25, 32], [12, 19, 26, 33], [13, 20, 27, 34],
         ],
+        playerOneWins: 0,
+      playerTwoWins: 0,
       };
     },
     methods: {
+      clearBoard() {
+    this.squares = Array.from({ length: 42 }, () => ({
+      player: 0,
+      taken: false
+    }));
+    this.currentPlayer = 1;
+    this.result = '';
+  },
       makeMove(index) {
        
         for (let row = 5; row >= 0; row--) {
@@ -71,6 +90,14 @@
             squares[a].player === squares[d].player
           ) {
             this.result = `Player ${squares[a].player} Wins!`;
+            if (squares[a].player === 1) {
+            this.playerOneWins++;
+          } else {
+            this.playerTwoWins++;
+          }
+            setTimeout(() => {
+          this.clearBoard();
+        }, 2000);
             return;
           }
         }
@@ -85,37 +112,56 @@
   </script>
   
   <style scoped>
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
-    width: 560px;
-    height: 480px; 
-    border: 1px solid white;
-  }
-  
-  .cell {
-    width: calc(100% / 7);
-    height: calc(100% / 6); 
-    box-sizing: border-box;
-    border-color: white; 
-  }
-  
-  .player-one {
-    background-color: red;
-border-radius: 50%;
- }
-  
-  .player-two {
-    background-color: blue;
-    border-radius: 50%;
-
-  }
-  
   .container {
-    background-color: black;
-    color: white;
-    border-color: white;
-    text-align: center;
-    padding: 20px;
-  }
+  background-color: black;
+  color: white;
+  border-color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  margin-left: 50px;
+}
+
+.bigGrid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 560px;
+  height: 480px;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+.cell {
+  width: calc(100% / 7);
+  height: calc(100% / 6);
+  box-sizing: border-box;
+  border-color: white;
+}
+
+.player-one {
+  background-color: red;
+  border-radius: 50%;
+}
+
+.player-two {
+  background-color: blue;
+  border-radius: 50%;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.clear-board-btn {
+  margin-top: 10px;
+}
   </style>

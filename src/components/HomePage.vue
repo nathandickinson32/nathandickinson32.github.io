@@ -9,7 +9,7 @@
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
       <div class="grid2">
-        <a href="../../public/Resume 1 (1).pdf">
+        <a href="../../public/Nathan_Dickinson_Resume.pdf">
         <button class="resume-btn">Résumé</button>
       </a>
       <div class="social-links">
@@ -37,6 +37,7 @@ export default {
   background-color: #f7f7f7;
   height: 128%;
   margin-left: 55px;
+  border-radius: 10px;
   
 }
 
@@ -126,6 +127,7 @@ body{
   padding: 20px;
  
 }
+
 @media only screen and (max-width: 600px) {
   .main-content {
     image-rendering: auto;

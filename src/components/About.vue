@@ -71,9 +71,10 @@
      <a href="https://www.linkedin.com/in/nathangdickinson/" class="linkedIn-btn">LinkedIn</a>
      
      <p>Let's create something amazing together!</p>
-     <img :src="randomImage1" class="top-right-image">
-    <img :src="randomImage2" class="bottom-left-image">
-
+     <transition>
+     <img :src="randomImage1" class="top-right-image" :key="randomIndex1">
+    <img :src="randomImage2" class="bottom-left-image" :key="randomIndex2">
+     </transition>
       </div>
     </div>
   </section>
@@ -110,7 +111,6 @@ export default {
         famImage,
         fiencee2Image
         
-        // Add more image variables as needed
       ],
       randomIndex1: 0,
       randomIndex2: 0,
@@ -124,7 +124,6 @@ export default {
     },
     randomImage2() {
       this.randomIndex2 = Math.floor(Math.random() * this.images.length);
-      // Ensure the second image is different from the first one
       while (this.randomIndex2 === this.randomIndex1) {
         this.randomIndex2 = Math.floor(Math.random() * this.images.length);
       }
@@ -132,13 +131,11 @@ export default {
     }
   },
   mounted() {
-    // Optional: Set interval logic for changing images
-    // Uncomment and modify as needed
+   
     
     this.intervalId = setInterval(() => {
       this.randomIndex1 = Math.floor(Math.random() * this.images.length);
       this.randomIndex2 = Math.floor(Math.random() * this.images.length);
-      // Ensure the second image is different from the first one
       while (this.randomIndex2 === this.randomIndex1) {
         this.randomIndex2 = Math.floor(Math.random() * this.images.length);
       }
@@ -155,7 +152,8 @@ export default {
   color: #333;
   line-height: 1.6;
   background-color: lightblue;
-  margin-left: 50px
+  margin-left: 50px;
+  border-radius: 10px;
 }
 
 .container {
@@ -211,16 +209,25 @@ strong {
   width: 230px;
   height:300px;
   object-fit: cover;
+  border-radius: 10px;
+   
+  transition: opacity 0.5s ease-in-out; 
+
 }
+
 
 .top-right-image {
   top: 10px;
   right: 10px;
+ 
+  
 }
 
 .bottom-left-image {
   bottom: 10px;
   left: 10px;
+ 
+
 }
 </style>
 

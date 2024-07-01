@@ -12,7 +12,7 @@ export default {
 
 <div id="app" class="nav">
   
-    <NavBar />
+    <NavBar class="navBar"/>
  
     
     <div class="content">
