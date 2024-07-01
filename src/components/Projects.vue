@@ -1,11 +1,13 @@
 <template>
   The Start of my Projects Page
-  <a href="https://nathandickinson32.github.io/project2/">Project1</a>
+  <router-link class="connect4" to="/connect4">
+Connect4
+</router-link>
 </template>
 
 <script>
 export default {
-name: 'Projects'
+name: 'projects'
 }
 </script>
 
