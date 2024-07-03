@@ -6,21 +6,20 @@
     <div class="off-screen-menu">
         <label id="profile"></label>
         <ul class="list">
+
+          <!-- NEED TO MAKE THESE ROUTER LINKS -->
           <a href="/">
             <li id="home">Home</li>
           </a>
-          <!--<a href="/favoriteMeals">
-            <li id="favMeals">Favorite Meals</li>
-          </a>-->
+            <!-- NEED TO MAKE THESE ROUTER LINKS -->
           <a href="/about">
             <li id="about">About</li>
           </a>
+             <!-- NEED TO MAKE THESE ROUTER LINKS -->
           <a href="/projects">
             <li id="Projects">Projects</li>
           </a>
-          <!--<a  href="">
-            <li id="addRecipes">Add Recipe</li>
-          </a>-->
+         
         </ul>
       </div>
     <nav>
