@@ -11,7 +11,7 @@ export default {
 <template>
 
 <div id="app" class="nav">
-  
+
     <NavBar class="navBar"/>
  
     
@@ -28,4 +28,5 @@ body{  background-image: url('/src/assets/images/port-background.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;}
+ 
 </style>

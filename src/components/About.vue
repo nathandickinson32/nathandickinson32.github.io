@@ -226,7 +226,7 @@ strong {
 }
 
 .bottom-left-image {
-  bottom: 10px;
+  top: 10px;
   left: 10px;
  
  
@@ -245,7 +245,7 @@ strong {
   .bottom-left-image {
     width: 120px;
     height: 200px;
-    margin-bottom: 10px;
+margin-top: 475px;    
   }
   .top-right-image {
     width: 120px;
