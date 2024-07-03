@@ -117,11 +117,10 @@ export default {
   background-color: black;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
-  margin-left: 0; /* Adjusted to shift content to the left */
   width: 100%;
-
+margin-left: 65px;
 }
 
 .bigGrid {
@@ -141,7 +140,7 @@ export default {
   max-height: 400px; /* Adjusted for responsiveness */
   border: 1px solid white;
   border-radius: 10px;
-  width: 70vw;
+  width: 100%;
  
 
 }
@@ -176,12 +175,9 @@ export default {
 
 @media (max-width: 600px) {
   .container {
-    margin-left: 0; /* Adjusted to shift content to the left */
+    margin-left: 20px; /* Adjusted to shift content to the left */
   }
 
-  .bigGrid {
-    margin-left: 0; /* Adjusted to shift content to the left */
-  }
 
   h1 {
     font-size: 24px;
