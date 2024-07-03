@@ -1,12 +1,12 @@
 <template>
   <div class="container">
   The Start of my Projects Page
-  <router-link class="connect4" to="/connect4">
+  <!-- <router-link class="connect4" to="/connect4">
 Connect4
 </router-link>
 <router-link class="whackAMole" to="/whackAMole">
   Whack A Mole
-</router-link>
+</router-link> -->
 </div>
 
 
@@ -42,7 +42,7 @@ methods : {
 }
 .dropdown{
   display: flex;
-  margin-left: 150px;
+  margin-left: 100px;
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
