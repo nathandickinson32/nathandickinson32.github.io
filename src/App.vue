@@ -23,5 +23,9 @@ export default {
 </template>
 
 <style>
-
+body{  background-image: url('/src/assets/images/port-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;}
 </style>

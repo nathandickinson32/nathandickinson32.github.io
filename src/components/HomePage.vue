@@ -8,56 +8,57 @@
       <p>
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
-      <div class="grid2">
+      <div class="resume">
         <a href="../../public/Nathan_Dickinson_Resume.pdf">
-        <button class="resume-btn">Résumé</button>
-      </a>
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
-        <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
-      </div>
-     
+          <button class="resume-btn">Résumé</button>
+        </a>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
+          <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'HomePage'
-}
 </script>
 
-<style >
+<style scoped>
 .main-content {
-  flex-grow: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f7f7f7;
-  height: 128%;
-  margin-left: 55px;
+  background-color: aliceblue;
+  padding: 20px;
   border-radius: 10px;
-  
+  margin-left: 75px;
+
+
+}
+body{
+  background-image: url('/src/assets/images/port-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-
 .profile img {
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   border: 5px solid #e6e6e6;
-  margin-left: 20px;
-  
 }
 
 .info {
   text-align: center;
-  margin-left: 30px;
+  margin-top: 20px;
 }
 
 .info h1 {
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -66,7 +67,7 @@ export default {
 }
 
 .info p {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 20px;
 }
 
@@ -74,7 +75,13 @@ export default {
   color: #2A5D84;
 }
 
-.info button {
+.resume {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resume-btn {
   background-color: #2A5D84;
   color: white;
   border: none;
@@ -85,81 +92,51 @@ export default {
   margin-bottom: 20px;
 }
 
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 .social-links a img {
-  width: 48px;
-  height: 48px;
-  margin: 0 10px;
+  width: 36px;
+  height: 36px;
 }
 
-li img {
-  width: 50px;
-}
-
-.grid1{
-  display: grid;
-  grid-template-columns: 1fr 100%;
-
-}
-.grid2{
-  display: flex;
-margin-left: 34%;
-
-}
-.resume-btn{
-  height: 48px;
-}
-
-body{
-  background-image: url('/src/assets/images/port-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-.nav{
-  display: flex;
-
-  
-}
-
-.content {
-  flex-grow: 1;
-  padding: 20px;
- 
-}
-
-@media only screen and (max-width: 600px) {
+@media (min-width: 600px) {
   .main-content {
-    image-rendering: auto;
-    /* height:50%;
-    width: 50%; */
- 
+    flex-direction: row;
+    padding: 40px;
+    
+  }
+
+  .profile img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .info {
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 0; 
+  }
+
+  .info h1 {
+    font-size: 24px;
+  }
+
+  .info p {
+    font-size: 18px;
+  }
+
+  .resume {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .resume-btn {
+    margin-bottom: 0; 
   }
 }
-
-@media only screen and (min-width: 600px) {
-  .media {
-    width: 100vh;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .media {
-    width: 100vh;
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  .media{
-    width: 100vh;
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  .media {
-    width: 100vh;
-  }
-}
-
-
 </style>

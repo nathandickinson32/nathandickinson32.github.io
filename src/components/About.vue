@@ -71,10 +71,12 @@
      <a href="https://www.linkedin.com/in/nathangdickinson/" class="linkedIn-btn">LinkedIn</a>
      
      <p>Let's create something amazing together!</p>
-     <transition>
+     <transition name="fade">
      <img :src="randomImage1" class="top-right-image" :key="randomIndex1">
+    </transition>
+    <transition name="fade">
     <img :src="randomImage2" class="bottom-left-image" :key="randomIndex2">
-     </transition>
+  </transition>
       </div>
     </div>
   </section>
@@ -152,14 +154,14 @@ export default {
   color: #333;
   line-height: 1.6;
   background-color: lightblue;
-  margin-left: 50px;
+  margin-left: 70px;
   border-radius: 10px;
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px;
 }
 
 h1 {
@@ -210,8 +212,8 @@ strong {
   height:300px;
   object-fit: cover;
   border-radius: 10px;
-   
-  transition: opacity 0.5s ease-in-out; 
+
+  
 
 }
 
@@ -219,7 +221,7 @@ strong {
 .top-right-image {
   top: 10px;
   right: 10px;
- 
+  
   
 }
 
@@ -227,8 +229,35 @@ strong {
   bottom: 10px;
   left: 10px;
  
+ 
 
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+@media (max-width: 600px) {
+  .bottom-left-image {
+    width: 120px;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+  .top-right-image {
+    width: 120px;
+    height: 200px;
+    left: 10px;
+margin-top: 225px;  
+}
+
+
+
+}
+
 </style>
 
 

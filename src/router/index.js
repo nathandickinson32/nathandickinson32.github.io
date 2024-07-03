@@ -3,6 +3,8 @@ import HomePage from '../components/HomePage.vue';
 import About from '../components/About.vue';
 import Projects from '../components/Projects.vue';
 import Connect4 from '../components/Connect4.vue';
+import whackAMole from '../components/whackAMole.vue';
+
 const routes = [
     {
         path: '/',
@@ -23,6 +25,11 @@ const routes = [
         path: '/connect4',
         name: 'connect4',
         component: Connect4
+    },
+    {
+        path: '/whackAMole',
+        name: 'whackAMole',
+        component: whackAMole
     }
 ];
 const router = createRouter({

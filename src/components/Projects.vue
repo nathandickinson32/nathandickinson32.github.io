@@ -4,6 +4,9 @@
   <router-link class="connect4" to="/connect4">
 Connect4
 </router-link>
+<router-link class="whackAMole" to="/whackAMole">
+  Whack A Mole
+</router-link>
 </div>
 </template>
 
