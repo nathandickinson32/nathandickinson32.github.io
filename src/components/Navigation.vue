@@ -6,24 +6,29 @@
     <div class="off-screen-menu">
         <label id="profile"></label>
         <ul class="list">
-
-          <!-- NEED TO MAKE THESE ROUTER LINKS -->
+<!-- 
           <a href="/">
             <li id="home">Home</li>
           </a>
-            <!-- NEED TO MAKE THESE ROUTER LINKS -->
           <a href="/about">
             <li id="about">About</li>
           </a>
-             <!-- NEED TO MAKE THESE ROUTER LINKS -->
+            
           <a href="/projects">
             <li id="Projects">Projects</li>
-          </a>
+          </a> -->
+    
+          <li>
+            <router-link class="home-btn" to="/" @click="closeMenu">Home</router-link><br>
+          <router-link class="abt-btn" to="/about" @click="closeMenu">About</router-link><br>
+          <router-link class="projects-btn" to="/projects" @click="closeMenu">Projects</router-link>
+       
+  </li>
          
         </ul>
       </div>
     <nav>
-        <div class="ham-menu">
+        <div class="ham-menu"  >
           <span></span>
           <span></span>
           <span></span>
@@ -61,6 +66,11 @@
 
 export default {
   name: 'NavBar',
+  data() {
+    return {
+      isMenuOpen: false,
+    };
+  },
   mounted() {
   const hamMenu = document.querySelector('.ham-menu');
   const offScreenMenu = document.querySelector('.off-screen-menu');
@@ -74,7 +84,17 @@ export default {
   
   
   },
-  
+
+  methods: {
+ 
+    closeMenu() {
+      this.isMenuOpen = false;
+      const hamMenu = document.querySelector('.ham-menu');
+      const offScreenMenu = document.querySelector('.off-screen-menu');
+      hamMenu.classList.remove('active');
+      offScreenMenu.classList.remove('active');
+    },
+  },
 }
 </script>
 
@@ -108,26 +128,26 @@ export default {
   width: 100%;
 } */
 
-/* .sidebar nav ul li {
+.sidebar nav ul li {
   width: 100%;
   margin: 20px 0;
 
   justify-content: center;
-} */
+}
 
-/* .sidebar nav ul li a {
+.sidebar nav ul li a {
   
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 40px;
-} */
+}
 
-/* .sidebar nav ul li a img {
+.sidebar nav ul li a img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-} */
+} 
 /* body{
   background-image: url('/src/assets/images/port-background.jpg');
   background-size: cover;
@@ -151,6 +171,7 @@ export default {
   text-align: left;
   font-size: 2.5rem;
   transition: .7s ease;
+  border-radius: 10px;
   
 
 }
@@ -211,5 +232,33 @@ export default {
   list-style: none;
 }
 
+/* @media (max-width: 600px) {
+  .off-screen-menu {
+  z-index: 100;
+  background-color: #87CEEB;
+  height: 100vh;
+  width: 100%;
+  max-width: 200px;
+  position: fixed;
+  top: 50px;
+  left: -450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  font-size: 2.5rem;
+  transition: .7s ease;
+  border-radius: 10px;
+  
 
+}
+
+.off-screen-menu.active{
+  right: 0;
+}
+
+
+
+} */
 </style>
