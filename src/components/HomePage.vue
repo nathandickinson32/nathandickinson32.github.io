@@ -6,18 +6,22 @@
     <div class="info">
       <h1>Hi There! I'm <span>Nathan Dickinson</span></h1>
       <p>
-        A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
+        A <span>Full Stack Web Developer</span> dedicated to developing robust
+        and scalable web applications across the stack
       </p>
-     
-     
+
       <div class="social-links">
-       
-        <router-link to="/resume"><button class="resume-btn">Résumé</button></router-link>
-      
-        <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
-        <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
+        <router-link to="/resume"
+          ><button class="resume-btn">Résumé</button></router-link
+        >
+
+        <a href="https://www.linkedin.com/in/nathangdickinson/"
+          ><img src="../assets/images/linkedin.png" alt="LinkedIn"
+        /></a>
+        <a href="https://github.com/nathandickinson32"
+          ><img src="../assets/images/github.png" alt="GitHub"
+        /></a>
       </div>
-    
     </div>
   </div>
 </template>
@@ -28,7 +32,7 @@
 <style scoped>
 .main-content {
   display: flex;
-  align-items: flex-start; 
+  align-items: flex-start;
   background-color: aliceblue;
   padding: 20px;
   border-radius: 10px;
@@ -58,7 +62,7 @@
 }
 
 .info h1 span {
-  color: #2A5D84;
+  color: #2a5d84;
 }
 
 .info p {
@@ -67,13 +71,11 @@
 }
 
 .info p span {
-  color: #2A5D84;
+  color: #2a5d84;
 }
 
-
-
 .resume-btn {
-  background-color: #2A5D84;
+  background-color: #2a5d84;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -92,13 +94,13 @@
   width: 36px;
   height: 36px;
 }
-.link-btns{
+.link-btns {
   margin-block-end: auto;
 }
 
 @media (max-width: 600px) {
   .main-content {
-    flex-direction: column; 
+    flex-direction: column;
     padding: 40px;
   }
 
@@ -109,7 +111,7 @@
 
   .info {
     text-align: left;
-    margin-top: 0; 
+    margin-top: 0;
   }
 
   .info h1 {
@@ -119,7 +121,5 @@
   .info p {
     font-size: 18px;
   }
-
-
 }
 </style>
