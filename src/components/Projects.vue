@@ -1,19 +1,18 @@
 <template>
-   <div class="container">
+  <div class="container">
     <h1 class="title">Play a game I Made <img src="../assets/images/happiness.png" class="happyImage"></h1>
 
     <div class="slider-wrapper">
       <div class="slider">
-        <router-link  id="slide-1" :to="{ path: '/connect4' }">
+        <router-link id="slide-1" :to="{ path: '/connect4' }">
           <img class="slide-image" src="../assets/images/connect4boardCover.png" alt="connectSS"/>
         </router-link>
-        <router-link id="slide-2"  :to="{ path: '/whackAMole' }">
+        <router-link id="slide-2" :to="{ path: '/whackAMole' }">
           <img class="slide-image" src="../assets/images/whackamolegamecover.png" alt="whackAmoleSS"/>
         </router-link>
-        <router-link id="slide-3"  :to="{ path: '/memory' }">
+        <router-link id="slide-3" :to="{ path: '/memory' }">
           <img class="slide-image" src="../assets/images/memoryboardcover.png" alt="memorySS"/>
         </router-link>
-        <video></video>
       </div>
 
       <div class="slider-nav">
@@ -24,42 +23,23 @@
     </div>
     <footer class="footer"><h2>Videos of my other projects coming soon!</h2></footer>
   </div>
-
-
-<!-- <div class="dropdown">
-      <label for="projects"></label>
-        <select name="projects" id="categories" v-on:change="changeRoute($event)">
-          <option value="">Pick a Game!</option>
-          <option value="/connect4">Connect-4</option>
-          <option value="/whackAMole">Whack-A-Mole</option>
-          <option value="/memory">Memory</option>
-          <option value="/project4">project4</option>
-          
-        </select>
-      </div> -->
 </template>
-
 <script>
 export default {
-name: 'projects',
-methods : {
+  name: 'projects',
+  methods: {
     changeRoute(e) {
       this.$router.push(e.target.value);
     },
-
-  
   }
 }
 </script>
 
 <style scoped>
-
-
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  margin-left: 50px;
 }
 
 .title {
@@ -70,27 +50,30 @@ methods : {
 
 .slider-wrapper {
   position: relative;
-  max-width: 100%;
   overflow: hidden;
-  margin: 0 auto;
+  width: 100%;
   max-width: 400px;
+  margin: 0 auto;
 }
 
 .slider {
   display: flex;
+  width: 100%;
   overflow-x: auto;
-  /* scroll-snap-type: x mandatory; */
-  scroll-behavior:smooth;
-  box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
-  border-radius: 0.5rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 10px;
+}
+
+.slider a {
+  scroll-snap-align: center;
+  flex: 0 0 100%;
 }
 
 .slide-image {
-  flex: 0 0 auto;
-  width: 400px;
+  width: 100%;
   height: auto;
   object-fit: cover;
-  scroll-snap-align: start;
 }
 
 .slider-nav {
@@ -112,14 +95,17 @@ methods : {
 .slider-nav a:hover {
   opacity: 1;
 }
-.title{
-  color:white
+
+.title {
+  color: white;
 }
-.footer{
-  color:white
+
+.footer {
+  color: white;
 }
-.happyImage{
-  width:5%;
-  height:auto;
+
+.happyImage {
+  width: 5%;
+  height: auto;
 }
 </style>

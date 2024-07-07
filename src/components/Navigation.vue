@@ -6,24 +6,13 @@
     <div class="off-screen-menu">
         <label id="profile"></label>
         <ul class="list">
-<!-- 
-          <a href="/">
-            <li id="home">Home</li>
-          </a>
-          <a href="/about">
-            <li id="about">About</li>
-          </a>
-            
-          <a href="/projects">
-            <li id="Projects">Projects</li>
-          </a> -->
     
           <li>
             <router-link class="home-btn" to="/" @click="closeMenu">Home</router-link><br>
           <router-link class="abt-btn" to="/about" @click="closeMenu">About</router-link><br>
           <router-link class="projects-btn" to="/projects" @click="closeMenu">Projects</router-link>
        
-  </li>
+         </li>
          
         </ul>
       </div>
@@ -34,31 +23,7 @@
           <span></span>
         </div>
       </nav>
-    <!-- <nav>
-      <ul>
-        <div class="nav-image">
-
-        
-          <li>
-    <router-link class="home-btn" to="/">
-      <img src="../assets/images/home.png" alt="Home"/>
-    </router-link>
-  </li>
-
-          <li>
-    <router-link class="about-btn" to="/about">
-      <img src="../assets/images/information.png" alt="About"/>
-    </router-link>
-  </li> 
-
-        <li>
-          <router-link class="projects-btn" to="/projects">
-            <img src="../assets/images/invention.png" alt="Projects" />
-          </router-link>
-        </li> 
-        </div>
-      </ul>
-    </nav> -->
+  
   </div>
 </template>
 
@@ -122,12 +87,6 @@ export default {
   margin-bottom: 40px;
 }
 
-/* .sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-} */
 
 .sidebar nav ul li {
   width: 100%;
@@ -149,13 +108,7 @@ export default {
   max-height: 100%;
   object-fit: contain;
 } 
-/* body{
-  background-image: url('/src/assets/images/port-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-} */
+
 .off-screen-menu {
   z-index: 100;
   background-color: #87CEEB;
@@ -202,8 +155,6 @@ export default {
   bottom: 50%;
   transform: translate (-50%, -50%);
   transition: .7s ease;
-
-
 }
 
 .ham-menu span:nth-child(1) {
@@ -233,33 +184,4 @@ export default {
   list-style: none;
 }
 
-/* @media (max-width: 600px) {
-  .off-screen-menu {
-  z-index: 100;
-  background-color: #87CEEB;
-  height: 100vh;
-  width: 100%;
-  max-width: 200px;
-  position: fixed;
-  top: 50px;
-  left: -450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  font-size: 2.5rem;
-  transition: .7s ease;
-  border-radius: 10px;
-  
-
-}
-
-.off-screen-menu.active{
-  right: 0;
-}
-
-
-
-} */
 </style>

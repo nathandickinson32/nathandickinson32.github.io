@@ -9,9 +9,14 @@
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
       <div class="resume">
-        <a href="../../public/resume/myResumeForNow.pdf">
+        <!-- <a href="assets/docs/myResumeForNow.pdf">
           <button class="resume-btn">Résumé</button>
-        </a>
+        </a> -->
+
+  <div>
+    <router-link to="/resume">Open PDF</router-link>
+  </div>
+
         <div class="social-links">
           <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
           <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>

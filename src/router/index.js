@@ -5,6 +5,7 @@ import Projects from '../components/Projects.vue';
 import Connect4 from '../components/Connect4.vue';
 import whackAMole from '../components/whackAMole.vue';
 import Memory from '../components/Memory.vue';
+import resume from '../components/resume.vue'
 
 const routes = [
     {
@@ -36,7 +37,12 @@ const routes = [
         path: '/memory',
         name: 'memory',
         component: Memory
-    }
+    },
+    {
+        path: '/resume',
+        name: 'resume',
+        component: resume
+      }
 ];
 const router = createRouter({
     history: createWebHistory(),
