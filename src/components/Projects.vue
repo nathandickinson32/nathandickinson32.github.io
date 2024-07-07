@@ -39,13 +39,15 @@ export default {
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+
 }
 
 .title {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
+  margin-left: -150px;
+
 }
 
 .slider-wrapper {
@@ -54,6 +56,9 @@ export default {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  margin-left: 25px;
+
+  
 }
 
 .slider {
@@ -102,10 +107,21 @@ export default {
 
 .footer {
   color: white;
+  margin-left: -100px;
 }
 
 .happyImage {
   width: 5%;
   height: auto;
+}
+@media (min-width: 600px) {
+  .container {
+   margin-left: 40px;
+    
+  }
+
+  /* .footer{
+    margin-left: 8px;
+  } */
 }
 </style>

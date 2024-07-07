@@ -242,11 +242,11 @@ strong {
 .fade-leave-to {
   opacity: 0;
 }
-@media (max-width: 600px) {
+@media (max-width: 1300px) {
   .bottom-left-image {
     width: 120px;
     height: 200px;
-margin-top: 475px;    
+    margin-top: 475px;    
   }
   .top-right-image {
     width: 120px;
@@ -254,9 +254,6 @@ margin-top: 475px;
     left: 10px;
 margin-top: 225px;  
 }
-
-
-
 }
 
 </style>

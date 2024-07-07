@@ -8,20 +8,16 @@
       <p>
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
-      <div class="resume">
-        <!-- <a href="assets/docs/myResumeForNow.pdf">
-          <button class="resume-btn">Résumé</button>
-        </a> -->
-
-  <div>
-    <router-link to="/resume">Open PDF</router-link>
-  </div>
-
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
-          <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
-        </div>
+     
+     
+      <div class="social-links">
+       
+        <router-link to="/resume"><button class="resume-btn">Résumé</button></router-link>
+      
+        <a href="https://www.linkedin.com/in/nathangdickinson/"><img src="../assets/images/linkedin.png" alt="LinkedIn" /></a>
+        <a href="https://github.com/nathandickinson32"><img src="../assets/images/github.png" alt="GitHub" /></a>
       </div>
+    
     </div>
   </div>
 </template>
@@ -32,23 +28,15 @@
 <style scoped>
 .main-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; 
   background-color: aliceblue;
   padding: 20px;
   border-radius: 10px;
-  margin-left: 75px;
-  margin-top: -5px
-
-
+  margin-left: 65px;
 }
-body{
-  background-image: url('/src/assets/images/port-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+
+.profile {
+  margin-right: 20px;
 }
 
 .profile img {
@@ -59,12 +47,13 @@ body{
 }
 
 .info {
+  flex: 1;
   text-align: center;
   margin-top: 20px;
 }
 
 .info h1 {
-  font-size: 20px;
+  font-size: 24px;
   margin-bottom: 10px;
 }
 
@@ -73,7 +62,7 @@ body{
 }
 
 .info p {
-  font-size: 16px;
+  font-size: 22px;
   margin-bottom: 20px;
 }
 
@@ -81,11 +70,7 @@ body{
   color: #2A5D84;
 }
 
-.resume {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 
 .resume-btn {
   background-color: #2A5D84;
@@ -95,7 +80,6 @@ body{
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin-bottom: 20px;
 }
 
 .social-links {
@@ -108,12 +92,14 @@ body{
   width: 36px;
   height: 36px;
 }
+.link-btns{
+  margin-block-end: auto;
+}
 
-@media (min-width: 600px) {
+@media (max-width: 600px) {
   .main-content {
-    flex-direction: row;
+    flex-direction: column; 
     padding: 40px;
-    
   }
 
   .profile img {
@@ -123,7 +109,6 @@ body{
 
   .info {
     text-align: left;
-    margin-left: 30px;
     margin-top: 0; 
   }
 
@@ -135,14 +120,6 @@ body{
     font-size: 18px;
   }
 
-  .resume {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 20px;
-  }
 
-  .resume-btn {
-    margin-bottom: 0; 
-  }
 }
 </style>
