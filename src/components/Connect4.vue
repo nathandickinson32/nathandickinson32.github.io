@@ -127,7 +127,7 @@ margin-left: 65px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-left: 0; /* Adjusted to shift content to the left */
+  margin-left: 0; 
   width: 100%;
 
 }
@@ -135,9 +135,9 @@ margin-left: 65px;
 .grid {
   display: flex;
   flex-wrap: wrap;
-  max-width: 400px; /* Adjusted for responsiveness */
-  height: 80vw; /* Adjusted for responsiveness */
-  max-height: 400px; /* Adjusted for responsiveness */
+  max-width: 400px; 
+  height: 80vw; 
+  max-height: 400px; 
   border: 1px solid white;
   border-radius: 10px;
   width: 100%;
@@ -158,14 +158,14 @@ margin-left: 65px;
 }
 
 .player-two {
-  background-color: blue;
+  background-color: yellow;
   border-radius: 50%;
 }
 
 .scoreboard {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Adjusted to align scoreboard to the left */
+  align-items: flex-start;
   margin-left: 20px;
 }
 
@@ -175,7 +175,7 @@ margin-left: 65px;
 
 @media (max-width: 600px) {
   .container {
-    margin-left: 20px; /* Adjusted to shift content to the left */
+    margin-left: 20px;
   }
 
 

@@ -9,7 +9,7 @@
         A <span>Full Stack Web Developer</span> dedicated to developing robust and scalable web applications across the stack
       </p>
       <div class="resume">
-        <a href="../../public/Nathan_Dickinson_Resume.pdf">
+        <a href="../../public/resume/myResumeForNow.pdf">
           <button class="resume-btn">Résumé</button>
         </a>
         <div class="social-links">
@@ -34,6 +34,7 @@
   padding: 20px;
   border-radius: 10px;
   margin-left: 75px;
+  margin-top: -5px
 
 
 }

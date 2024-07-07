@@ -156,6 +156,7 @@ export default {
   background-color: lightblue;
   margin-left: 70px;
   border-radius: 10px;
+  margin-top: -5px
 }
 
 .container {

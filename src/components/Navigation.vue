@@ -101,13 +101,14 @@ export default {
 <style scoped>
 .sidebar {
   width: 60px;
-  height: 125px;
+  height: 120px;
   background-color: #2A5D84;
   color: white;
   position: fixed;
   display: flex;
     flex-direction: column;
   align-items: center;
+  margin-top: -5px;
  
   
   border-radius: 10px;

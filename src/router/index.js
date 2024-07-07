@@ -4,6 +4,7 @@ import About from '../components/About.vue';
 import Projects from '../components/Projects.vue';
 import Connect4 from '../components/Connect4.vue';
 import whackAMole from '../components/whackAMole.vue';
+import Memory from '../components/Memory.vue';
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: '/whackAMole',
         name: 'whackAMole',
         component: whackAMole
+    },
+    {
+        path: '/memory',
+        name: 'memory',
+        component: Memory
     }
 ];
 const router = createRouter({
