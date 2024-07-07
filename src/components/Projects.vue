@@ -1,6 +1,6 @@
 <template>
    <div class="container">
-    <h1 class="title">Have a look at some of the projects I've built with team members or play a game I made</h1>
+    <h1 class="title">Play a game I Made <img src="../assets/images/happiness.png" class="happyImage"></h1>
 
     <div class="slider-wrapper">
       <div class="slider">
@@ -13,6 +13,7 @@
         <router-link id="slide-3"  :to="{ path: '/memory' }">
           <img class="slide-image" src="../assets/images/memoryboardcover.png" alt="memorySS"/>
         </router-link>
+        <video></video>
       </div>
 
       <div class="slider-nav">
@@ -21,6 +22,7 @@
         <a href="#slide-3"></a>
       </div>
     </div>
+    <footer class="footer"><h2>Videos of my other projects coming soon!</h2></footer>
   </div>
 
 
@@ -112,5 +114,12 @@ methods : {
 }
 .title{
   color:white
+}
+.footer{
+  color:white
+}
+.happyImage{
+  width:5%;
+  height:auto;
 }
 </style>
