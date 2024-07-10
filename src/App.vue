@@ -23,10 +23,8 @@ export default {
 </template>
 
 <style>
-/* body{  background-image: url('/src/assets/images/port-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;} */
- 
+body{ 
+  background: linear-gradient(171.8deg, rgb(5, 111, 146) 13.5%, rgb(6, 57, 84) 78.6%);
+
+}
 </style>

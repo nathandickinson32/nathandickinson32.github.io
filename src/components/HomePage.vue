@@ -127,6 +127,7 @@
   align-items: center;
   padding: 20px;
   text-align: center;
+  color:aliceblue;
 }
 
 .profile img {
@@ -146,7 +147,7 @@
 }
 
 .info h1 span {
-  color: #2a5d84; 
+  color: darkblue; 
 }
 
 .info p {
@@ -156,7 +157,7 @@
 
 .info p span {
   font-weight: bold;
-  color: #2a5d84; 
+  color: darkblue; 
 }
 
 .social-links {

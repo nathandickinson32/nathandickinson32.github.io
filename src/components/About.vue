@@ -51,9 +51,9 @@
         <h2>Get in Touch</h2>
         <p>I am currently seeking my first opportunity in the tech industry and am eager to bring my unique background and skills to a dynamic team. If you are looking for a dedicated and enthusiastic software developer who is ready to tackle new challenges and contribute to meaningful projects, I would love to connect with you. Please feel free to reach out to me at nathandickinson32@gmail.com or connect with me on <a href="https://www.linkedin.com/in/nathangdickinson/" class="linkedIn-btn">LinkedIn</a>.</p>
         <p>Let's create something amazing together!</p>
-        <transition name="fade">
+        <!-- <transition name="fade">
           <img :src="randomImage1" class="top-right-image" :key="randomIndex1" />
-        </transition>
+        </transition> -->
         <!-- <transition name="fade">
           <img :src="randomImage2" class="bottom-left-image" :key="randomIndex2" />
         </transition> -->
@@ -237,6 +237,7 @@ margin-top: 225px;
 
 .about-me {
   padding: 20px;
+  color:aliceblue
 }
 
 .container {
@@ -278,9 +279,18 @@ p {
 }
 
 img {
-  max-width: 100%;
+  max-width: 300px;
   height: auto;
 }
+/* .fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+} */
 /* 
 .top-right-image {
   position: absolute;
