@@ -7,30 +7,23 @@
         <h2>Who I Am</h2>
         <p>Hello! My name is Nathan Dickinson, and I'm a passionate web developer based in Youngstown, Ohio. Recent grad from Tech Elevator's National Live Remote program, I now hone the skills of full-stack development. I thrive on creating user-friendly applications, always eager to learn and embrace new challenges.</p>
       </div>
- 
+
       <div class="section">
         <h2>My Journey</h2>
-        
         <p>My journey began over a decade ago when I started my career in landscaping. During these years, I honed my skills in design, project management, and client relations, transforming outdoor spaces into beautiful and functional environments. My work ranged from residential gardens to large commercial projects, each requiring a unique blend of creativity and technical expertise.</p>
+        <p>While I found immense satisfaction in landscaping, I discovered a deep-seated passion for technology that had always been with me. I started exploring programming and quickly realized the parallels between designing landscapes and writing code. Both require a meticulous attention to detail, problem-solving skills, and the ability to envision a project from start to finish.</p>
+        <p>Driven by this new interest, I decided to pivot my career towards software development. I enrolled in online courses and bootcamps, gaining proficiency in various programming languages and frameworks such as Java, JavaScript, and Vue.js. My background in landscaping has given me a unique perspective on user experience and design, which I now apply to creating intuitive and efficient software solutions.</p>
+        <p>This transition has been challenging yet incredibly rewarding. I'm excited to combine my creative background with my technical skills to develop innovative software that solves real-world problems. Whether working on web applications, mobile apps, or other projects, I bring a fresh perspective and a dedicated work ethic to the tech industry.</p>
+      </div>
 
-<p>While I found immense satisfaction in landscaping, I discovered a deep-seated passion for technology that had always been with me. I started exploring programming and quickly realized the parallels between designing landscapes and writing code. Both require a meticulous attention to detail, problem-solving skills, and the ability to envision a project from start to finish.</p>
-
-<p>Driven by this new interest, I decided to pivot my career towards software development. I enrolled in online courses and bootcamps, gaining proficiency in various programming languages and frameworks such as Java, JavaScript, and Vue.js. My background in landscaping has given me a unique perspective on user experience and design, which I now apply to creating intuitive and efficient software solutions.</p>
-
-<p>This transition has been challenging yet incredibly rewarding. I'm excited to combine my creative background with my technical skills to develop innovative software that solves real-world problems. Whether working on web applications, mobile apps, or other projects, I bring a fresh perspective and a dedicated work ethic to the tech industry.</p>
-      
-    </div>
       <div class="section">
         <h2>What I Do</h2>
-        <div class="list">
-        <ul>
-          <li><strong>Object-Oriented Programming:</strong> Java </li>
-          <li><strong>Web Application Development:</strong> HTML, CSS, JavaScript, Spring Boot, Vue.js </li>
+        <ul class="list">
+          <li><strong>Object-Oriented Programming:</strong> Java</li>
+          <li><strong>Web Application Development:</strong> HTML, CSS, JavaScript, Spring Boot, Vue.js</li>
           <li><strong>Database Programming:</strong> JDBC, Table Design, SQL, PostgreSQL, E/R diagrams</li>
-          <li><strong>Development tools and techniques:</strong>  Agile, Unit Testing (JUnit), Integration Testing, Git, IntelliJ</li> 
-
+          <li><strong>Development tools and techniques:</strong> Agile, Unit Testing (JUnit), Integration Testing, Git, IntelliJ</li>
         </ul>
-      </div>
       </div>
 
       <div class="section">
@@ -40,43 +33,30 @@
 
       <div class="section">
         <h2>Outside of Work</h2>
-            <p>
-              When I'm not diving into the world of software development, I cherish spending quality time with my fiancée, especially enjoying movie nights together. 
-              We're excitedly planning our wedding, which will take place this September. 
-              <strong>Fun fact: My future wife is in the Smiley Costume!</strong>
-            </p>
-
-            <p>
-              In the past year, I've developed a new love for golf. It has been an exhilarating journey learning the game, and I find it to be a great way to unwind and challenge myself.
-            </p>
-
-            <p>
-              I also enjoy playing video games with my friends, providing a perfect balance of fun and competition.
-               Additionally, I love fishing with my parents as they step into retirement, creating memorable moments and enjoying the serenity of the outdoors.
-            </p>
-
-            <p>
-              Being a proud uncle to two nephews, a niece, and a fourth little one on the way brings me immense joy.
-               Watching them grow and spending time with them is incredibly fulfilling. 
-               These moments outside of work help keep me inspired, balanced, and ready for new challenges in my professional life.
-            </p>
-
+        <p>
+          When I'm not diving into the world of software development, I cherish spending quality time with my fiancée, especially enjoying movie nights together. We're excitedly planning our wedding, which will take place this September. <strong>Stay for the photos to see my future wife in the Smiley Costume!</strong>
+        </p>
+        <p>
+          In the past year, I've developed a new love for golf. It has been an exhilarating journey learning the game, and I find it to be a great way to unwind and challenge myself.
+        </p>
+        <p>
+          I also enjoy playing video games with my friends, providing a perfect balance of fun and competition. Additionally, I love fishing with my parents as they step into retirement, creating memorable moments and enjoying the serenity of the outdoors.
+        </p>
+        <p>
+          Being a proud uncle to two nephews, a niece, and a fourth little one on the way brings me immense joy. Watching them grow and spending time with them is incredibly fulfilling. These moments outside of work help keep me inspired, balanced, and ready for new challenges in my professional life.
+        </p>
       </div>
 
       <div class="section">
         <h2>Get in Touch</h2>
-        <span>I am currently seeking my first opportunity in the tech industry and am eager to bring my unique background and skills to a dynamic team.
-     If you are looking for a dedicated and enthusiastic software developer who is ready to tackle new challenges and contribute to meaningful projects, 
-     I would love to connect with you. Please feel free to reach out to me at nathandickinson32@gmail.com or connect with me on </span> 
-     <a href="https://www.linkedin.com/in/nathangdickinson/" class="linkedIn-btn">LinkedIn</a>
-     
-     <p>Let's create something amazing together!</p>
-     <transition name="fade">
-     <img :src="randomImage1" class="top-right-image" :key="randomIndex1">
-    </transition>
-    <transition name="fade">
-    <img :src="randomImage2" class="bottom-left-image" :key="randomIndex2">
-  </transition>
+        <p>I am currently seeking my first opportunity in the tech industry and am eager to bring my unique background and skills to a dynamic team. If you are looking for a dedicated and enthusiastic software developer who is ready to tackle new challenges and contribute to meaningful projects, I would love to connect with you. Please feel free to reach out to me at nathandickinson32@gmail.com or connect with me on <a href="https://www.linkedin.com/in/nathangdickinson/" class="linkedIn-btn">LinkedIn</a>.</p>
+        <p>Let's create something amazing together!</p>
+        <transition name="fade">
+          <img :src="randomImage1" class="top-right-image" :key="randomIndex1" />
+        </transition>
+        <!-- <transition name="fade">
+          <img :src="randomImage2" class="bottom-left-image" :key="randomIndex2" />
+        </transition> -->
       </div>
     </div>
   </section>
@@ -84,8 +64,7 @@
 
 <script>
 import fianceeImage from '../assets/images/fiencee.jpg';
-import dadFishImage from '../assets/images/me&dadfish.jpg';
-import momFishImage from '../assets/images/me&momfish.jpg';
+
 import meTomImage from '../assets/images/me-Tom.jpg';
 import bugSmileyImage from '../assets/images/bugSmiley.jpg';
 import cleBugImage from '../assets/images/cleBug.jpg';
@@ -103,8 +82,6 @@ export default {
     return {
       images: [
         fianceeImage,
-        dadFishImage,
-        momFishImage,
         meTomImage,
         bugSmileyImage,
         cleBugImage,
@@ -149,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-.about-me {
+/* .about-me {
   font-family: Arial, sans-serif;
   color: #333;
   line-height: 1.6;
@@ -254,8 +231,93 @@ strong {
     left: 10px;
 margin-top: 225px;  
 }
+} */
+
+
+
+.about-me {
+  padding: 20px;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.list {
+  padding-left: 20px;
+}
+
+.list li {
+  margin-bottom: 10px;
+}
+
+.linkedIn-btn {
+  color: #0073e6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+/* 
+.top-right-image {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.bottom-left-image {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+} */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  /* .top-right-image, .bottom-left-image {
+    display: none;
+  } */
+
+  
+}
 </style>
 
 

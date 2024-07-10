@@ -120,8 +120,97 @@ export default {
     
   }
 
-  /* .footer{
+  .footer{
     margin-left: 8px;
-  } */
+  }  
 }
+
+/* .container {
+  padding: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.happyImage {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide-image {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.slider-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.slider-nav a {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #ccc;
+  border-radius: 50%;
+  text-indent: -9999px;
+  transition: background-color 0.3s;
+}
+
+.slider-nav a.active,
+.slider-nav a:hover {
+  background-color: #0073e6;
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+/* Mobile Styles */
+/* @media (max-width: 768px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .happyImage {
+    width: 30px;
+    height: 30px;
+  }
+
+  .slide-image {
+    max-width: 80%;
+  }
+
+  .slider-nav a {
+    width: 8px;
+    height: 8px;
+  }
+
+  .footer h2 {
+    font-size: 16px;
+  }
+}  */
 </style>

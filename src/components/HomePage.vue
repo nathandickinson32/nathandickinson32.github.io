@@ -30,13 +30,12 @@
 </script>
 
 <style scoped>
-.main-content {
+/* .main-content {
   display: flex;
   align-items: flex-start;
   background-color: aliceblue;
   padding: 20px;
   border-radius: 10px;
-  margin-left: 65px;
 }
 
 .profile {
@@ -101,7 +100,6 @@
 @media (max-width: 600px) {
   .main-content {
     flex-direction: column;
-    padding: 40px;
   }
 
   .profile img {
@@ -120,6 +118,107 @@
 
   .info p {
     font-size: 18px;
+} }*/
+
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.profile img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.info {
+  max-width: 600px;
+}
+
+.info h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.info h1 span {
+  color: #2a5d84; 
+}
+
+.info p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.info p span {
+  font-weight: bold;
+  color: #2a5d84; 
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-links a {
+  margin: 10px;
+}
+
+.social-links img {
+  width: 30px;
+  height: 30px;
+}
+
+.resume-btn {
+  background-color: #2a5d84; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Mobile Styles */
+@media (min-width: 768px) {
+  .main-content {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .profile {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile img {
+    margin-bottom: 0;
+  }
+
+  .info {
+    flex: 2;
+    margin-left: 20px;
+  }
+
+  .social-links {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .social-links a {
+    margin: 0 10px;
+  }
+
+  .resume-btn {
+    margin-bottom: 0;
+    margin-right: 10px;
   }
 }
 </style>
