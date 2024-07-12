@@ -35,8 +35,9 @@ export default {
 }
 </script>
 
-<style scoped>
-.container {
+ <style scoped>
+
+/* .container {
   max-width: 800px;
   margin: 0 auto;
 
@@ -123,94 +124,117 @@ export default {
   .footer{
     margin-left: 8px;
   }  
-}
+}  */
 
-/* .container {
-  padding: 20px;
+.container {
+  padding: 1rem;
   text-align: center;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
 .title {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .happyImage {
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
 }
 
 .slider-wrapper {
-  position: relative;
-  width: 100%;
   overflow: hidden;
-  margin: 0 auto;
+  position: relative;
 }
 
 .slider {
   display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
-.slide-image {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  border-radius: 10px;
+  transition: transform 0.5s ease;
 }
 
 .slider-nav {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
 .slider-nav a {
-  display: block;
-  width: 10px;
-  height: 10px;
-  margin: 0 5px;
-  background-color: #ccc;
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.25rem;
+  background-color: #ddd;
   border-radius: 50%;
+  display: inline-block;
   text-indent: -9999px;
-  transition: background-color 0.3s;
 }
 
 .slider-nav a.active,
 .slider-nav a:hover {
-  background-color: #0073e6;
+  background-color: #333;
 }
 
+.slide-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* Footer styling */
 .footer {
-  margin-top: 20px;
+  margin-top: 2rem;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
-/* Mobile Styles */
-/* @media (max-width: 768px) {
+.footer h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Larger screen adjustments */
+@media (min-width: 600px) {
   .title {
-    font-size: 20px;
+    font-size: 2rem;
   }
 
   .happyImage {
-    width: 30px;
-    height: 30px;
+    width: 2rem;
+    height: 2rem;
   }
 
   .slide-image {
-    max-width: 80%;
-  }
-
-  .slider-nav a {
-    width: 8px;
-    height: 8px;
+    width: 80%;
+    margin: 0 auto;
   }
 
   .footer h2 {
-    font-size: 16px;
+    font-size: 1.25rem;
   }
-}  */
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .happyImage {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .slide-image {
+    width: 60%;
+  }
+
+  .footer h2 {
+    font-size: 1.5rem;
+  }
+}
 </style>
