@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "google-fonts-webpack-plugin": "^0.4.4",
     "vue": "^3.4.29",
     "vue-router": "^4.4.0",
     "vuex": "^4.0.2"

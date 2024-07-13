@@ -1,136 +1,80 @@
 <template>
   <div class="container">
-    <h1 class="title">Play a game I Made <img src="../assets/images/happiness.png" class="happyImage"></h1>
+    <h1 class="title">My Games and <br />Video Presentations</h1>
 
-    <div class="slider-wrapper">
-      <div class="slider">
-        <router-link id="slide-1" :to="{ path: '/connect4' }">
-          <img class="slide-image" src="../assets/images/connect4boardCover.png" alt="connectSS"/>
-        </router-link>
-        <router-link id="slide-2" :to="{ path: '/whackAMole' }">
-          <img class="slide-image" src="../assets/images/whackamolegamecover.png" alt="whackAmoleSS"/>
-        </router-link>
-        <router-link id="slide-3" :to="{ path: '/memory' }">
-          <img class="slide-image" src="../assets/images/memoryboardcover.png" alt="memorySS"/>
-        </router-link>
-      </div>
-
-      <div class="slider-nav">
-        <a href="#slide-1"></a>
-        <a href="#slide-2"></a>
-        <a href="#slide-3"></a>
-      </div>
+    <div class="dropdown">
+      <label for="projects"></label>
+      <select name="projects" id="projects" v-on:change="changeRoute($event)">
+        <option value="">--Pick a Project--</option>
+        <!-- keep this value empty, select can't be selected-->
+        <option value="/connect4">Connect 4</option>
+        <option value="/whackAMole">Whack-A-Mole</option>
+        <option value="/my_foodie_friend">My Foodie Friend</option>
+        <option value="/tenmo">TEnmo</option>
+        <option value="/second_nature">Second Nature</option>
+      </select>
     </div>
-    <footer class="footer"><h2>Videos of my other projects coming soon!</h2></footer>
+
+ <div class="connect4Description">
+<h2>Connect 4</h2>
+<p>
+  description
+</p>
+ </div> 
+ <div class="whackAMoleDescription">
+<h2>Whack-A-Mole</h2>
+<p>
+  description
+</p>
+ </div> 
+
+ <div class="myFoodieFriendDescription">
+<h2>My Foodie Friend</h2>
+<p>
+  description
+</p>
+ </div> 
+
+ <div class="tenmoDescription">
+<h2>TEnmo</h2>
+<p>
+  description
+</p>
+ </div> 
+
+ <div class="secondNatureDescription">
+<h2>Second Nature</h2>
+<p>
+  description
+</p>
+ </div> 
+
+    <footer class="footer">
+      <h2>
+        I'm always updating projects and adding more so be sure to come back to
+        see what's new!
+      </h2>
+    </footer>
   </div>
 </template>
 <script>
 export default {
-  name: 'projects',
+  name: "projects",
   methods: {
     changeRoute(e) {
       this.$router.push(e.target.value);
     },
-  }
-}
+  },
+};
 </script>
 
  <style scoped>
-
-/* .container {
-  max-width: 800px;
-  margin: 0 auto;
-
-}
-
-.title {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-  margin-left: -150px;
-
-}
-
-.slider-wrapper {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-left: 25px;
-
-  
-}
-
-.slider {
-  display: flex;
-  width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  gap: 10px;
-}
-
-.slider a {
-  scroll-snap-align: center;
-  flex: 0 0 100%;
-}
-
-.slide-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.slider-nav {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.slider-nav a {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: white;
-  opacity: 0.75;
-  transition: opacity 250ms ease;
-}
-
-.slider-nav a:hover {
-  opacity: 1;
-}
-
-.title {
-  color: white;
-}
-
-.footer {
-  color: white;
-  margin-left: -100px;
-}
-
-.happyImage {
-  width: 5%;
-  height: auto;
-}
-@media (min-width: 600px) {
-  .container {
-   margin-left: 40px;
-    
-  }
-
-  .footer{
-    margin-left: 8px;
-  }  
-}  */
-
 .container {
   padding: 1rem;
   text-align: center;
   background-color: #f9f9f9;
   color: #333;
+  border-radius: 10px;
 }
 
 .title {
@@ -147,44 +91,6 @@ export default {
   margin-left: 0.5rem;
 }
 
-.slider-wrapper {
-  overflow: hidden;
-  position: relative;
-}
-
-.slider {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-.slider-nav {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.slider-nav a {
-  width: 1rem;
-  height: 1rem;
-  margin: 0 0.25rem;
-  background-color: #ddd;
-  border-radius: 50%;
-  display: inline-block;
-  text-indent: -9999px;
-}
-
-.slider-nav a.active,
-.slider-nav a:hover {
-  background-color: #333;
-}
-
-.slide-image {
-  width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-}
-
-/* Footer styling */
 .footer {
   margin-top: 2rem;
   background-color: #333;
@@ -198,7 +104,23 @@ export default {
   margin: 0;
 }
 
-/* Larger screen adjustments */
+.dropdown {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  justify-content: center;
+}
+
+#projects {
+  text-align: left;
+  background-color: #84c7fa;
+  font-size: 20px;
+  border-radius: 10px;
+  color: black;
+}
+
 @media (min-width: 600px) {
   .title {
     font-size: 2rem;
@@ -207,11 +129,6 @@ export default {
   .happyImage {
     width: 2rem;
     height: 2rem;
-  }
-
-  .slide-image {
-    width: 80%;
-    margin: 0 auto;
   }
 
   .footer h2 {
@@ -227,10 +144,6 @@ export default {
   .happyImage {
     width: 2.5rem;
     height: 2.5rem;
-  }
-
-  .slide-image {
-    width: 60%;
   }
 
   .footer h2 {

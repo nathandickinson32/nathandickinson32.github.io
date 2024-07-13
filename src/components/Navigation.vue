@@ -111,7 +111,7 @@ export default {
 } 
 
 .off-screen-menu {
-  z-index: 100;
+  
   background-color: #87CEEB;
   height: 100vh;
   width: 100%;
@@ -127,7 +127,7 @@ export default {
   font-size: 2.5rem;
   transition: .7s ease;
   border-radius: 10px;
-  
+  z-index: 100;
 
 }
 .off-screen-menu.active{
