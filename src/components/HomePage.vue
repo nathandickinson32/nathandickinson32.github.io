@@ -46,7 +46,10 @@
   height: 150px;
   border-radius: 50%;
   margin-bottom: 20px;
+ 
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
+
 
 .info {
   max-width: 600px;
@@ -111,6 +114,7 @@
 
   .profile img {
     margin-bottom: 0;
+ 
   }
 
   .info {
@@ -131,5 +135,6 @@
     margin-bottom: 0;
     margin-right: 10px;
   }
+
 }
 </style>
