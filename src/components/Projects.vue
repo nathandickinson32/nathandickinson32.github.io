@@ -4,15 +4,15 @@
 
     <div class="dropdown">
       <label for="projects"></label>
-      <select name="projects" id="projects" v-on:change="changeRoute($event)">
+      <select name="projects" id="projects" @change="handleSelectChange">
         <option value="">--Pick a Project--</option>
         <!-- keep this value empty, select can't be selected-->
         <optgroup label="Works In Progress">
-          <option value="/second_nature">Second Nature App</option>
+          <option value="">Second Nature App</option>
         </optgroup>
         <optgroup label="Video Presentations">
-          <option value="/my_foodie_friend">My Foodie Friend</option>
-          <option value="/tenmo">TEnmo</option>
+          <option value="myFoodieFriendVideo">My Foodie Friend</option>
+          <option value="tenmoVideo">TEnmo</option>
         </optgroup>
         <optgroup label="Games">
           <option value="/connect4">Connect 4</option>
@@ -20,6 +20,8 @@
         </optgroup>
       </select>
     </div>
+
+    <VideoModal :show="showModal" :videoSrc="videoSrc" @close="closeModal" />
 
     <div class="secondNatureDescription">
       <h2 class="projectTitle">Second Nature App</h2>
@@ -117,6 +119,7 @@
         technologies, offering both nostalgic appeal and contemporary usability.
       </p>
     </div>
+
     <div class="whackAMoleDescription">
       <h2 class="projectTitle">Whack-A-Mole</h2>
       <p>
@@ -147,23 +150,41 @@
     </footer>
   </div>
 </template>
-<script>
-export default {
-  name: "projects",
-  methods: {
-    changeRoute(e) {
-      this.$router.push(e.target.value);
-    },
-  },
+
+<script setup>
+import { ref } from 'vue';
+import VideoModal from './VideoModal.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const showModal = ref(false);
+const videoSrc = ref('');
+
+const openModal = (src) => {
+  videoSrc.value = src;
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const handleSelectChange = (event) => {
+  const value = event.target.value;
+  if (value === "myFoodieFriendVideo") {
+    openModal(new URL('../assets/videos/Meal-Planner.mp4', import.meta.url).href);
+  } else if (value === "tenmoVideo") {
+    openModal(new URL('../assets/videos/TEnmo-Presentation.mp4', import.meta.url).href);
+  } else if (value) {
+    router.push(value);
+  }
 };
 </script>
 
- <style scoped>
+<style scoped>
 .container {
   padding: 1rem;
   text-align: center;
-  /* background-color: #f9f9f9; */
-  /* color: #333; */
   color: aliceblue;
   border-radius: 10px;
 }
@@ -212,6 +233,7 @@ export default {
   border-radius: 10px;
   color: black;
 }
+
 .projectTitle {
   color: black;
 }

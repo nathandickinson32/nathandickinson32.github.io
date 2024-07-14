@@ -8,9 +8,9 @@
         <ul class="list">
     
           <li>
-            <router-link class="home-btn" to="/" @click="closeMenu">Home</router-link><br>
-          <router-link class="abt-btn" to="/about" @click="closeMenu">About</router-link><br>
-          <router-link class="projects-btn" to="/projects" @click="closeMenu">Projects</router-link>
+            <router-link class="ham-btns" to="/" @click="closeMenu">Home</router-link><br>
+          <router-link class="ham-btns" to="/about" @click="closeMenu">About</router-link><br>
+          <router-link class="ham-btns" to="/projects" @click="closeMenu">Projects</router-link>
        
          </li>
          
@@ -183,6 +183,9 @@ export default {
 
 .list{
   list-style: none;
+}
+.ham-btns{
+  color:black
 }
 
 </style>
