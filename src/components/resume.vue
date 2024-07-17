@@ -45,6 +45,17 @@
     <section>
       <h2>TECHNICAL EXPERIENCE</h2>
       <div>
+        <h3>Portfolio</h3>
+        <p>
+          Sleek, responsive personal portfolio website to effectively showcase
+          my professional skills, projects, and accomplishments. Leveraged
+          Vue.js for a dynamic, interactive interface, ensuring optimal
+          performance across all devices. The project reflects my proficiency in
+          front-end development and design, emphasizing clean aesthetics and
+          user-centric design principles.
+        </p>
+      </div>
+      <div>
         <h3>My Foodie Friend</h3>
         <p>
           Meal planning application that allows users to view various recipes by
@@ -100,7 +111,8 @@
           <li>
             Boosted client acquisition growth through strategic
             relationship-building between Human Resources & potential clientele,
-            leveraging proven quality work & tailored in-person communication approaches
+            leveraging proven quality work & tailored in-person communication
+            approaches
           </li>
           <li>
             Prioritized team schedules and enhanced team productivity 20%
@@ -116,7 +128,12 @@
           <strong>Supervisor</strong>
         </p>
         <ul>
-          <li>Trained over 15+ employees with hands-on training through on-site demonstrations, equipment usage tutorials, landscaping techniques workshops, safety protocol drills, and real-world landscaping projects</li>
+          <li>
+            Trained over 15+ employees with hands-on training through on-site
+            demonstrations, equipment usage tutorials, landscaping techniques
+            workshops, safety protocol drills, and real-world landscaping
+            projects
+          </li>
           <li>
             Enhanced productivity by 20% through meticulous time tracking using
             time tracking software to optimize workload capacity
@@ -144,7 +161,7 @@
   border: 1px solid #ddd;
   margin-left: 65px;
   border-radius: 10px;
-  color:black
+  color: black;
 }
 
 header {
