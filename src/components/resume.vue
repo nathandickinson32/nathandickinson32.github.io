@@ -11,6 +11,8 @@
         <a href="https://www.linkedin.com/in/nathangdickinson">LinkedIn</a>
         |
         <a href="https://github.com/nathandickinson32">GitHub</a>
+        |
+        <a href="https://nathandickinson32.github.io">Portfolio</a>
       </p>
     </header>
     <section>
@@ -98,12 +100,12 @@
           <li>
             Boosted client acquisition growth through strategic
             relationship-building between Human Resources & potential clientele,
-            leveraging proven quality work & tailored communication approaches
+            leveraging proven quality work & tailored in-person communication approaches
           </li>
           <li>
             Prioritized team schedules and enhanced team productivity 20%
             through delegating trucks, trailers, & machines with GPS tracking
-            systems & inventory management tools
+            systems & inventory management tools(Temeda)
           </li>
         </ul>
       </div>
@@ -114,7 +116,7 @@
           <strong>Supervisor</strong>
         </p>
         <ul>
-          <li>Trained over 15 employees with on-the-job training</li>
+          <li>Trained over 15+ employees with hands-on training through on-site demonstrations, equipment usage tutorials, landscaping techniques workshops, safety protocol drills, and real-world landscaping projects</li>
           <li>
             Enhanced productivity by 20% through meticulous time tracking using
             time tracking software to optimize workload capacity
