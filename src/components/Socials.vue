@@ -15,10 +15,32 @@
 
 <script>
 export default {
-
+name: "Socials"
 }
 </script>
 
-<style>
+<style scoped>
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.social-links a {
+  margin: 10px;
+}
+
+.social-links img {
+  width: 40px;
+  height: 40px;
+}
+
+.resume-btn {
+  background-color: #2a5d84; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
 </style>

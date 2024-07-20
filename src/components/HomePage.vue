@@ -74,7 +74,7 @@
   color: darkblue; 
 }
 
-.social-links {
+/* .social-links {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,7 +97,7 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 10px;
-}
+} */
 
 @media (min-width: 768px) {
   .main-content {

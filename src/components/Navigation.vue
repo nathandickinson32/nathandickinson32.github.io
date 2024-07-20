@@ -26,75 +26,60 @@
   
   </div> -->
   <div class="header">
-
- 
- 
-          <router-link class="header-btns" id="home-btn" to="/" >Home</router-link>
-          <router-link class="header-btns" to="/about">About</router-link>
-          <router-link class="header-btns" to="/projects">Projects</router-link>
-  
-  
- 
-            
-       
-        
+    <router-link class="header-btns" id="home-btn" to="/"
+      ><h3>Home</h3></router-link
+    >
+    <router-link class="header-btns" to="/about"><h3>About</h3></router-link>
+    <router-link class="header-btns" to="/projects"
+      ><h3>Projects</h3></router-link
+    >
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'NavBar',
+  name: "NavBar",
   data() {
     return {
       isMenuOpen: false,
     };
   },
   mounted() {
-  const hamMenu = document.querySelector('.ham-menu');
-  const offScreenMenu = document.querySelector('.off-screen-menu');
-  
-  
-  
-    hamMenu.addEventListener('click', () => {
-    hamMenu.classList.toggle('active');
-    offScreenMenu.classList.toggle('active');
-    })
-  
-  
+    const hamMenu = document.querySelector(".ham-menu");
+    const offScreenMenu = document.querySelector(".off-screen-menu");
+
+    hamMenu.addEventListener("click", () => {
+      hamMenu.classList.toggle("active");
+      offScreenMenu.classList.toggle("active");
+    });
   },
 
   methods: {
- 
     closeMenu() {
       this.isMenuOpen = false;
-      const hamMenu = document.querySelector('.ham-menu');
-      const offScreenMenu = document.querySelector('.off-screen-menu');
-      hamMenu.classList.remove('active');
-      offScreenMenu.classList.remove('active');
+      const hamMenu = document.querySelector(".ham-menu");
+      const offScreenMenu = document.querySelector(".off-screen-menu");
+      hamMenu.classList.remove("active");
+      offScreenMenu.classList.remove("active");
     },
   },
-}
+};
 </script>
 
 <style scoped>
-
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
   padding: 10px;
 }
 
 .header-btns {
   color: white;
-  text-decoration: none;
   padding: 10px 20px;
   flex: 1;
   text-align: center;
 }
-
-
 
 /* 
 .sidebar {
@@ -220,7 +205,4 @@ export default {
 .ham-btns{
   color:black
 } */
-
-
-
 </style>
