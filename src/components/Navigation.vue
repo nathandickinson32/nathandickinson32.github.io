@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <!-- <div class="sidebar">
     <div class="logo">
       <span>ND</span>
     </div>
@@ -24,6 +24,20 @@
         </div>
       </nav>
   
+  </div> -->
+  <div class="header">
+
+ 
+ 
+          <router-link class="header-btns" id="home-btn" to="/" >Home</router-link>
+          <router-link class="header-btns" to="/about">About</router-link>
+          <router-link class="header-btns" to="/projects">Projects</router-link>
+  
+  
+ 
+            
+       
+        
   </div>
 </template>
 
@@ -64,6 +78,25 @@ export default {
 </script>
 
 <style scoped>
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.header-btns {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  flex: 1;
+  text-align: center;
+}
+
+
+
+/* 
 .sidebar {
   width: 60px;
   height: 120px;
@@ -186,6 +219,8 @@ export default {
 }
 .ham-btns{
   color:black
-}
+} */
+
+
 
 </style>

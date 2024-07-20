@@ -10,7 +10,7 @@
         and scalable web applications across the stack
       </p>
 
-      <div class="social-links">
+      <!-- <div class="social-links">
         <router-link to="/resume"
           ><button class="resume-btn">Résumé</button></router-link
         >
@@ -21,7 +21,7 @@
         <a href="https://github.com/nathandickinson32"
           ><img src="../assets/images/github.png" alt="GitHub"
         /></a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
