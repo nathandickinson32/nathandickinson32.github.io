@@ -95,7 +95,6 @@
     height: 300px;
     width: 300px;
     border: 1px solid white;
-    margin-left: 50px;
     border-radius: 10px;
    
   }
@@ -121,8 +120,6 @@
   .scoreboard {
     background-color: aliceblue;
     border-radius: 10px;
-    margin-left: 65px;
-    margin-right: 30px;
    
    
   }

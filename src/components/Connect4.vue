@@ -171,12 +171,5 @@ export default {
   margin-top: 10px;
 }
 
-@media (max-width: 600px) {
- 
 
-
-  h1 {
-    font-size: 24px;
-  }
-}
 </style>

@@ -76,11 +76,16 @@ export default {
 
 .header-btns {
   color: white;
-  padding: 10px 20px;
   flex: 1;
   text-align: center;
+  margin-right: 10px;
 }
 
+@media (max-width: 600px) {
+  .header-btns {
+   margin-right: 20px;
+  }
+}
 /* 
 .sidebar {
   width: 60px;
