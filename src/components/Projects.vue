@@ -12,7 +12,9 @@
         </optgroup>
         <optgroup label="Video Presentations">
           <option value="myFoodieFriendVideo">My Foodie Friend</option>
-          <option value="tenmoVideo">TEnmo</option>
+          <!-- <option value="tenmoVideo">TEnmo</option> -->
+          <option value="dungeonVideo">Dungeon Adventure Game</option>
+
         </optgroup>
         <optgroup label="Games">
           <option value="/connect4">Connect 4</option>
@@ -175,6 +177,8 @@ const handleSelectChange = (event) => {
     openModal(new URL('../assets/videos/Meal-Planner.mp4', import.meta.url).href);
   } else if (value === "tenmoVideo") {
     openModal(new URL('../assets/videos/TEnmo-Presentation.mp4', import.meta.url).href);
+  }else if (value === "dungeonVideo") {
+    openModal(new URL('../assets/videos/DungeonPresentationFinal.mp4', import.meta.url).href);
   } else if (value) {
     router.push(value);
   }
