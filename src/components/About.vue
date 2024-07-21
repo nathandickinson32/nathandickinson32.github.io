@@ -34,7 +34,8 @@
       <div class="section">
         <h2 class="title">Outside of Work</h2>
         <p>
-          When I'm not diving into the world of software development, I cherish spending quality time with my fiancée, especially enjoying movie nights together. We're excitedly planning our wedding, which will take place this September. <strong>Stay for the photos to see my future wife in the Smiley Costume!</strong>
+          When I'm not diving into the world of software development, I cherish spending quality time with my fiancée, especially enjoying movie nights together. We're excitedly planning our wedding, which will take place this September. 
+          <!-- <strong>Stay for the photos to see my future wife in the Smiley Costume!</strong> -->
         </p>
         <p>
           In the past year, I've developed a new love for golf. It has been an exhilarating journey learning the game, and I find it to be a great way to unwind and challenge myself.

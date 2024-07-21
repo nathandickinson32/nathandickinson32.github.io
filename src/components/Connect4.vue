@@ -117,17 +117,15 @@ export default {
   background-color: black;
   color: white;
   text-align: center;
-  padding: 30px;
+  padding: 20px 20px;
   border-radius: 10px;
   width: 100%;
-margin-left: 65px;
 }
 
 .bigGrid {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-left: 0; 
   width: 100%;
 
 }
@@ -174,9 +172,7 @@ margin-left: 65px;
 }
 
 @media (max-width: 600px) {
-  .container {
-    margin-left: 20px;
-  }
+ 
 
 
   h1 {
