@@ -98,7 +98,7 @@ export default {
           }
           setTimeout(() => {
             this.clearBoard();
-          }, 2000);
+          }, 4000);
           return;
         }
       }
