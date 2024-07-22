@@ -89,6 +89,7 @@
   </script>
   
   <style scoped>
+ 
   .grid {
     display: flex;
     flex-wrap: wrap;
@@ -96,6 +97,7 @@
     width: 300px;
     border: 1px solid white;
     border-radius: 10px;
+  
    
   }
   
@@ -113,16 +115,8 @@
     
   }
   
-  body {
-    background-color: black;
-    color: white;
-  }
-  .scoreboard {
-    background-color: aliceblue;
-    border-radius: 10px;
-   
-   
-  }
+ 
+  
   button {
   margin-top: 20px;
   padding: 10px 20px;

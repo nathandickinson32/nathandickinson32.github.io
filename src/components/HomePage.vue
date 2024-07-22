@@ -9,19 +9,6 @@
         A <span>Full Stack Web Developer</span> dedicated to developing robust
         and scalable web applications across the stack
       </p>
-
-      <!-- <div class="social-links">
-        <router-link to="/resume"
-          ><button class="resume-btn">Résumé</button></router-link
-        >
-
-        <a href="https://www.linkedin.com/in/nathangdickinson/"
-          ><img src="../assets/images/linkedin.png" alt="LinkedIn"
-        /></a>
-        <a href="https://github.com/nathandickinson32"
-          ><img src="../assets/images/github.png" alt="GitHub"
-        /></a>
-      </div> -->
     </div>
   </div>
 </template>
@@ -74,30 +61,6 @@
   color: darkblue; 
 }
 
-/* .social-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.social-links a {
-  margin: 10px;
-}
-
-.social-links img {
-  width: 30px;
-  height: 30px;
-}
-
-.resume-btn {
-  background-color: #2a5d84; 
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 10px;
-} */
 
 @media (min-width: 768px) {
   .main-content {

@@ -46,13 +46,7 @@
   }
   
   .close-btn {
-    /* position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background: transparent;
-    font-size: 16px; */
-    /* margin-top: 100px; */
+   
     cursor: pointer;
   }
   
