@@ -30,12 +30,12 @@
     { name: 'eevee', img: '../assets/images/eevee.png' },
     { name: 'bulbasaur', img: '../assets/images/bulbasaur.png' },
     { name: 'psyduck', img: '../assets/images/psyduck.png' },
-    { name: 'charmander', img: '../src/assets/images/charmander.png' },
-    { name: 'pikachu', img: '../src/assets/images/pikachu.png' },
-    { name: 'squirtle', img: '../src/assets/images/squirtle.png' },
-    { name: 'eevee', img: '../src/assets/images/eevee.png' },
-    { name: 'bulbasaur', img: '../src/assets/images/bulbasaur.png' },
-    { name: 'psyduck', img: '../src/assets/images/psyduck.png' }
+    { name: 'charmander', img: '../assets/images/charmander.png' },
+    { name: 'pikachu', img: '../assets/images/pikachu.png' },
+    { name: 'squirtle', img: '../assets/images/squirtle.png' },
+    { name: 'eevee', img: '../assets/images/eevee.png' },
+    { name: 'bulbasaur', img: '../assets/images/bulbasaur.png' },
+    { name: 'psyduck', img: '../assets/images/psyduck.png' }
   ])
   
   const result = ref(0)
