@@ -8,7 +8,7 @@
     <router-link class="header-btns" to="/projects"
       ><h3>Projects</h3></router-link
     >
-    <router-link class="header-btns" to="/projects2"><h3>Projects 2</h3></router-link>
+    <!-- <router-link class="header-btns" to="/projects2"><h3>Projects 2</h3></router-link> -->
 
   </div>
 </template>
