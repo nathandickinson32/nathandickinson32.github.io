@@ -24,7 +24,7 @@
   import { ref, onMounted } from 'vue'
   
   const cardArray = ref([
-    { name: 'charmander', img: '@/assets/images/charmander.png' },
+    { name: 'charmander', img: '/memory/src/assets/images/charmander.png' },
     { name: 'pikachu', img: '../assets/images/pikachu.png' },
     { name: 'squirtle', img: '../assets/images/squirtle.png' },
     { name: 'eevee', img: '../assets/images/eevee.png' },
