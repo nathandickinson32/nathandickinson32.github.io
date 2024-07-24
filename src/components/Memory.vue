@@ -46,7 +46,7 @@
   const gameWon = ref(false)
   const winImage = '../src/assets/images/ash.png'
   
-  const pokeballImage = '../src/assets/images/pokeball.png'
+  const pokeballImage = '/images/pokeball.png'
   const blankImage = '../src/assets/images/blank.png'
   const transparentImage = '../src/assets/images/blank.png'
   
