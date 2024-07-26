@@ -6,10 +6,14 @@
     <router-link class="project-btns" id="foodieFriend-btn" to="/foodieFriend"
       ><h3>My Foodie Friend</h3></router-link
     >
-   
-    <router-link class="project-btns" to="/connect4"><h3>Connect 4</h3></router-link>
+    <div>
+      <h3 class="btn-header">Connect 4</h3>
+      <router-link class="project-btns connect4-btn" id="connet4-btn" to="/connect4"><h3></h3></router-link>
+    </div>
+  
     <router-link class="project-btns" to="/whackAMole"><h3>Whack-A-Mole</h3></router-link>
-    <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link>
+
+    <!-- <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link> -->
 
     <router-link class="project-btns" to="/tenmo"
       ><h3>TEnmo</h3></router-link
@@ -48,10 +52,23 @@ export default {
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  color:black
 
 }
 h3 {
   text-align: center;
+}
+.connect4-btn {
+  background-image: url('../assets/images/connect4Pic.png');
+  background-size: cover;
+  background-position: top;
+  color: white; 
+}
+.btn-header{
+  color:white
+}
+h1{
+  color:black
 }
 
 
