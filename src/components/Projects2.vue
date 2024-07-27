@@ -1,26 +1,48 @@
 <template>
   <h1>Click on a project to learn more</h1>
   <div class="container">
-    <router-link class="project-btns" to="/secondNature"><h3>Second Nature App</h3></router-link>
+    <div class="project-container">
+      <router-link class="project-btns second-nature-btn" to="/secondNature"></router-link>
+      <h4 class="btn-header"> <span>Second Nature</span><br/>App</h4>
+    </div>
 
-    <router-link class="project-btns" id="foodieFriend-btn" to="/foodieFriend"
-      ><h3>My Foodie Friend</h3></router-link
-    >
-    <div>
-      <h3 class="btn-header">Connect 4</h3>
-      <router-link class="project-btns connect4-btn" id="connet4-btn" to="/connect4"><h3></h3></router-link>
+    <div class="project-container">
+      <router-link class="project-btns foodie-friend-btn" to="/foodieFriend"></router-link>
+    <h4 class="btn-header">My Foodie Friend</h4>
+    </div>
+    
+
+
+    <div class="project-container">
+      <router-link class="project-btns connect4-btn" id="connet4-btn" to="/connect4"></router-link>
+      <h4 class="btn-header">Connect 4</h4>
     </div>
   
-    <router-link class="project-btns" to="/whackAMole"><h3>Whack-A-Mole</h3></router-link>
+    <div class="project-container">
+
+      <router-link class="project-btns whack-a-mole-btn" to="/whackAMole"></router-link>
+      <h4 class="btn-header">Whack-A-Mole</h4>
+    </div>
 
     <!-- <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link> -->
 
-    <router-link class="project-btns" to="/tenmo"
-      ><h3>TEnmo</h3></router-link
-    >
-    <router-link class="project-btns" to="/vendingMachine"><h3>Virtual Vending Machine</h3></router-link>
+    <div class="project-container">
 
-    <router-link class="project-btns" to="/dungeonGame"><h3>Dungeon Adventure Game</h3></router-link>
+      <router-link class="project-btns tenmo-btn" to="/tenmo"
+      ></router-link
+    >
+    <h4 class="btn-header">TEnmo</h4>
+    </div>
+   
+    <div class="project-container">
+      <router-link class="project-btns vending-machine-btn" to="/vendingMachine"></router-link>
+      <h4 class="btn-header"><span>Virtual Vending </span><br/>Machine</h4>
+    </div>
+
+    <div class="project-container">
+      <router-link class="project-btns dungeon-game-btn" to="/dungeonGame"></router-link>
+      <h4 class="btn-header"> <span>Dungeon Adventure</span><br/> Game</h4>
+    </div>
 
   </div>
 
@@ -37,17 +59,15 @@ export default {
   display: flex;
   gap: 50px;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .project-btns {
   display: flex;
-  border: 1px solid black;
   width: 80px;
   height: 80px;
   padding: 20px;
   border-radius: 5px;
-  background-color: white;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -55,21 +75,59 @@ export default {
   color:black
 
 }
-h3 {
+h4 {
   text-align: center;
+  margin-top: 3px;
+  color: white
 }
 .connect4-btn {
-  background-image: url('../assets/images/connect4Pic.png');
+  background-image: url('../assets/images/connect-four.png');
   background-size: cover;
-  background-position: top;
-  color: white; 
+  justify-content: center;
 }
-.btn-header{
-  color:white
+.whack-a-mole-btn{
+  background-image: url('../assets/images/mole.png');
+  background-size: cover;
+  justify-content: center;
 }
+
+.second-nature-btn{
+  background-image: url('../assets/images/second-nature.png');
+  background-size: cover;
+  justify-content: center;
+}
+.tenmo-btn{
+  background-image: url('../assets/images/money-exchange.png');
+  background-size: cover;
+  justify-content: center;
+  
+}
+.foodie-friend-btn{
+  background-image: url('../assets/images/cook-book.png');
+  background-size: cover;
+  justify-content: center;
+}
+.vending-machine-btn{
+  background-image: url('../assets/images/vending-machine.png');
+  background-size: cover;
+  justify-content: center;
+}
+.dungeon-game-btn{
+  background-image: url('../assets/images/dungeon.png');
+  background-size: cover;
+  justify-content: center;
+}
+
 h1{
   color:black
 }
+.project-container{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+
 
 
 /* @media only screen and (min-width: 600px) {
