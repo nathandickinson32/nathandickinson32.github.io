@@ -1,5 +1,7 @@
 <template>
-  <h1>Click on a project to learn more</h1>
+  <div class="heading-container">
+    <h1>Project Gallery</h1>
+  </div>
   <div class="container">
     <div class="project-container">
       <router-link class="project-btns second-nature-btn" to="/secondNature"></router-link>
@@ -80,6 +82,24 @@ h4 {
   margin-top: 3px;
   color: white
 }
+h1{
+  color:black
+}
+.project-container{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+.second-nature-btn{
+  background-image: url('../assets/images/second-nature.png');
+  background-size: cover;
+  justify-content: center;
+}
+.foodie-friend-btn{
+  background-image: url('../assets/images/cook-book.png');
+  background-size: cover;
+  justify-content: center;
+}
 .connect4-btn {
   background-image: url('../assets/images/connect-four.png');
   background-size: cover;
@@ -91,22 +111,14 @@ h4 {
   justify-content: center;
 }
 
-.second-nature-btn{
-  background-image: url('../assets/images/second-nature.png');
-  background-size: cover;
-  justify-content: center;
-}
+
 .tenmo-btn{
   background-image: url('../assets/images/money-exchange.png');
   background-size: cover;
   justify-content: center;
   
 }
-.foodie-friend-btn{
-  background-image: url('../assets/images/cook-book.png');
-  background-size: cover;
-  justify-content: center;
-}
+
 .vending-machine-btn{
   background-image: url('../assets/images/vending-machine.png');
   background-size: cover;
@@ -117,15 +129,35 @@ h4 {
   background-size: cover;
   justify-content: center;
 }
+.heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
 
-h1{
-  color:black
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
 }
-.project-container{
- display: flex;
- flex-direction: column;
- align-items: center;
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+  background: linear-gradient(90deg, rgba(190, 144, 212, 0) 0%, rgba(190, 144, 212, 1) 25%, rgba(72, 61, 139, 1) 50%, rgba(144, 238, 144, 1) 75%, rgba(144, 238, 144, 0) 100%);
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
 }
+
 
 
 
