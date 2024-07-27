@@ -74,8 +74,12 @@ export default {
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color:black
+  color:black;
+  transition: transform 0.3s ease;
 
+}
+.project-btns:hover{
+  transform: scale(1.13);
 }
 h4 {
   text-align: center;
@@ -151,7 +155,15 @@ h1{
   display: block;
   width: 100%;
   height: 3px; 
-  background: linear-gradient(90deg, rgba(190, 144, 212, 0) 0%, rgba(190, 144, 212, 1) 25%, rgba(72, 61, 139, 1) 50%, rgba(144, 238, 144, 1) 75%, rgba(144, 238, 144, 0) 100%);
+  /* background: linear-gradient(90deg, rgba(190, 144, 212, 0) 0%, rgba(190, 144, 212, 1) 25%, rgba(72, 61, 139, 1) 50%, rgba(144, 238, 144, 1) 75%, rgba(144, 238, 144, 0) 100%); */
+ 
+  background: linear-gradient(
+    90deg, /* Gradient direction: 90 degrees for horizontal */
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+
   margin: 0.5rem auto 0;
   position: absolute;
   left: 0;

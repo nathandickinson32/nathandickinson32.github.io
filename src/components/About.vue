@@ -1,7 +1,10 @@
 <template>
   <section class="about-me">
     <div class="container">
-      <h1 class="title">Nathan Dickinson</h1>
+      <div class="heading-container">
+        <h1>Nathan Dickinson</h1>
+
+      </div>
 
       <div class="section">
         <h2 class="title">Who I Am</h2>
@@ -128,7 +131,7 @@ export default {
 <style scoped>
 
 .title{
-  color:black
+  color:black;
 }
 
 .about-me {
@@ -178,6 +181,42 @@ img {
   max-width: 300px;
   height: auto;
 }
+.heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
+}
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+ 
+  background: linear-gradient(
+    90deg,
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+}
+
 
 @media (max-width: 768px) {
   .container {

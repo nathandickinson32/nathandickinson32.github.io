@@ -43,28 +43,11 @@ export default {
 </script>
 
 <style scoped>
-.container{
-    display: flex;;
-  text-align: center;
+p{
   color: aliceblue;
-  border-radius: 10px;
 }
-
-.projectTitle {
-  color: black;
-}
-.firstImage{
-    display: flex;
-   
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-    background-image: url('../assets/images/connect4Pic.png');
-  background-size: cover;
-}
-.images{
-    display:flex;
-    
+.projectTitle{
+  color: aliceblue;
 }
 
 </style>

@@ -32,8 +32,14 @@ export default {
   flex: 1;
   text-align: center;
   margin-right: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: text-shadow 0.3s ease;
 }
+.header-btns:hover{
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
 
+}
 @media (max-width: 600px) {
   .header-btns {
    margin-right: 20px;

@@ -28,6 +28,12 @@ name: "Socials"
 
 .social-links a {
   margin: 10px;
+  transition: transform 0.3s ease;
+
+}
+.social-links a:hover{
+  transform: scale(1.08);
+
 }
 
 .social-links img {
