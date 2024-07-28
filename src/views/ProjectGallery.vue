@@ -10,7 +10,7 @@
   
       <div class="project-container">
         <router-link class="project-btns foodie-friend-btn" to="/foodieFriend"></router-link>
-      <h4 class="btn-header">My Foodie Friend</h4>
+      <h4 class="btn-header"><span>My Foodie</span><br/>Friend</h4>
       </div>
       
   
@@ -38,12 +38,12 @@
      
       <div class="project-container">
         <router-link class="project-btns vending-machine-btn" to="/vendingMachine"></router-link>
-        <h4 class="btn-header"><span>Click&Pick Vending </span></h4>
+        <h4 class="btn-header"><span>Click&Pick  </span><br/>Vending</h4>
       </div>
   
       <div class="project-container">
         <router-link class="project-btns dungeon-game-btn" to="/dungeonGame"></router-link>
-        <h4 class="btn-header"> <span>Dungeon Adventure</span><br/> Game</h4>
+        <h4 class="btn-header"> <span>Dungeon</span><br/><span>Adventure</span><br/> Game</h4>
       </div>
   
     </div>
@@ -68,7 +68,6 @@
     display: flex;
     width: 80px;
     height: 80px;
-    padding: 20px;
     border-radius: 5px;
     text-align: center;
     align-items: center;
