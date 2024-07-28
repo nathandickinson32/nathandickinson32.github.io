@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .heading-container {
   text-align: center;
   margin: 2rem 0;

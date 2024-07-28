@@ -19,7 +19,15 @@
               solutions, providing a seamless experience for users to purchase items from the
                vending machine.
         </p>
-     
+        <div class="VendingImages">
+
+<div class="divImg Click-Pick1"></div>
+<div class="divImg Click-Pick2"></div>
+<div class="divImg Click-Pick3"></div>
+<div class="divImg Click-Pick4"></div>
+
+
+</div>
       </div>
 </template>
 
@@ -67,4 +75,69 @@ export default {
 p{
   color: aliceblue;
 }
+
+.Click-Pick1{
+  background-image: url('../assets/images/Click-Pick1.png');
+  object-fit: cover;
+  width: 282px;
+  
+  height: 640px;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content:center;
+  margin-bottom: 5px;
+}
+.Click-Pick2{
+  background-image: url('../assets/images/Click-Pick2.png');
+  object-fit: cover;
+  width: 282px;
+  
+  height: 430px;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+
+}
+.Click-Pick3{
+  background-image: url('../assets/images/Click-Pick3.png');
+  object-fit: cover;
+  width: 281px;
+  
+  height: 390px;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+}
+.Click-Pick4{
+  background-image: url('../assets/images/Click-Pick4.png');
+  object-fit: cover;
+  width: 281px;
+  
+  height: 220px;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+
+}
+.VendingImages {
+  display: inline-block;
+  justify-content: space-between;
+  align-items: center;
+}
+.divImg{
+  display: flex;
+ 
+}
+
 </style>
