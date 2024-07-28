@@ -1,8 +1,33 @@
 <template>
+<div class="heading-container">
+        <h1 class="projectTitle">Whack-A-Mole</h1>
+      </div>
+
+      <div class="whackAMoleDescription">
+        <p>
+          Step into the whimsical world of the Whack-A-Mole game, a lively web adaptation of 
+          the beloved arcade classic. Crafted initially in JavaScript and transformed into a 
+          dynamic Vue.js component, this game invites players to test their reflexes and agility.
+           Psyducks pop up unpredictably from their burrows, challenging players to swiftly click
+            or "whack" them before they retreat. The goal is to accumulate points by hitting as 
+            many psyducks as possible within a set time, while avoiding penalties for missed clicks.
+
+        </p>
+        <p>
+          Built on Vue.js, the game features responsive design elements that ensure seamless 
+          gameplay across various devices. Vibrant visuals and smooth animations enhance the 
+          player experience, capturing the whimsy and excitement of the arcade original. 
+          The Whack-A-Mole game exemplifies the fusion of retro gaming nostalgia with modern web
+           technology, delivering a delightful and engaging experience for players of all ages.
+        </p>
+        
+      </div>
+
+
     <div class="container">
         <div class="scoreboard">
-      <h1>Your score: </h1>
-      <h1 id="score">{{ result }}</h1>
+      <h2>Your score: </h2>
+      <h2 id="score">{{ result }}</h2>
   
       <h3>Seconds Left: <span id="time-left">{{ currentTime }}</span></h3>
       <h3>High Score: <span id="high-score">{{ highScore }}</span></h3>
@@ -89,7 +114,12 @@
   </script>
   
   <style scoped>
- 
+ .container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+ }
   .grid {
     display: flex;
     flex-wrap: wrap;
@@ -97,7 +127,6 @@
     width: 300px;
     border: 1px solid white;
     border-radius: 10px;
-  
    
   }
   
@@ -115,7 +144,9 @@
     
   }
   
- 
+ .scoreboard{
+  color:aliceblue
+ }
   
   button {
   margin-top: 20px;
@@ -129,4 +160,42 @@
 button:hover {
   background-color: grey;
 }
+.heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
+}
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+ 
+  background: linear-gradient(
+    90deg,
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+}
+p{
+  color: aliceblue;
+}
+
   </style>

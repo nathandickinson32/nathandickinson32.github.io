@@ -1,4 +1,34 @@
 <template>
+<div class="heading-container">
+        <h1 class="projectTitle">Connect Four</h1>
+      </div>
+
+      <div class="connect4Description">
+        <p>
+          The Connect 4 game is a classic strategy board game brought to 
+          life in a modern web application format. Originally developed in 
+          JavaScript and later migrated to a Vue.js component, this 
+          rendition of Connect 4 offers players an engaging and intuitive 
+          gameplay experience. Players take turns dropping colored discs 
+          into a vertical grid with the goal of connecting four discs of 
+          their color horizontally, vertically, or diagonally before their 
+          opponent.
+        </p>
+        <p>
+          Implemented as a Vue.js component, the game leverages Vue's 
+          reactive data binding and component-based architecture to ensure
+           smooth and interactive gameplay. The frontend interface is 
+           designed to be responsive and user-friendly, allowing players to 
+           enjoy the game seamlessly across various devices. The Connect 4 
+           game showcases the integration of classic gaming mechanics with
+            modern web development technologies, offering both nostalgic 
+            appeal and contemporary usability.
+        </p>
+        
+      </div>
+
+
+
   <section class="container">
     <div class="currentPlayer">
       <h1>The current Player is:</h1> 
@@ -170,6 +200,42 @@ export default {
 .clear-board-btn {
   margin-top: 10px;
 }
+.heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
 
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
+}
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+ 
+  background: linear-gradient(
+    90deg,
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+}
+p{
+  color: aliceblue;
+}
 
 </style>

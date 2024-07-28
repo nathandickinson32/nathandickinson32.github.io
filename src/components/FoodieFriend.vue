@@ -1,6 +1,9 @@
 <template>
     <div class="container">
+      <div class="heading-container">
         <h1 class="projectTitle">My Foodie Friend</h1>
+
+      </div>
 <div class="myFoodieFriendDescription">
       <p>
         My Foodie Friend is an intuitive meal planning application designed for
@@ -22,14 +25,7 @@
         usability with culinary creativity, redefining meal planning for users
         seeking convenience and personalization.
       </p>
-<div class="images">
-    <div class="firstImage"></div>
-      <div class="firstImage"></div>
 
-      <div class="firstImage"></div>
-      <div class="firstImage"></div>
-
-</div>
      
     </div>
     </div>
@@ -48,6 +44,40 @@ p{
 }
 .projectTitle{
   color: aliceblue;
+}
+.heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
+}
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+ 
+  background: linear-gradient(
+    90deg,
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
 }
 
 </style>
