@@ -18,7 +18,7 @@ I'm a passionate web developer with a keen interest in creating engaging and int
 
 # Mobile Responsive Design
 
-A showcase of my work on making web applications mobile-responsive. This includes a project where I implemented a slider component with images and router links, ensuring it remains user-friendly across different devices.
+A showcase of my work on making web applications mobile-responsive. This includes a project gallery with images and router links, ensuring it remains user-friendly across different devices.
 
 # Skills 
 
