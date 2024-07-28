@@ -17,7 +17,7 @@
           permanence—players must live with the choices they make, which influence the game's 
           outcome. The journey includes solving a challenging riddle, leading up to a
            climactic boss battle that tests the skills and decisions of the player. 
-           Developed during the early weeks of programming, TextQuest is a testament to the 
+           Developed during the early weeks of programming, Dungeon Adventure is a testament to the 
            capabilities of Java, showcasing fundamental principles of object-oriented programming.
             The game combines classic elements of interactive storytelling with strategic 
             gameplay, offering a compelling experience that emphasizes the weight of choice 
