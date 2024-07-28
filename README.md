@@ -14,7 +14,7 @@ Contact
 
 # About Me
 
-I'm a passionate web developer with a keen interest in creating engaging and interactive web applications. My journey in web development began [mention your starting point or motivation]. Over the years, I've honed my skills in front-end technologies, with a particular focus on Vue.js, and I'm always eager to learn and experiment with new technologies.
+I'm a passionate web developer with a keen interest in creating engaging and interactive web applications. My journey in web development began not that long ago. Over the last year, I've honed my skills in front-end technologies, with a particular focus on Vue.js, and I'm always eager to learn and experiment with new technologies.
 
 # Mobile Responsive Design
 
