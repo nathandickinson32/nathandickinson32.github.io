@@ -5,7 +5,7 @@
     <div class="container">
       <div class="project-container">
         <router-link class="project-btns second-nature-btn" to="/secondNature"></router-link>
-        <h4 class="btn-header"> <span>Second Nature</span><br/>App</h4>
+        <h4 class="btn-header"> <span>Second<br/> Nature</span><br/>App</h4>
       </div>
   
       <div class="project-container">
@@ -23,7 +23,7 @@
       <div class="project-container">
   
         <router-link class="project-btns whack-a-mole-btn" to="/whackAMole"></router-link>
-        <h4 class="btn-header">Whack-A-Mole</h4>
+        <h4 class="btn-header">Whack<br/>A<br/>Mole</h4>
       </div>
   
       <!-- <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link> -->

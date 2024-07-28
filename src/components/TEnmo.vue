@@ -22,24 +22,24 @@
                banking.
         </p>
         
-        <div class="tenmoImages">
-
-<div class="divImg HomePage"></div>
-<div class="divImg RegLog"></div>
-<div class="divImg SendMoney"></div>
-<div class="divImg Transfer"></div>
-
-
-</div>
+      
        
+      </div>
 
+      <div class="TEnmoImgages">
+
+        <TEnmoImages class="JavaImages"/>
       </div>
       
+
       
 </template>
 
 <script>
+import TEnmoImages from '../components/TEnmoImages.vue';
+
 export default {
+  components: { TEnmoImages },
 
 }
 </script>
@@ -82,70 +82,20 @@ export default {
 p{
   color: aliceblue;
 }
-
-.HomePage{
-  background-image: url('../assets/images/TEnmoHomePage.png');
-  object-fit: cover;
-  width: 250px;
-  
-  height: 250px;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  align-items: center;
-  justify-content:center;
-  margin-bottom: 5px;
-}
-.RegLog{
-  background-image: url('../assets/images/TEnmoRegLog.png');
-  object-fit: cover;
-  width: 350px;
-  
-  height: 275px;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 5px;
-
-}
-.SendMoney{
-  background-image: url('../assets/images/TEnmoSendMoney.png');
-  object-fit: cover;
-  width: 350px;
-  
-  height: 440px;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-
-}
-.Transfer{
-  background-image: url('../assets/images/TEnmoTransfers.png');
-  object-fit: cover;
-  width: 300px;
-  
-  height: 270px;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5px;
-
-}
-.tenmoImages {
-  display: inline-block;
-  justify-content: space-between;
-  align-items: center;
-}
-.divImg{
+.TEnmoImgages {
+  width: 100%; /* Ensure the container takes full width of the screen */
+  height: auto; /* Maintain aspect ratio */
   display: flex;
- 
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically if needed */
 }
+
+.TEnmoImgages .JavaImages {
+  width: 100%; /* Ensure images take up full width of the container */
+  height: auto; /* Maintain aspect ratio */
+  max-width: 1200px; /* Optional: set a maximum width for larger screens */
+}
+
 @media (max-width: 768px) {
  
 
@@ -160,8 +110,13 @@ p{
  p {
    font-size: 14px;
  }
-
-
+/* .tenmoDescription{
+  margin-right: 70px;
+} */
+ .TEnmoImgages .JavaImages {
+    width: 100%;
+    height: auto;
+  }
  
 }
 
