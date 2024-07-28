@@ -140,7 +140,6 @@ export default {
 }
 
 .about-me {
-  padding: 20px;
   color:aliceblue
 }
 
@@ -196,8 +195,6 @@ p {
   font-size: 2.5rem;
   font-weight: bold;
   color: aliceblue;
-  margin: 0;
-  padding: 0;
   line-height: 1.2;
   letter-spacing: 1px; 
   position: relative;
@@ -243,9 +240,7 @@ background-position: center;
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
+ 
 
   h1 {
     font-size: 28px;
