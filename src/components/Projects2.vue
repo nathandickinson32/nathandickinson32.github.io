@@ -38,7 +38,7 @@
    
     <div class="project-container">
       <router-link class="project-btns vending-machine-btn" to="/vendingMachine"></router-link>
-      <h4 class="btn-header"><span>Virtual Vending </span><br/>Machine</h4>
+      <h4 class="btn-header"><span>Click&Pick Vending </span></h4>
     </div>
 
     <div class="project-container">
@@ -155,15 +155,13 @@ h1{
   display: block;
   width: 100%;
   height: 3px; 
-  /* background: linear-gradient(90deg, rgba(190, 144, 212, 0) 0%, rgba(190, 144, 212, 1) 25%, rgba(72, 61, 139, 1) 50%, rgba(144, 238, 144, 1) 75%, rgba(144, 238, 144, 0) 100%); */
  
   background: linear-gradient(
-    90deg, /* Gradient direction: 90 degrees for horizontal */
+    90deg,
     aliceblue 0%, 
     black 50%, 
     aliceblue 100%
   );
-
   margin: 0.5rem auto 0;
   position: absolute;
   left: 0;
