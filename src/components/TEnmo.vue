@@ -22,19 +22,19 @@
                banking.
         </p>
         
+        <div class="tenmoImages">
 
+<div class="divImg HomePage"></div>
+<div class="divImg RegLog"></div>
+<div class="divImg SendMoney"></div>
+<div class="divImg Transfer"></div>
+
+
+</div>
        
 
       </div>
-      <div class="tenmoImages">
-
-        <div class="divImg HomePage"></div>
-        <div class="divImg RegLog"></div>
-        <div class="divImg SendMoney"></div>
-        <div class="divImg Transfer"></div>
-        
-        
-      </div>
+      
       
 </template>
 
@@ -146,6 +146,23 @@ p{
   display: flex;
  
 }
+@media (max-width: 768px) {
+ 
 
+ h1 {
+   font-size: 28px;
+ }
+
+ h2 {
+   font-size: 20px;
+ }
+
+ p {
+   font-size: 14px;
+ }
+
+
+ 
+}
 
 </style>
