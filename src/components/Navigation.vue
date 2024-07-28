@@ -31,7 +31,7 @@ export default {
   color: white;
   flex: 1;
   text-align: center;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   position: relative;
   overflow: hidden;
   transition: text-shadow 0.3s ease;
@@ -42,7 +42,7 @@ export default {
 }
 @media (max-width: 600px) {
   .header-btns {
-   margin-right: 20px;
+   margin-left: -10px;
   }
 }
 
