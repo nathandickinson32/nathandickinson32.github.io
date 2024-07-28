@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../components/HomePage.vue';
-import About from '../components/About.vue';
+import HomePage from '../views/HomePage.vue';
+import About from '../views/About.vue';
 import Projects from '../components/Projects.vue';
 import Connect4 from '../components/Connect4.vue';
 import whackAMole from '../components/whackAMole.vue';
 import Memory from '../components/Memory.vue';
 import resume from '../components/resume.vue';
-import Projects2 from '../components/Projects2.vue';
 import FoodieFriend from '../components/FoodieFriend.vue';
 import DungeonGame from '../components/DungeonGame.vue';
 import TEnmo from '../components/TEnmo.vue';
 import SecondNature from '../components/SecondNature.vue';
 import VendingMachine from '../components/VendingMachine.vue';
+import ProjectsGallery from '../views/ProjectGallery.vue';
 
 const routes = [
     {
@@ -49,11 +49,7 @@ const routes = [
         name: 'resume',
         component: resume
       },
-      {
-          path: '/projects2',
-          name: 'projects2',
-          component: Projects2
-        },
+     
         {
             path: '/foodieFriend',
             name: 'foodieFriend',
@@ -78,7 +74,12 @@ const routes = [
                     path: '/vendingMachine',
                     name: 'vendingMachine',
                     component: VendingMachine
-                  }
+                  },
+                  {
+                      path: '/project-gallery',
+                      name: 'project-gallery',
+                      component: ProjectsGallery
+                    }
 ];
 const router = createRouter({
     history: createWebHistory(),

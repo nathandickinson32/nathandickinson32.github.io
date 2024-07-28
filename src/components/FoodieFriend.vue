@@ -30,6 +30,7 @@
     </div>
 
     <div class="video-container">
+      <h4 style="color: black;">Click below to watch a video presentation</h4>
     <video controls>
       <source src="../assets/videos/Meal-Planner.mp4" type="video/mp4">
       Your browser does not support the video tag.

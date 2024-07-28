@@ -5,10 +5,10 @@
       ><h3>Home</h3></router-link
     >
     <router-link class="header-btns" to="/about"><h3>About</h3></router-link>
-    <router-link class="header-btns" to="/projects"
+    <router-link class="header-btns" to="/project-gallery"
       ><h3>Projects</h3></router-link
     >
-    <router-link class="header-btns" to="/projects2"><h3>Projects 2</h3></router-link>
+    <!-- <router-link class="header-btns" to="/projects2"><h3>Projects 2</h3></router-link> -->
 
   </div>
 </template>

@@ -5,6 +5,11 @@
         <h1>Nathan Dickinson</h1>
 
       </div>
+      <div class="AboutImages">
+        <div class="divImg FirstImage"></div>
+      </div>
+
+     
 
       <div class="section">
         <h2 class="title">Who I Am</h2>
@@ -177,10 +182,10 @@ p {
   font-weight: bold;
 }
 
-img {
+/* img {
   max-width: 300px;
   height: auto;
-}
+} */
 .heading-container {
   text-align: center;
   margin: 2rem 0;
@@ -216,7 +221,26 @@ img {
   left: 0;
   bottom: -0.5rem;
 }
+.FirstImage{
+  background-image: url('../assets/images/fiencee.jpg');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+  padding: 150px;
+  border-radius: 5px;
+ 
+  
 
+}
+.AboutImages {
+  display: inline-block;
+  justify-content: space-between;
+  align-items: center;
+}
+.divImg{
+  display: flex;
+ 
+}
 
 @media (max-width: 768px) {
   .container {
