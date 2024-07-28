@@ -6,13 +6,12 @@
         Youngstown, OH |
         <a href="mailto:nathandickinson32@gmail.com"
           >nathandickinson32@gmail.com</a
-        >
-        | (330) 314-6043 |
+        ><br/>
+         (330) 314-6043 |
         <a href="https://www.linkedin.com/in/nathangdickinson">LinkedIn</a>
         |
         <a href="https://github.com/nathandickinson32">GitHub</a>
-        |
-        <a href="https://nathandickinson32.github.io">Portfolio</a>
+        
       </p>
     </header>
     <section>
@@ -199,6 +198,9 @@ section ul {
   list-style-type: disc;
   margin: 0;
   padding-left: 20px;
+}
+p{
+  color:black;
 }
 </style>
   
