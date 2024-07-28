@@ -2,6 +2,8 @@
     <div class="heading-container">
       <h1>Project Gallery</h1>
     </div>
+
+    <div class="learnMore"><h4 style="color: black;">Click on each project to learn more</h4></div>
     <div class="container">
       <div class="project-container">
         <router-link class="project-btns second-nature-btn" to="/secondNature"></router-link>
@@ -57,6 +59,7 @@
   </script>
   
   <style scoped>
+
   .container {
     display: flex;
     gap: 50px;
@@ -166,5 +169,7 @@
     left: 0;
     bottom: -0.5rem;
   }
- 
+ .learnMore{
+  margin-bottom: 20px;
+ }
   </style>
