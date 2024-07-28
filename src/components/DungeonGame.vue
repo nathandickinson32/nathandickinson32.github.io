@@ -23,6 +23,13 @@
             gameplay, offering a compelling experience that emphasizes the weight of choice 
             and consequence.
         </p>
+
+        <div class="video-container">
+    <video controls>
+      <source src="../assets/videos/DungeonPresentationFinal.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
     
       </div>
 </template>
@@ -70,5 +77,16 @@ export default {
 }
 p{
   color: aliceblue;
+}
+
+.video-container {
+  max-width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+video {
+  width: 100%;
+  height: auto;
 }
 </style>

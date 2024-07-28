@@ -26,11 +26,11 @@
 
     <div class="container">
         <div class="scoreboard">
-      <h2>Your score: </h2>
-      <h2 id="score">{{ result }}</h2>
+      <h2 style="color: black;">Your score: </h2>
+      <h2 style="color: black;" id="score">{{ result }}</h2>
   
-      <h3>Seconds Left: <span id="time-left">{{ currentTime }}</span></h3>
-      <h3>High Score: <span id="high-score">{{ highScore }}</span></h3>
+      <h3 style="color: black;">Seconds Left: <span id="time-left">{{ currentTime }}</span></h3>
+      <h3 style="color: black;">High Score: <span id="high-score">{{ highScore }}</span></h3>
 
     </div>
       <div class="grid">
@@ -119,6 +119,10 @@
   flex-direction: column;
   align-items: center;
 
+
+ }
+ .scoreboard{
+  color: black;
  }
   .grid {
     display: flex;
