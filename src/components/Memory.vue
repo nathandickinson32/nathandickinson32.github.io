@@ -47,8 +47,8 @@
   const winImage = '/assets/images/ash.png'
   
   const pokeballImage = '/assets/images/pokeball.png'
-  const blankImage = '/src/assets/images/blank.png'
-  const transparentImage = '/src/assets/images/blank.png'
+  const blankImage = '/assets/images/blank.png'
+  const transparentImage = '/assets/images/blank.png'
   
   cardArray.value.sort(() => 0.5 - Math.random())
   
