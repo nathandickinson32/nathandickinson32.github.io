@@ -24,18 +24,18 @@
   import { ref, onMounted } from 'vue'
   
   const cardArray = ref([
-    { name: 'charmander', img: '../assets/images/charmander.png' },
-    { name: 'pikachu', img: '../assets/images/pikachu.png' },
-    { name: 'squirtle', img: '../assets/images/squirtle.png' },
-    { name: 'eevee', img: '../assets/images/eevee.png' },
-    { name: 'bulbasaur', img: '../assets/images/bulbasaur.png' },
-    { name: 'psyduck', img: '../assets/images/psyduck.png' },
-    { name: 'charmander', img: '../assets/images/charmander.png' },
-    { name: 'pikachu', img: '../assets/images/pikachu.png' },
-    { name: 'squirtle', img: '../assets/images/squirtle.png' },
-    { name: 'eevee', img: '../assets/images/eevee.png' },
-    { name: 'bulbasaur', img: '../assets/images/bulbasaur.png' },
-    { name: 'psyduck', img: '../assets/images/psyduck.png' }
+    { name: 'charmander', img: '/assets/images/charmander.png' },
+    { name: 'pikachu', img: '/assets/images/pikachu.png' },
+    { name: 'squirtle', img: '/assets/images/squirtle.png' },
+    { name: 'eevee', img: '/assets/images/eevee.png' },
+    { name: 'bulbasaur', img: '/assets/images/bulbasaur.png' },
+    { name: 'psyduck', img: '/assets/images/psyduck.png' },
+    { name: 'charmander', img: '/assets/images/charmander.png' },
+    { name: 'pikachu', img: '/assets/images/pikachu.png' },
+    { name: 'squirtle', img: '/assets/images/squirtle.png' },
+    { name: 'eevee', img: '/assets/images/eevee.png' },
+    { name: 'bulbasaur', img: '/assets/images/bulbasaur.png' },
+    { name: 'psyduck', img: '/assets/images/psyduck.png' }
   ])
   
   const result = ref(0)
@@ -44,11 +44,11 @@
   const cardsWon = ref([])
   const message = ref('')
   const gameWon = ref(false)
-  const winImage = '../src/assets/images/ash.png'
+  const winImage = '/assets/images/ash.png'
   
   const pokeballImage = '/assets/images/pokeball.png'
-  const blankImage = '../src/assets/images/blank.png'
-  const transparentImage = '../src/assets/images/blank.png'
+  const blankImage = '/src/assets/images/blank.png'
+  const transparentImage = '/src/assets/images/blank.png'
   
   cardArray.value.sort(() => 0.5 - Math.random())
   
