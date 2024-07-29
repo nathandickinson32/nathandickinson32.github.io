@@ -11,7 +11,7 @@
         />
       </div>
   
-      <div v-if="gameWon" class="overlay">
+      <div v-if="showOverlay" class="overlay">
         <div class="overlay-content">
           <img :src="winImage" alt="You Win" class="win-image" />
           <div class="message" v-if="message"><h2>{{ message }}</h2></div>
@@ -45,6 +45,7 @@
   const message = ref('')
   const gameWon = ref(false)
   const winImage = '/assets/images/ash.png'
+  const showOverlay = ref(false)
   
   const pokeballImage = '/assets/images/pokeball.png'
   const blankImage = '/assets/images/blank.png'
@@ -83,18 +84,39 @@
     if (cardsWon.value.length === cardArray.value.length / 2) {
       message.value = 'Congratulations! You caught them all!'
       gameWon.value = true 
+      showOverlay.value = true
+      setTimeout(() => {
+      showOverlay.value = false
+      resetGame();
+    }, 5000)
     }
   }
   
   const flipCard = index => {
-    cardsChosen.value.push(cardArray.value[index].name)
-    cardsChosenIds.value.push(index)
-    cardArray.value[index].src = cardArray.value[index].img
-  
+    if (cardArray.value[index].src === pokeballImage && !gameWon.value) {
+    cardsChosen.value.push(cardArray.value[index].name);
+    cardsChosenIds.value.push(index);
+    cardArray.value[index].src = cardArray.value[index].img;
+
     if (cardsChosen.value.length === 2) {
-      setTimeout(checkMatch, 700)
+      setTimeout(checkMatch, 700);
     }
   }
+  }
+  const resetGame = () => {
+  // Shuffle and reset the card array
+  cardArray.value = cardArray.value.map(card => ({
+    ...card,
+    src: pokeballImage
+  })).sort(() => 0.5 - Math.random());
+  
+  result.value = 0;
+  cardsChosen.value = [];
+  cardsChosenIds.value = [];
+  cardsWon.value = [];
+  message.value = '';
+  gameWon.value = false;
+};
   
   onMounted(() => {
     createBoard()
