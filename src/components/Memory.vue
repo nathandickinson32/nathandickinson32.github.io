@@ -24,7 +24,7 @@
   import { ref, onMounted } from 'vue'
   
   const cardArray = ref([
-    { name: 'charmander', img: 'assets/images/charmander.png' },
+    { name: 'charmander', img: '../assets/images/charmander.png' },
     { name: 'pikachu', img: '../assets/images/pikachu.png' },
     { name: 'squirtle', img: '../assets/images/squirtle.png' },
     { name: 'eevee', img: '../assets/images/eevee.png' },
@@ -46,7 +46,7 @@
   const gameWon = ref(false)
   const winImage = '../src/assets/images/ash.png'
   
-  const pokeballImage = '/images/pokeball.png'
+  const pokeballImage = '/assets/images/pokeball.png'
   const blankImage = '../src/assets/images/blank.png'
   const transparentImage = '../src/assets/images/blank.png'
   
