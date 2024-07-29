@@ -28,7 +28,13 @@
         <h4 class="btn-header">Whack<br/>A<br/>Mole</h4>
       </div>
   
-      <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link>
+<div class="project-container">
+
+  <router-link class="project-btns memory-btn" to="/memory"></router-link>
+  <h4>Classic<br/> Memory <br/>Game</h4>
+</div>
+
+      
   
       <div class="project-container">
   
@@ -116,7 +122,11 @@
     background-size: cover;
     justify-content: center;
   }
-  
+  .memory-btn{
+    background-image: url('../assets/images/PokeBallicon.png');
+    background-size: cover;
+    justify-content: center;
+  }
   
   .tenmo-btn{
     background-image: url('../assets/images/money-exchange.png');
