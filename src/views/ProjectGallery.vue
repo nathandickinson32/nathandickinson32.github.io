@@ -28,7 +28,7 @@
         <h4 class="btn-header">Whack<br/>A<br/>Mole</h4>
       </div>
   
-      <!-- <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link> -->
+      <router-link class="project-btns" to="/memory"><h3>Classic Memory Game</h3></router-link>
   
       <div class="project-container">
   
