@@ -1,5 +1,24 @@
 <template>
-    <div>
+<div class="heading-container">
+        <h1 class="projectTitle">Pokémon Memory Match</h1>
+      </div>
+
+      <div class="memoryDescription">
+        <p>
+         
+Pokémon Memory Match is a charming and interactive web-based game designed to delight Pokémon fans and challenge memory skills. 
+Created using HTML, CSS, and JavaScript, the game presents a grid of cards featuring various Pokémon characters. 
+Players flip two cards at a time to reveal the images, with the objective of finding and matching pairs. 
+The gameplay encourages players to use their memory and concentration to recall the locations of previously revealed cards, 
+aiming to complete the game in as few moves as possible.
+
+        </p>
+      
+        
+      </div>
+
+
+    <div class="big-grid">
       <h1 class="score">Score: <span>{{ result }}</span>/6</h1>
       <div id="grid">
         <img
@@ -124,6 +143,9 @@
   </script>
   
   <style scoped>
+  .big-grid{
+    display: inline-block;
+  }
   #grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -171,5 +193,42 @@
     max-width: 35%;
     max-height: 35%;
   }
+  .heading-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+
+.heading-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  letter-spacing: 1px; 
+  position: relative;
+}
+
+.heading-container h1::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px; 
+ 
+  background: linear-gradient(
+    90deg,
+    aliceblue 0%, 
+    black 50%, 
+    aliceblue 100%
+  );
+  margin: 0.5rem auto 0;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+}
+p{
+  color: aliceblue;
+}
   </style>
   

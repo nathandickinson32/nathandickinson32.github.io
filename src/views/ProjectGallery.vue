@@ -31,7 +31,7 @@
 <div class="project-container">
 
   <router-link class="project-btns memory-btn" to="/memory"></router-link>
-  <h4>Classic<br/> Memory <br/>Game</h4>
+  <h4>Pokemon<br/> Memory <br/>Match</h4>
 </div>
 
       
