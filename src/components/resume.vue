@@ -133,10 +133,10 @@
             workshops, safety protocol drills, and real-world landscaping
             projects
           </li>
-          <li>
+          <!-- <li>
             Enhanced productivity by 20% through meticulous time tracking using
             time tracking software to optimize workload capacity
-          </li>
+          </li> -->
           <li>
             Diagnosed & repaired an average of 5 mechanical issues weekly using
             wrenches & socket set
