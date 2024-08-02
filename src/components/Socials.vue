@@ -37,8 +37,9 @@ name: "Socials"
 }
 
 .social-links img {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
+  margin-top: 7px;
 }
 
 .resume-btn {
@@ -47,6 +48,5 @@ name: "Socials"
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 </style>
