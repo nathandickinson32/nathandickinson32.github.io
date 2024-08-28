@@ -83,17 +83,17 @@ p{
   color: aliceblue;
 }
 .TEnmoImgages {
-  width: 100%; /* Ensure the container takes full width of the screen */
-  height: auto; /* Maintain aspect ratio */
+  width: 100%; 
+  height: auto; 
   display: flex;
-  justify-content: center; /* Center the content horizontally */
-  align-items: center; /* Center the content vertically if needed */
+  justify-content: center;
+  align-items: center;
 }
 
 .TEnmoImgages .JavaImages {
-  width: 100%; /* Ensure images take up full width of the container */
-  height: auto; /* Maintain aspect ratio */
-  max-width: 1200px; /* Optional: set a maximum width for larger screens */
+  width: 100%; 
+  height: auto; 
+  max-width: 1200px; 
 }
 
 @media (max-width: 768px) {
@@ -110,9 +110,7 @@ p{
  p {
    font-size: 14px;
  }
-/* .tenmoDescription{
-  margin-right: 70px;
-} */
+
  .TEnmoImgages .JavaImages {
     width: 100%;
     height: auto;
