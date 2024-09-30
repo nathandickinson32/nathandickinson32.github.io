@@ -6,12 +6,11 @@
         Youngstown, OH |
         <a href="mailto:nathandickinson32@gmail.com"
           >nathandickinson32@gmail.com</a
-        ><br/>
-         (330) 314-6043 |
+        ><br />
+        (330) 314-6043 |
         <a href="https://www.linkedin.com/in/nathangdickinson">LinkedIn</a>
         |
         <a href="https://github.com/nathandickinson32">GitHub</a>
-        
       </p>
     </header>
     <section>
@@ -43,6 +42,19 @@
     </section>
     <section>
       <h2>TECHNICAL EXPERIENCE</h2>
+      <div>
+        <h3>Second Nature App</h3>
+        <p>
+          A communications app designed for employees to streamline their daily
+          tasks. The app allows users to clock in/out, request time off, give
+          kudos to coworkers, and view equipment inventory and maintenance
+          history. Additionally, employees can submit maintenance tickets for
+          equipment. This full-stack application was developed by a team
+          following Agile principles, incorporating Java OOP fundamentals,
+          PostgreSQL for database management, and Vue.js for the front-end.
+        </p>
+      </div>
+
       <div>
         <h3>Portfolio</h3>
         <p>
@@ -199,8 +211,8 @@ section ul {
   margin: 0;
   padding-left: 20px;
 }
-p{
-  color:black;
+p {
+  color: black;
 }
 </style>
   
