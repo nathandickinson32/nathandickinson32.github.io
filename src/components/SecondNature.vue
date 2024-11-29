@@ -5,31 +5,24 @@
 
   <div class="secondNatureDescription">
     <p>
-      In its conceptual phase, this forthcoming app aims to revolutionize
-      communication and operational efficiency within a landscape company.
-      Planned to leverage Java Object-Oriented Programming (OOP) principles for
-      its robust backend, the application will ensure secure data management and
-      scalability using PostgreSQL for reliable storage of employee records,
-      time-off requests, and communication logs.
-    </p>
-    <p>
-      Vue.js is envisioned to power the frontend, providing a dynamic and
-      user-friendly interface essential for enhancing employee engagement and
-      workflow management. A key feature in the app's roadmap will enable
-      employees to digitally request time off, streamlining administrative
-      processes and promoting transparency in scheduling and resource
-      allocation.
-    </p>
-    <p>
-      The project's journey began with an inaugural meeting with the product
-      owner to define requirements and sketch comprehensive diagrams for both
-      the app's interface and database structure. Embracing an Agile approach,
-      the development roadmap includes iterative cycles to refine
-      functionalities based on user feedback and evolving business needs.
+      The Second Nature app is designed to streamline communication and enhance
+      productivity within a landscaping team. Built using Java Object-Oriented
+      Programming and Vue.js, the app features tools like the Kudos Board for
+      employee recognition, equipment management for tracking resources, a
+      robust maintenance ticketing system, and an easy-to-use time-off request
+      process. Our team has been collaborating closely with the product owner to
+      ensure the app meets the needs of the workforce. These features work
+      together to improve daily operations, foster a collaborative work
+      environment, and keep the team connected and efficient.
     </p>
   </div>
 
   <div class="divImg Second-Nature1"></div>
+  <p>
+    The Time Off feature simplifies leave requests by letting employees submit,
+    track, and manage their time off. This ensures easy approval processes and
+    clear visibility for both employees and managers.
+  </p>
   <div class="divImg Second-Nature2"></div>
   <div class="divImg Second-Nature3"></div>
   <div class="divImg Second-Nature4"></div>
@@ -80,11 +73,7 @@ export default {};
   border-radius: 8px;
   margin: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
- 
 }
-
-
-
 
 .image-grid {
   display: flex;
@@ -94,35 +83,31 @@ export default {};
   align-items: center;
 }
 
-
 .Second-Nature1 {
   width: 280px;
-  height: 410px;
-  background-image: url('../assets/images/PortfolioEquipment.png');
+  height: 450px;
+  background-image: url("../assets/images/PortfolioTimeOffRequest.png");
   justify-self: center;
-
 }
 
 .Second-Nature2 {
   width: 280px;
   height: 410px;
-  background-image: url('../assets/images/PortfolioKudosBoard.png');
+  background-image: url("../assets/images/PortfolioKudosBoard.png");
   justify-self: center;
-
 }
 
 .Second-Nature3 {
   width: 280px;
-  height: 450px;
-  background-image: url('../assets/images/PortfolioTimeOffRequest.png');
+  height: 410px;
+  background-image: url("../assets/images/PortfolioEquipment.png");
   justify-self: center;
-
 }
 
 .Second-Nature4 {
   width: 280px;
   height: 450px;
-  background-image: url('../assets/images/PortfolioMaintenance.png');
+  background-image: url("../assets/images/PortfolioMaintenance.png");
   justify-self: center;
 }
 
