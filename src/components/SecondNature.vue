@@ -15,21 +15,36 @@
       together to improve daily operations, foster a collaborative work
       environment, and keep the team connected and efficient.
     </p>
+    <div class="divImg Second-NatureHome"></div>
   </div>
-
-  <div class="divImg Second-Nature1"></div>
   <p>
     The Time Off feature simplifies leave requests by letting employees submit,
     track, and manage their time off. This ensures easy approval processes and
     clear visibility for both employees and managers.
   </p>
+  <div class="divImg Second-Nature1"></div>
+  <p>
+    The Kudos Board lets employees easily recognize and celebrate each other’s
+    achievements. This feature fosters a positive work environment by allowing
+    real-time shoutouts and appreciation posts.
+  </p>
   <div class="divImg Second-Nature2"></div>
+  <p>
+    The Equipment feature tracks inventory and maintenance history, helping
+    employees view and manage tools efficiently. It ensures up-to-date records
+    for better resource allocation and equipment readiness.
+  </p>
   <div class="divImg Second-Nature3"></div>
+  <p>
+    Maintenance Tickets streamline issue reporting by allowing employees to
+    submit and track service requests. The system supports multiple services per
+    ticket, ensuring thorough and organized maintenance management.
+  </p>
   <div class="divImg Second-Nature4"></div>
 </template>
 
 <script>
-export default {};
+
 </script>
 
 <style scoped>
@@ -82,6 +97,12 @@ export default {};
   justify-content: center;
   align-items: center;
 }
+.Second-NatureHome {
+  width: 280px;
+  height: 700px;
+  background-image: url("../assets/images/PortfolioSecondNatureHome.png");
+  justify-self: center;
+}
 
 .Second-Nature1 {
   width: 280px;
@@ -111,17 +132,17 @@ export default {};
   justify-self: center;
 }
 
-/* Media query for larger screens */
+
 @media (min-width: 768px) {
   .image-grid {
-    flex-wrap: nowrap; /* Prevent wrapping on larger screens */
-    height: 100vh; /* Take full screen height */
-    justify-content: center; /* Center images horizontally */
-    align-items: center; /* Center images vertically */
+    flex-wrap: nowrap; 
+    height: 100vh;
+    justify-content: center;
+    align-items: center; 
   }
 
   .divImg {
-    width: 350px; /* Larger size for bigger screens */
+    width: 350px; 
     height: 500px;
   }
 }
