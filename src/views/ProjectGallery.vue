@@ -9,6 +9,11 @@
         <router-link class="project-btns second-nature-btn" to="/secondNature"></router-link>
         <h4 class="btn-header"> <span>Second<br/> Nature</span><br/>App</h4>
       </div>
+
+      <div class="project-container">
+        <router-link class="project-btns oh-I-remember-btn" to="/oh-I-remember"></router-link>
+        <h4 class="btn-header"> <span>Oh I</span><br/>Remember!</h4>
+      </div>
   
       <div class="project-container">
         <router-link class="project-btns foodie-friend-btn" to="/foodieFriend"></router-link>
@@ -104,6 +109,11 @@
   }
   .second-nature-btn{
     background-image: url('../assets/images/second-nature.png');
+    background-size: cover;
+    justify-content: center;
+  }
+  .oh-I-remember-btn{
+    background-image: url('../assets/images/Remember_Logo.png');
     background-size: cover;
     justify-content: center;
   }

@@ -12,7 +12,7 @@ import TEnmo from '../components/TEnmo.vue';
 import SecondNature from '../components/SecondNature.vue';
 import VendingMachine from '../components/VendingMachine.vue';
 import ProjectsGallery from '../views/ProjectGallery.vue';
-
+import OhIRemember from '../components/OhIRemember.vue'
 const routes = [
     {
         path: '/',
@@ -70,6 +70,11 @@ const routes = [
                   name: 'secondNature',
                   component: SecondNature
                 },
+                {
+                    path: '/oh-I-remember',
+                    name: 'ohIremember',
+                    component: OhIRemember
+                  },
                 {
                     path: '/vendingMachine',
                     name: 'vendingMachine',
