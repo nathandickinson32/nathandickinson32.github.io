@@ -90,8 +90,8 @@
   }
   .OIR-Home {
     width: 280px;
-    height: 400px;
-    background-image: url("../assets/images/OIR_Home.png");
+    height: 500px;
+    background-image: url("../assets/images/OIR_Home1.png");
     justify-self: center;
   }
   
@@ -111,7 +111,7 @@
   
   .OIR-Friends {
     width: 280px;
-    height: 460px;
+    height: 500px;
     background-image: url("../assets/images/OIR_Friends.png");
     justify-self: center;
   }
