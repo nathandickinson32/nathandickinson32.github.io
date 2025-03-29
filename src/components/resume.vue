@@ -56,6 +56,19 @@
       </div>
 
       <div>
+        <h3>Oh, I Remember!</h3>
+        <p>
+          A messaging app designed to help users recall forgotten thoughts. The
+          app allows users to ask questions and receive answers whenever the
+          recipient remembers. It features real-time notifications for new
+          questions, answers, and friend requests. Built with Java for backend
+          logic, PostgreSQL for database management, and Vue.js for the
+          front-end, the app prioritizes accessibility and seamless
+          communication.
+        </p>
+      </div>
+
+      <div>
         <h3>Portfolio</h3>
         <p>
           Sleek, responsive personal portfolio website to effectively showcase
@@ -64,34 +77,6 @@
           performance across all devices. The project reflects my proficiency in
           front-end development and design, emphasizing clean aesthetics and
           user-centric design principles.
-        </p>
-      </div>
-      <div>
-        <h3>My Foodie Friend</h3>
-        <p>
-          Meal planning application that allows users to view various recipes by
-          category while registered users can favorite recipes, alter recipes,
-          and create a grocery list. Full stack meal planning application built
-          with a team using Agile product management, Java OOP fundamentals,
-          PostgreSQL, and Vue.js.
-        </p>
-      </div>
-      <div>
-        <h3>TEnmo Money Exchange Application</h3>
-        <p>
-          Keeps track of user account balances, can deposit more funds, accepts
-          money transfers and requests between users in the database, and logs
-          all transactions. Worked in a small team to design an object-oriented
-          money exchange program using Java (IntelliJ), Spring Boot and
-          PostgreSQL (pgAdmin).
-        </p>
-      </div>
-      <div>
-        <h3>Virtual Vending Machine Application</h3>
-        <p>
-          Accepts user input for depositing money, calculates change, and
-          actively tracks and displays inventory. Worked in a small to design an
-          object-oriented vending machine program using Java (IntelliJ).
         </p>
       </div>
     </section>
