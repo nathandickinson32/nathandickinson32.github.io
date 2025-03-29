@@ -42,7 +42,7 @@
       <div class="section">
         <h2 class="title">Outside of Work</h2>
         <p class="details">
-          Outside of software development, I love unwinding with my wife, especially on our movie nights. We recently welcomed a kitten into our home, adding even more warmth and excitement to our days together.          <!-- <strong>Stay for the photos to see my future wife in the Smiley Costume!</strong> -->
+          Outside of software development, I love unwinding with my wife, especially on our movie nights. We recently welcomed a kitten into our home, adding even more warmth and excitement to our days together.
         </p>
         <p class="details">
           In the past year, I've developed a new love for golf. It has been an exhilarating journey learning the game, and I find it to be a great way to unwind and challenge myself.
@@ -51,7 +51,7 @@
           I also enjoy playing video games with my friends, providing a perfect balance of fun and competition. Additionally, I love fishing with my parents as they step into retirement, creating memorable moments and enjoying the serenity of the outdoors.
         </p>
         <p class="details">
-          Being a proud uncle to two nephews, a niece, and a fourth little one on the way brings me immense joy. Watching them grow and spending time with them is incredibly fulfilling. These moments outside of work help keep me inspired, balanced, and ready for new challenges in my professional life.
+          Being a proud uncle to three nephews and a niece brings me immense joy. Watching them grow and spending time with them is incredibly fulfilling. These moments outside of work help keep me inspired, balanced, and ready for new challenges in my professional life.
         </p>
       </div>
 
