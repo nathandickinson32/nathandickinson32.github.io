@@ -6,8 +6,8 @@
     <div class="info">
       <h1>Hi There! I'm <span>Nathan Dickinson</span></h1>
       <p>
-        A <span>Full Stack Web Developer</span> dedicated to developing robust
-        and scalable web applications across the stack
+        An <span>Apprentice Software Craftsman</span> at Clean Coders Studio. Through
+         this apprenticeship I'll be learning Clean Code, Clojure and TDD.
       </p>
     </div>
   </div>

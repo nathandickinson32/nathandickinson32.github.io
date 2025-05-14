@@ -8,7 +8,7 @@
       Oh, I Remember! is a messaging app designed to help users recall forgotten thoughts. Whether it's an old memory,
        a lost idea, or an unanswered question, this app allows users to ask and receive answers whenever the recipient 
        remembers. With real-time notifications and seamless communication, it ensures that no thought goes unnoticed.
-       Click the link to make an account and check it out! <a href="https://fluffy-ganache-b4021a.netlify.app/" class="OIRememberLink">Oh, I Remember!</a>
+       <!-- Click the link to make an account and check it out! <a href="https://fluffy-ganache-b4021a.netlify.app/" class="OIRememberLink">Oh, I Remember!</a> -->
     </p>
     <div class="divImg OIR-Home"></div>
     </div>

@@ -15,7 +15,7 @@
         <h4 class="btn-header"> <span>Oh I</span><br/>Remember!</h4>
       </div>
   
-      <div class="project-container">
+      <!-- <div class="project-container">
         <router-link class="project-btns foodie-friend-btn" to="/foodieFriend"></router-link>
       <h4 class="btn-header"><span>My Foodie</span><br/>Friend</h4>
       </div>
@@ -58,7 +58,7 @@
         <router-link class="project-btns dungeon-game-btn" to="/dungeonGame"></router-link>
         <h4 class="btn-header"> <span>Dungeon</span><br/><span>Adventure</span><br/> Game</h4>
       </div>
-  
+   -->
     </div>
   
   </template>
