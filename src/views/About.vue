@@ -77,7 +77,7 @@
   </ul>
 </div>
 
-
+<!-- 
       <div class="section">
         <h2 class="title">My Work Philosophy</h2>
         <p class="details">
@@ -86,7 +86,7 @@
           strive for excellence, innovation, and collaboration. My goal is to
           create work that not only meets but exceeds client expectations.
         </p>
-      </div>
+      </div> -->
 
       <div class="section">
         <h2 class="title">Outside of Work</h2>
