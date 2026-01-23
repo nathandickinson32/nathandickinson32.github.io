@@ -13,6 +13,8 @@ import SecondNature from '../components/SecondNature.vue';
 import VendingMachine from '../components/VendingMachine.vue';
 import ProjectsGallery from '../views/ProjectGallery.vue';
 import OhIRemember from '../components/OhIRemember.vue'
+import TicTacToe from '../components/TicTacToe.vue';
+import CleanCodersStudio from '../components/CleanCodersStudio.vue';
 const routes = [
     {
         path: '/',
@@ -49,7 +51,6 @@ const routes = [
         name: 'resume',
         component: resume
       },
-     
         {
             path: '/foodieFriend',
             name: 'foodieFriend',
@@ -84,6 +85,16 @@ const routes = [
                       path: '/project-gallery',
                       name: 'project-gallery',
                       component: ProjectsGallery
+                    },
+                    {
+                      path: '/tic-tac-toe',
+                      name: 'ticTacToe',
+                      component: TicTacToe
+                    },
+                     {
+                      path: '/clean-coders',
+                      name: 'cleanCoders',
+                      component: CleanCodersStudio
                     }
 ];
 const router = createRouter({

@@ -1,8 +1,11 @@
 <template>
    <div class="social-links">
         <router-link to="/resume"
-          ><button class="resume-btn">Résumé</button></router-link
+          ><button class="social-btn">Résumé</button></router-link
         >
+
+        <a href="https://nathandickinson32.github.io/my-blog/"
+          ><button class="social-btn">My Blog</button></a>
 
         <a href="https://www.linkedin.com/in/nathangdickinson/"
           ><img src="../assets/images/linkedin.png" alt="LinkedIn"
@@ -10,6 +13,8 @@
         <a href="https://github.com/nathandickinson32"
           ><img src="../assets/images/github.png" alt="GitHub"
         /></a>
+
+         
       </div>
 </template>
 
@@ -42,7 +47,9 @@ name: "Socials"
   margin-top: 7px;
 }
 
-.resume-btn {
+
+
+.social-btn {
   background-color: #2a5d84; 
   color: white;
   border: none;

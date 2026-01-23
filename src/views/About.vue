@@ -11,10 +11,9 @@
       <div class="section">
         <h2 class="title whoAmI">Who I Am</h2>
         <p class="details">
-          Hello! My name is Nathan Dickinson, and I'm currently an apprentice
-          Software Craftsman at Clean Coders Studio. During this apprenticeship,
-          I'm learning what it means to become a true software craftsman. I’ll
-          be developing my skills in Clojure, practicing Test-Driven Development
+          Hello! My name is Nathan Dickinson, and I'm currently a
+          Software Craftsman at Clean Coders Studio. I’ve
+          developed my skills in Clojure, practicing Test-Driven Development
           (TDD), and following the SOLID principles to write clean, maintainable
           code.
         </p>
@@ -55,24 +54,25 @@
         </p>
       </div>
 
-      <div class="section">
+     <div class="section">
   <h2 class="title">What I Do</h2>
   <ul class="list">
-    <li><strong>Object‑Oriented Programming:</strong> Java</li>
-    <li><strong>Functional Programming:</strong> Clojure, immutable data structures</li>
+    <li><strong>Production Development:</strong> Contributing features to live platforms at Clean Coders Studio</li>
+    <li><strong>Languages:</strong> Java, Clojure, ClojureScript, JavaScript, HTML, CSS, Go</li>
+    <li><strong>Frameworks & Libraries:</strong> Spring Boot, Vue.js</li>
+    <li><strong>Real-time Technologies:</strong> WebSockets, Redis for live data synchronization</li>
     <li>
-      <strong>Web Application Development:</strong> HTML, CSS, JavaScript, Spring Boot, Vue.js
+      <strong>Database Development:</strong> PostgreSQL, SQL, JDBC, table design, E/R diagrams
     </li>
     <li>
-      <strong>Database Programming:</strong> JDBC, table design & E/R modeling, SQL & PostgreSQL
+      <strong>Test-Driven Development:</strong> JUnit, Speclj, unit testing, integration testing
+    </li>
+    <li><strong>Clean Code Practices:</strong> SOLID principles, refactoring, design patterns</li>
+    <li>
+      <strong>Development Methodologies:</strong> Agile workflows, TDD, pair programming
     </li>
     <li>
-      <strong>Test‑Driven Development:</strong>
-       Speclj
-    </li>
-    <li><strong>SOLID & Clean Code:</strong> Applying SOLID principles, refactoring, design patterns</li>
-    <li>
-      <strong>Development Tools & Techniques:</strong> Git & GitHub, IntelliJ, Leiningen/deps.edn, Agile workflows
+      <strong>Development Tools:</strong> Git, GitHub, IntelliJ, Leiningen, version control
     </li>
   </ul>
 </div>
@@ -113,13 +113,12 @@
           balanced, and ready for new challenges in my professional life.
         </p> -->
       </div>
-<!-- 
+
       <div class="section">
         <h2 class="title">Get in Touch</h2>
         <p class="details">
-          I am currently seeking my first opportunity in the tech industry and
-          am eager to bring my unique background and skills to a dynamic team.
-          If you are looking for a dedicated and enthusiastic software developer
+          I am currently seeking new opportunities If you are 
+          looking for a dedicated software developer
           who is ready to tackle new challenges and contribute to meaningful
           projects, I would love to connect with you. Please feel free to reach
           out to me at nathandickinson32@gmail.com or connect with me on
@@ -127,9 +126,9 @@
             href="https://www.linkedin.com/in/nathangdickinson/"
             class="linkedIn-btn"
             >LinkedIn</a
-          >
+          >.
         </p>
-      </div> -->
+      </div> 
     </div>
   </section>
 </template>

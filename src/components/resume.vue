@@ -15,68 +15,58 @@
     </header>
     <section>
       <p>
-        Software Developer with over 10+ years of experience in leadership and
-        customer-facing roles. Successful track record of management,
-        innovation, self-drive, and project leadership. Seeking roles as a
-        junior software developer to work in collaborative environments where
-        innovation and creativity are valued.
+        Software Engineer proficient in clean code principles, SOLID design
+        patterns, TDD, and modern development practices. Brings 10+ years of
+        leadership and customer-facing experience to technical problem-solving
+        and team collaboration.
       </p>
     </section>
     <section>
       <h2>TECHNICAL SKILLS</h2>
-      <ul>
-        <li>Object-Oriented Programming: Java</li>
-        <li>
-          Web Application Development: HTML, CSS, JavaScript, Spring Boot,
-          Vue.js
-        </li>
-        <li>
-          Database Programming: JDBC, Table Design, SQL, PostgreSQL, E/R
-          diagrams
-        </li>
-        <li>
-          Development tools and techniques: Agile, Unit Testing (JUnit),
-          Integration Testing, Git, IntelliJ
-        </li>
-      </ul>
+      <p>
+        Java, HTML, CSS, JavaScript, Go, Clojure, Spring Boot, Vue.js,
+        WebSockets, Redis, JDBC, Table Design, SQL, PostgreSQL, E/R diagrams,
+        Clean Code, SOLID Principles, TDD, Agile, Unit Testing (JUnit),
+        Integration Testing, Git, IntelliJ
+      </p>
     </section>
     <section>
       <h2>TECHNICAL EXPERIENCE</h2>
       <div>
-        <h3>Second Nature App</h3>
+        <h3>Clean Coders</h3>
         <p>
-          A communications app designed for employees to streamline their daily
-          tasks. The app allows users to clock in/out, request time off, give
-          kudos to coworkers, and view equipment inventory and maintenance
-          history. Additionally, employees can submit maintenance tickets for
-          equipment. This full-stack application was developed by a team
-          following Agile principles, incorporating Java OOP fundamentals,
-          PostgreSQL for database management, and Vue.js for the front-end.
+          Contributed production features across Clean Coders platforms
+          (cleancoders.com and epic.cleancoders.com). Developed an automated
+          migrations-as-a-service feature ensuring database schema consistency
+          across server deployments. Implemented standardized contact forms
+          throughout the main platform. Built a real-time leaderboard chart and
+          velocity report page for tracking user progress on Epic. Developed
+          using Clojure and ClojureScript following TDD and Clean Code
+          principles, with WebSockets and Redis for real-time functionality.
         </p>
       </div>
 
       <div>
-        <h3>Oh, I Remember!</h3>
+        <h3>Tic-Tac-Toe Evolution</h3>
         <p>
-          A messaging app designed to help users recall forgotten thoughts. The
-          app allows users to ask questions and receive answers whenever the
-          recipient remembers. It features real-time notifications for new
-          questions, answers, and friend requests. Built with Java for backend
-          logic, PostgreSQL for database management, and Vue.js for the
-          front-end, the app prioritizes accessibility and seamless
-          communication.
+          Multi-language implementation demonstrating software engineering
+          principles. Java version with minimax algorithm for unbeatable AI.
+          Advanced Clojure version with multiple board sizes (3x3, 4x4, 3x3x3),
+          configurable AI difficulty, dual interfaces (terminal/GUI), persistent
+          storage (PostgreSQL/EDN), game replay, and web-deployed version with
+          Clojure frontend and Java backend hosted on personal blog. Go version
+          showcasing rapid language acquisition while maintaining TDD, SOLID
+          principles, and Clean Code practices.
         </p>
       </div>
 
       <div>
-        <h3>Portfolio</h3>
+        <h3>Second Nature Landscape</h3>
         <p>
-          Sleek, responsive personal portfolio website to effectively showcase
-          my professional skills, projects, and accomplishments. Leveraged
-          Vue.js for a dynamic, interactive interface, ensuring optimal
-          performance across all devices. The project reflects my proficiency in
-          front-end development and design, emphasizing clean aesthetics and
-          user-centric design principles.
+          Full-stack employee communications app built with Java, PostgreSQL,
+          and Vue.js following Agile principles. Features time tracking, leave
+          requests, peer recognition, equipment inventory, and maintenance
+          ticketing.
         </p>
       </div>
     </section>
@@ -94,26 +84,42 @@
     <section>
       <h2>PROFESSIONAL EXPERIENCE</h2>
       <div>
+        <h3>Clean Coders Studio, Remote</h3>
+        <p>April 2025 – Present</p>
+        <p>
+          <strong>Software Engineer</strong>
+        </p>
+        <ul>
+          <li>
+            Enhanced platform reliability by implementing automated database
+            migration system, eliminating manual deployment errors across
+            production environments
+          </li>
+          <li>
+            Improved user engagement through development of real-time features
+            including interactive leaderboards and progress tracking dashboards
+          </li>
+          <li>
+            Streamlined user experience by standardizing contact forms across
+            multiple platforms, reducing support tickets and improving response
+            rates
+          </li>
+        </ul>
+      </div>
+      <div>
         <h3>Second Nature, Austintown, Ohio</h3>
-        <p>July 2020 – Present</p>
+        <p>July 2020 – April 2025</p>
         <p>
           <strong>Supervisor</strong>
         </p>
         <ul>
           <li>
-            Increased landscaping job efficiency 20% through expertly operating
-            lawn mowers, trimmers, & pruning tools to optimize productivity
+            Optimized team efficiency by 20% through strategic scheduling and
+            resource management using GPS tracking and inventory tools
           </li>
           <li>
-            Boosted client acquisition growth through strategic
-            relationship-building between Human Resources & potential clientele,
-            leveraging proven quality work & tailored in-person communication
-            approaches
-          </li>
-          <li>
-            Prioritized team schedules and enhanced team productivity 20%
-            through delegating trucks, trailers, & machines with GPS tracking
-            systems & inventory management tools(Temeda)
+            Expanded client base by 50+ accounts through personalized
+            relationship-building and consistent service quality
           </li>
         </ul>
       </div>
@@ -125,29 +131,23 @@
         </p>
         <ul>
           <li>
-            Trained over 15+ employees with hands-on training through on-site
-            demonstrations, equipment usage tutorials, landscaping techniques
-            workshops, safety protocol drills, and real-world landscaping
-            projects
+            Trained 10+ employees using hands-on demonstrations, technique
+            workshops, and safety protocol drills
           </li>
-          <!-- <li>
-            Enhanced productivity by 20% through meticulous time tracking using
-            time tracking software to optimize workload capacity
-          </li> -->
           <li>
-            Diagnosed & repaired an average of 5 mechanical issues weekly using
-            wrenches & socket set
+            Increased productivity by 20% by leveraging time-tracking systems to
+            optimize workload distribution
           </li>
         </ul>
       </div>
     </section>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .resume {
   font-family: Arial, sans-serif;
   margin: 0 auto;
@@ -200,4 +200,3 @@ p {
   color: black;
 }
 </style>
-  

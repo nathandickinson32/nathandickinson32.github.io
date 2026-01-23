@@ -6,8 +6,8 @@
     <div class="info">
       <h1>Hi There! I'm <span>Nathan Dickinson</span></h1>
       <p>
-        An <span>Apprentice Software Craftsman</span> at Clean Coders Studio. Through
-         this apprenticeship I'll be learning Clean Code, Clojure and TDD.
+        A <span>Software Craftsman</span> at Clean Coders Studio. Practicing
+         Clean Code, SOLID Principles and TDD in Clojure and Java.
       </p>
     </div>
   </div>
