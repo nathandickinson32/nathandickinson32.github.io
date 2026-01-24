@@ -118,7 +118,7 @@
         <h2 class="title">Get in Touch</h2>
         <p class="details">
           I am currently seeking new opportunities If you are 
-          looking for a dedicated software developer
+          looking for a dedicated software engineer1
           who is ready to tackle new challenges and contribute to meaningful
           projects, I would love to connect with you. Please feel free to reach
           out to me at nathandickinson32@gmail.com or connect with me on
