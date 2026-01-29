@@ -50,10 +50,23 @@
   <div class="feature-section">
     <h3>Go Version - Week-Long Challenge</h3>
     <p>
-      As part of a challenging week where I also wrote a 10-minute blog post and delivered a 
-      10-minute presentation on separate topics, I implemented another complete version in Go. 
-      This demonstrates rapid language acquisition while maintaining TDD, SOLID, and Clean Code 
+      As part of a challenging week where I also wrote a 10-minute blog post and delivered a
+      10-minute presentation on separate topics, I implemented another complete version in Go.
+      This demonstrates rapid language acquisition while maintaining TDD, SOLID, and Clean Code
       standards—proving that solid engineering principles transcend any specific programming language.
+    </p>
+  </div>
+
+  <div class="feature-section">
+    <h3>Tic-Tac-Zoo - Claude Code Experiment</h3>
+    <p>
+      A zoo-themed version built entirely through AI-assisted development using Claude Code.
+      The game runs in the browser with no server — Python handles the game logic and minimax AI
+      via Pyodide (CPython compiled to WebAssembly), while JavaScript manages a safari-themed UI
+      with animal emoji tokens. Players pick from five animal avatars and face off against the
+      Bunny (easy), Fox (medium), or Lion (hard, unbeatable). The entire game lives in a single
+      HTML file, and the project explores what it's like to build a complete application with
+      an AI coding assistant.
     </p>
   </div>
 </template>
