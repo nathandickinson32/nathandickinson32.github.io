@@ -1,30 +1,47 @@
 # My Portfolio
 
-Welcome to my portfolio! This is a showcase of my work, skills, and experiences in web development and other creative projects. Here, you'll find a collection of projects I've worked on, each highlighting different aspects of my capabilities and interests.
- 
-# Table of Contents
+Welcome to my portfolio. This repository showcases a focused set of projects that represent how I build, think, and grow as a software engineer. Each project highlights real problem-solving, clean design, and hands-on experience with modern tools and practices.
 
-About Me
-Projects
-JavaScript Games
-My Foodie Friend
-Mobile Responsive Design
-Skills
-Contact
+For a full overview of my background, experience, and technical skill set, please refer to my resume.
 
-# About Me
+## Projects
 
-I'm a passionate web developer with a keen interest in creating engaging and interactive web applications. My journey in web development began not that long ago. Over the last year, I've honed my skills in front-end technologies, with a particular focus on Vue.js, and I'm always eager to learn and experiment with new technologies.
+### Tic-Tac-Toe Evolution
+- A multi-language exploration of software engineering fundamentals and design principles.
+- Java implementation featuring a minimax-based unbeatable AI
+- Advanced Clojure version with multiple board sizes, configurable AI difficulty, persistence, and replay support
+- Go implementation demonstrating rapid language acquisition while maintaining TDD, SOLID principles, and clean code
 
-# Mobile Responsive Design
+### Clean Coders
+- Production-level contributions to real-world platforms.
+- Built real-time leaderboard and velocity reporting features
+- Implemented WebSocket-based updates with Redis
+- Developed standardized contact forms and database migration tooling
+- Focused on TDD, clean code, and maintainable architecture using Clojure and ClojureScript
 
-A showcase of my work on making web applications mobile-responsive. This includes a project gallery with images and router links, ensuring it remains user-friendly across different devices.
+### Second Nature App
+- A full-stack employee communication and operations platform.
+- Built with Java, PostgreSQL, and Vue.js
+- Features include time tracking, leave requests, peer recognition, equipment inventory, and maintenance tickets
+- Designed and developed following Agile workflows and clean architecture principles
 
-# Skills 
+### Oh I Remember
+- A creative project focused on user experience and interaction, emphasizing thoughtful UI design and responsiveness while reinforcing core front-end development skills.
+- Mobile-Responsive Design
+- All projects prioritize mobile-first and responsive design. Layouts, navigation, and interactions are built to function smoothly across phones, tablets, and desktops using modern CSS and Vue.js patterns.
 
-Front-end Development: Vue.js, HTML, CSS, JavaScript
-Design: Responsive Design
-Tools: Git
+## Skills
+- Front-End
+- Vue.js
+- JavaScript
+- HTML
+- CSS
+- Back-End & Concepts
+- Java
+- Clojure / ClojureScript
+- PostgreSQL
+- WebSockets
+- Clean Code, SOLID, TDD
 
-
-Thank you for visiting my portfolio! I hope you enjoy exploring my work as much as I enjoyed creating it.
+## Tools
+- Git
