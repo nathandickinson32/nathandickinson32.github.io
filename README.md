@@ -31,12 +31,12 @@ For a full overview of my background, experience, and technical skill set, pleas
 - All projects prioritize mobile-first and responsive design. Layouts, navigation, and interactions are built to function smoothly across phones, tablets, and desktops using modern CSS and Vue.js patterns.
 
 ## Skills
-- Front-End
+### Front-End
 - Vue.js
 - JavaScript
 - HTML
 - CSS
-- Back-End & Concepts
+### Back-End & Concepts
 - Java
 - Clojure / ClojureScript
 - PostgreSQL
