@@ -20,7 +20,7 @@ const teams = [
   ['Utah Jazz', 'UTA', '#8277ab'], ['Washington Wizards', 'WAS', '#6285aa']
 ];
 
-const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], revision: 0 });
+const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, revision: 0 });
 const activePlayer = ref(0);
 const role = ref('');
 const status = ref('');
@@ -43,12 +43,17 @@ let retryTimer = null;
 let pendingResult = null;
 
 const roomUrl = computed(() => state.id ? `${location.origin}/nba2k26-random-team?session=${encodeURIComponent(state.id)}` : '');
-const used = computed(() => new Set(state.players.flatMap(p => p.picks)));
+const used = computed(() => new Set([
+  ...state.players.flatMap(p => p.picks),
+  ...state.games.filter(game => game.keep).flatMap(game => game.teams)
+]));
 const available = computed(() => teams.filter(t => !used.value.has(t[0])));
 const player = computed(() => state.players[activePlayer.value]);
 const nextKind = computed(() => player.value.forced ? 'done' : player.value.picks.length < 3 ? 'regular' : 'forced');
 const canSpin = computed(() => Boolean(state.id) && connected.value && !spinning.value && nextKind.value !== 'done' && available.value.length > 0);
 const matchup = computed(() => state.players.map(p => p.choice || p.forced));
+const canRecord = computed(() => connected.value && !spinning.value &&
+  state.players.every(p => p.picks.length >= 3 && p.choice) && matchup.value[0] !== matchup.value[1]);
 const wheelSlices = computed(() => teams.map((team, i) => ({
   ...{ team, i },
   path: sector(i * 12, (i + 1) * 12),
@@ -78,6 +83,20 @@ function cleanState(raw) {
   if (!raw || !/^[0-9a-f]{24}$/.test(raw.id) || !Array.isArray(raw.players) || raw.players.length !== 2) return null;
   return {
     id: raw.id, revision: Number.isInteger(raw.revision) ? raw.revision : 0,
+    keepNext: typeof raw.keepNext === 'boolean' ? raw.keepNext : true,
+    games: Array.isArray(raw.games) ? raw.games.filter(game =>
+      game && typeof game.id === 'string' && Array.isArray(game.teams) &&
+      game.teams.length === 2 && game.teams.every(team => teams.some(t => t[0] === team))
+    ).map((game, i) => ({
+      id: game.id,
+      number: i + 1,
+      teams: game.teams,
+      names: Array.isArray(game.names) && game.names.length === 2
+        ? game.names.map((name, index) => String(name).slice(0, 24) || `Player ${index + 1}`)
+        : ['Player 1', 'Player 2'],
+      keep: Boolean(game.keep),
+      playedAt: typeof game.playedAt === 'string' ? game.playedAt : ''
+    })) : [],
     players: raw.players.map((p, i) => {
       const picks = Array.isArray(p.picks) ? p.picks.filter((v, j) => teams.some(t => t[0] === v) && p.picks.indexOf(v) === j).slice(0, 4) : [];
       const forced = picks.includes(p.forced) ? p.forced : null;
@@ -91,15 +110,18 @@ function cleanState(raw) {
 }
 function save() {
   if (!state.id) return;
-  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, revision: state.revision }));
+  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, revision: state.revision }));
   localStorage.setItem('nba2k26:last', state.id);
   hasSaved.value = true;
 }
 function applyState(raw) {
   const next = cleanState(raw);
   if (!next || (state.id && next.id !== state.id) || next.revision < state.revision) return;
+  if (next.games.length > state.games.length) { activePlayer.value = 0; lastTeam.value = null; }
   state.id = next.id;
   state.players = next.players;
+  state.games = next.games;
+  state.keepNext = next.keepNext;
   state.revision = next.revision;
   save();
 }
@@ -115,6 +137,33 @@ function commit(action) {
   broadcast({ type: 'state', state: JSON.parse(JSON.stringify(state)) });
 }
 function applyAction(action) {
+  if (action.type === 'keep-next' && typeof action.keep === 'boolean') {
+    state.keepNext = action.keep;
+    return true;
+  }
+  if (action.type === 'toggle-keep' && typeof action.keep === 'boolean') {
+    const game = state.games.find(item => item.id === action.id);
+    if (!game) return false;
+    game.keep = action.keep;
+    return true;
+  }
+  if (action.type === 'save-game') {
+    if (!state.players.every(p => p.picks.length >= 3 && p.choice) ||
+        state.players[0].choice === state.players[1].choice) return false;
+    state.games.push({
+      id: secureId(),
+      number: state.games.length + 1,
+      teams: state.players.map(p => p.choice),
+      names: state.players.map(p => p.name),
+      keep: state.keepNext,
+      playedAt: new Date().toISOString()
+    });
+    state.players.forEach(p => { p.picks = []; p.choice = null; p.forced = null; });
+    state.keepNext = true;
+    activePlayer.value = 0;
+    lastTeam.value = null;
+    return true;
+  }
   const p = state.players[action.player];
   if (!p || !['name', 'remove', 'choose'].includes(action.type)) return false;
   if (action.type === 'name') {
@@ -128,7 +177,7 @@ function applyAction(action) {
     if (p.forced === action.team) p.forced = null;
     if (p.choice === action.team) p.choice = null;
   } else {
-    if (!p.picks.includes(action.team) || p.forced) return false;
+    if (p.picks.length < 3 || !p.picks.includes(action.team) || p.forced) return false;
     p.choice = action.team;
   }
   return true;
@@ -148,6 +197,11 @@ function setName(index) {
 }
 function remove(index, team) { request({ type: 'remove', player: index, team }); }
 function choose(index, team) { request({ type: 'choose', player: index, team }); }
+function recordGame() { if (canRecord.value) request({ type: 'save-game' }); }
+function gameDate(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
 function beginSpin() {
   if (!canSpin.value) return;
   if (role.value !== 'host') {
@@ -228,7 +282,7 @@ function closePeer() {
 function host(id, restore = false) {
   closePeer();
   const saved = restore ? readSaved(id) : null;
-  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], revision: 0 });
+  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, revision: 0 });
   role.value = 'host';
   status.value = 'Opening session…';
   localStorage.setItem(`nba2k26:host:${id}`, '1');
@@ -292,6 +346,8 @@ function newSession() {
   state.id = '';
   state.revision = 0;
   state.players = [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }];
+  state.games = [];
+  state.keepNext = true;
   role.value = '';
   status.value = '';
   lastTeam.value = null;
@@ -316,7 +372,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 <template>
   <main class="nba-page">
     <header class="page-heading">
-      <div><span class="eyebrow">NBA 2K26 · MATCHUP SELECTOR</span><h1>Who’s taking the court?</h1></div>
+      <div><h1>NBA 2K26 Random Teams</h1></div>
       <div v-if="state.id" class="session-actions">
         <span class="connection" :class="{ online: connected }"><i></i>{{ status }}</span>
         <button class="subtle-button" @click="newSession">New session</button>
@@ -330,7 +386,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
       </div>
       <div>
         <h2>Three picks each. One optional fourth.</h2>
-        <p>Spin for three teams, then choose your matchup. Take a fourth spin if you want, but that team is your pick.</p>
+        <p>Spin for three teams each, choose a matchup, and record every game. A fourth spin is optional, but that team must be used.</p>
         <div class="entry-buttons"><button class="primary-button" @click="createSession">Start a session</button><button v-if="hasSaved" class="outline-button" @click="resume">Resume last session</button></div>
         <form class="join-form" @submit.prevent="join(roomInput.trim().toLowerCase())"><label for="room">Have a session link or code?</label><div><input id="room" v-model="roomInput" placeholder="Paste session code" /><button class="outline-button" type="submit">Join</button></div></form>
         <p v-if="status" class="feedback">{{ status }}</p>
@@ -374,17 +430,34 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
                 <span class="slot-num">{{ slot < 4 ? `0${slot}` : '04' }}</span>
                 <template v-if="p.picks[slot - 1]">
                   <span class="team-name">{{ p.picks[slot - 1] }} <small v-if="slot === 4">LOCKED</small></span>
-                  <button v-if="!p.forced" class="choose-button" :class="{ chosen: p.choice === p.picks[slot - 1] }" :aria-label="`Choose ${p.picks[slot - 1]} for matchup`" @click="choose(i, p.picks[slot - 1])">{{ p.choice === p.picks[slot - 1] ? 'MATCHUP PICK' : 'CHOOSE' }}</button>
+                  <button v-if="p.picks.length >= 3 && !p.forced" class="choose-button" :class="{ chosen: p.choice === p.picks[slot - 1] }" :aria-label="`Choose ${p.picks[slot - 1]} for matchup`" @click="choose(i, p.picks[slot - 1])">{{ p.choice === p.picks[slot - 1] ? 'MATCHUP PICK' : 'CHOOSE' }}</button>
                   <button class="remove-button" :aria-label="`Remove ${p.picks[slot - 1]}`" title="Remove team" @click="remove(i, p.picks[slot - 1])">×</button>
                 </template>
                 <template v-else><span class="team-name">{{ slot === 4 ? 'Optional — must use if spun' : 'Waiting for a spin' }}</span></template>
               </div>
             </div>
           </div>
-          <div class="matchup"><span class="eyebrow">YOUR MATCHUP</span><div><strong>{{ matchup[0] || 'Player 1 pick' }}</strong><span>VS</span><strong>{{ matchup[1] || 'Player 2 pick' }}</strong></div></div>
-          <p class="rule-note">Teams already on either list stay off the wheel until removed. Picks save on your device; keep the host’s tab open for live sharing.</p>
+          <div class="matchup">
+            <span class="eyebrow">GAME {{ state.games.length + 1 }}</span>
+            <div class="matchup-teams"><strong>{{ matchup[0] || 'Player 1 pick' }}</strong><span>VS</span><strong>{{ matchup[1] || 'Player 2 pick' }}</strong></div>
+            <label class="keep-option"><input type="checkbox" :checked="state.keepNext" :disabled="!connected || spinning" @change="request({ type: 'keep-next', keep: $event.target.checked })" /> Keep both teams off the wheel for future games</label>
+            <button class="primary-button record-button" :disabled="!canRecord" @click="recordGame">Record Game {{ state.games.length + 1 }}</button>
+            <p v-if="!canRecord" class="record-help">Draw at least three teams for each player, then choose one team each.</p>
+          </div>
+          <p class="rule-note">Current picks and teams marked in game history stay off the wheel. Session picks save on your device; keep the host’s tab open for live sharing.</p>
         </section>
       </div>
+      <section class="history-panel" aria-label="Games played">
+        <div class="history-heading"><h2>Games played</h2><span>{{ state.games.length }} recorded</span></div>
+        <p v-if="!state.games.length" class="history-empty">Your first matchup will appear here after you record it.</p>
+        <div v-else class="history-list">
+          <article v-for="game in state.games" :key="game.id" class="history-game">
+            <div class="history-number"><strong>GAME {{ game.number }}</strong><small>{{ gameDate(game.playedAt) }}</small></div>
+            <div class="history-match"><div><small>{{ game.names[0] }}</small><strong>{{ game.teams[0] }}</strong></div><span>VS</span><div><small>{{ game.names[1] }}</small><strong>{{ game.teams[1] }}</strong></div></div>
+            <label class="keep-option history-keep"><input type="checkbox" :checked="game.keep" :disabled="!connected || spinning" @change="request({ type: 'toggle-keep', id: game.id, keep: $event.target.checked })" /> Keep both off wheel</label>
+          </article>
+        </div>
+      </section>
     </template>
   </main>
 </template>
@@ -397,6 +470,29 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .entry-mark svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 12px 13px #060d17)}
 .entry-mark span{position:relative;z-index:1;width:49%;height:49%;border-radius:50%;background:#132033;border:3px solid #fff;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:2.1rem}
 .entry-mark span small{font-size:.55rem}
+.matchup .keep-option{margin-top:18px}
+.keep-option{display:flex;align-items:center;gap:9px;color:#d5e0eb;font-size:.84rem;line-height:1.4;cursor:pointer}
+.keep-option input{width:17px;height:17px;flex:none;accent-color:#ffad4b;cursor:pointer}
+.keep-option input:disabled{cursor:not-allowed}
+.record-button{margin-top:16px;width:100%}
+.record-button:disabled{opacity:.48}
+.record-help{color:var(--muted);font-size:.76rem;margin:8px 0 0;line-height:1.35}
+.history-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:22px}
+.history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px}
+.history-heading span,.history-empty{color:var(--muted);font-size:.84rem}
+.history-empty{margin:0}
+.history-list{display:grid;gap:9px}
+.history-game{display:grid;grid-template-columns:125px minmax(0,1fr) 180px;align-items:center;gap:16px;padding:14px 16px;background:#223349;border-radius:10px}
+.history-number{display:flex;flex-direction:column;gap:3px}
+.history-number strong{color:var(--accent);font-size:.77rem;letter-spacing:.1em}
+.history-number small{color:var(--muted);font-size:.72rem}
+.history-match{display:flex;align-items:center;gap:12px;min-width:0}
+.history-match div{display:flex;flex-direction:column;min-width:0}
+.history-match small{color:var(--muted);font-size:.72rem}
+.history-match strong{font-size:.94rem;overflow-wrap:anywhere}
+.history-match>span{color:var(--accent);font-weight:900;font-size:.73rem}
+.history-keep{font-size:.77rem;justify-self:end}
+@media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-keep{justify-self:start}}
 @media(max-width:550px){.entry-mark span{font-size:1.2rem;border-width:2px}.entry-mark span small{font-size:.4rem}}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
 </style>
