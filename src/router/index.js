@@ -15,7 +15,13 @@ import ProjectsGallery from '../views/ProjectGallery.vue';
 import OhIRemember from '../components/OhIRemember.vue'
 import TicTacToe from '../components/TicTacToe.vue';
 import CleanCodersStudio from '../components/CleanCodersStudio.vue';
+import NbaRandomTeam from '../views/NbaRandomTeam.vue';
 const routes = [
+    {
+        path: '/nba2k26-random-team',
+        name: 'nba2k26-random-team',
+        component: NbaRandomTeam
+    },
     {
         path: '/',
         name: 'HomePage',
