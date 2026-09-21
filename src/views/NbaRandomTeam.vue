@@ -49,8 +49,9 @@ const used = computed(() => new Set([
 ]));
 const available = computed(() => teams.filter(t => !used.value.has(t[0])));
 const player = computed(() => state.players[activePlayer.value]);
-const nextKind = computed(() => player.value.forced ? 'done' : player.value.picks.length < 3 ? 'regular' : 'forced');
-const canSpin = computed(() => Boolean(state.id) && connected.value && !spinning.value && nextKind.value !== 'done' && available.value.length > 0);
+const bothHaveThree = computed(() => state.players.every(p => p.picks.length >= 3));
+const nextKind = computed(() => player.value.forced ? 'done' : player.value.picks.length < 3 ? 'regular' : bothHaveThree.value ? 'forced' : 'waiting');
+const canSpin = computed(() => Boolean(state.id) && connected.value && !spinning.value && ['regular', 'forced'].includes(nextKind.value) && available.value.length > 0);
 const matchup = computed(() => state.players.map(p => p.choice || p.forced));
 const canRecord = computed(() => connected.value && !spinning.value &&
   state.players.every(p => p.picks.length >= 3 && p.choice) && matchup.value[0] !== matchup.value[1]);
@@ -95,6 +96,7 @@ function cleanState(raw) {
         ? game.names.map((name, index) => String(name).slice(0, 24) || `Player ${index + 1}`)
         : ['Player 1', 'Player 2'],
       keep: Boolean(game.keep),
+      winner: game.winner === 0 || game.winner === 1 ? game.winner : null,
       playedAt: typeof game.playedAt === 'string' ? game.playedAt : ''
     })) : [],
     players: raw.players.map((p, i) => {
@@ -147,6 +149,12 @@ function applyAction(action) {
     game.keep = action.keep;
     return true;
   }
+  if (action.type === 'set-winner' && [0, 1, null].includes(action.winner)) {
+    const game = state.games.find(item => item.id === action.id);
+    if (!game) return false;
+    game.winner = action.winner;
+    return true;
+  }
   if (action.type === 'save-game') {
     if (!state.players.every(p => p.picks.length >= 3 && p.choice) ||
         state.players[0].choice === state.players[1].choice) return false;
@@ -156,6 +164,7 @@ function applyAction(action) {
       teams: state.players.map(p => p.choice),
       names: state.players.map(p => p.name),
       keep: state.keepNext,
+      winner: null,
       playedAt: new Date().toISOString()
     });
     state.players.forEach(p => { p.picks = []; p.choice = null; p.forced = null; });
@@ -213,6 +222,7 @@ function beginSpin() {
 function startHostSpin(index) {
   const p = state.players[index];
   if (spinning.value || !connected.value || !p || p.picks.length >= 4 || available.value.length === 0) return;
+  if (p.picks.length === 3 && !bothHaveThree.value) return;
   if (p.forced) return;
   const kind = p.picks.length === 3 ? 'forced' : 'regular';
   const chosen = available.value[randomIndex(available.value.length)];
@@ -238,6 +248,7 @@ function completeSpin(message) {
   pendingResult = null;
   const p = state.players[message.player];
   if (!p || p.picks.includes(message.team) || used.value.has(message.team) || p.picks.length >= 4) return;
+  if (message.kind === 'forced' && (p.picks.length !== 3 || !bothHaveThree.value)) return;
   p.picks.push(message.team);
   if (message.kind === 'forced') { p.forced = message.team; p.choice = message.team; }
   state.revision += 1;
@@ -386,7 +397,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
       </div>
       <div>
         <h2>Three picks each. One optional fourth.</h2>
-        <p>Spin for three teams each, choose a matchup, and record every game. A fourth spin is optional, but that team must be used.</p>
+        <p>Spin for three teams each, choose a matchup, and record every game. After both players have three teams, either can take an optional fourth spin, but that team must be used.</p>
         <div class="entry-buttons"><button class="primary-button" @click="createSession">Start a session</button><button v-if="hasSaved" class="outline-button" @click="resume">Resume last session</button></div>
         <form class="join-form" @submit.prevent="join(roomInput.trim().toLowerCase())"><label for="room">Have a session link or code?</label><div><input id="room" v-model="roomInput" placeholder="Paste session code" /><button class="outline-button" type="submit">Join</button></div></form>
         <p v-if="status" class="feedback">{{ status }}</p>
@@ -411,11 +422,11 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
               </g>
               <circle cx="300" cy="300" r="65" fill="#101a2a" stroke="#f1f3f6" stroke-width="4"/>
             </svg>
-            <button class="spin-button" :disabled="!canSpin" @click="beginSpin" :aria-label="`Spin for ${player.name}`"><span>{{ spinning ? 'SPINNING' : 'SPIN' }}</span><small>{{ spinning ? '…' : nextKind === 'forced' ? '4TH PICK' : nextKind === 'done' ? 'DONE' : 'TAP TO DRAW' }}</small></button>
+            <button class="spin-button" :disabled="!canSpin" @click="beginSpin" :aria-label="`Spin for ${player.name}`"><span>{{ spinning ? 'SPINNING' : 'SPIN' }}</span><small>{{ spinning ? '…' : nextKind === 'forced' ? '4TH PICK' : nextKind === 'waiting' ? 'WAITING' : nextKind === 'done' ? 'DONE' : 'TAP TO DRAW' }}</small></button>
           </div>
           <div class="wheel-footer">
             <div><span class="eyebrow">SPINNING FOR</span><div class="turn-switch"><button v-for="(p, i) in state.players" :key="i" :class="{ selected: activePlayer === i }" @click="activePlayer = i">{{ p.name }}</button></div></div>
-            <p v-if="spinning">Drawing a team…</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong> selected</p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks, then choose or take a fourth.</p>
+            <p v-if="spinning">Drawing a team…</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong> selected</p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
           </div>
         </section>
 
@@ -433,7 +444,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
                   <button v-if="p.picks.length >= 3 && !p.forced" class="choose-button" :class="{ chosen: p.choice === p.picks[slot - 1] }" :aria-label="`Choose ${p.picks[slot - 1]} for matchup`" @click="choose(i, p.picks[slot - 1])">{{ p.choice === p.picks[slot - 1] ? 'MATCHUP PICK' : 'CHOOSE' }}</button>
                   <button class="remove-button" :aria-label="`Remove ${p.picks[slot - 1]}`" title="Remove team" @click="remove(i, p.picks[slot - 1])">×</button>
                 </template>
-                <template v-else><span class="team-name">{{ slot === 4 ? 'Optional — must use if spun' : 'Waiting for a spin' }}</span></template>
+                <template v-else><span class="team-name">{{ slot === 4 ? 'Optional after both have three — must use if spun' : 'Waiting for a spin' }}</span></template>
               </div>
             </div>
           </div>
@@ -454,6 +465,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           <article v-for="game in state.games" :key="game.id" class="history-game">
             <div class="history-number"><strong>GAME {{ game.number }}</strong><small>{{ gameDate(game.playedAt) }}</small></div>
             <div class="history-match"><div><small>{{ game.names[0] }}</small><strong>{{ game.teams[0] }}</strong></div><span>VS</span><div><small>{{ game.names[1] }}</small><strong>{{ game.teams[1] }}</strong></div></div>
+            <div class="winner-row"><span>Winner</span><button v-for="index in [0, 1]" :key="index" class="winner-button" :class="{ selected: game.winner === index }" :disabled="!connected || spinning" :aria-pressed="game.winner === index" @click="request({ type: 'set-winner', id: game.id, winner: game.winner === index ? null : index })">{{ game.names[index] }}{{ game.winner === index ? ' ✓' : '' }}</button><small v-if="game.winner === null">Not marked yet</small></div>
             <label class="keep-option history-keep"><input type="checkbox" :checked="game.keep" :disabled="!connected || spinning" @change="request({ type: 'toggle-keep', id: game.id, keep: $event.target.checked })" /> Keep both off wheel</label>
           </article>
         </div>
@@ -477,22 +489,23 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .record-button{margin-top:16px;width:100%}
 .record-button:disabled{opacity:.48}
 .record-help{color:var(--muted);font-size:.76rem;margin:8px 0 0;line-height:1.35}
+.winner-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;grid-column:2;grid-row:2;color:var(--muted);font-size:.8rem}.winner-row>span{font-weight:750;margin-right:4px}.winner-row small{font-size:.72rem}.winner-button{border:1px solid #65788c;background:#23344a;color:#d5e0eb;border-radius:7px;padding:7px 10px;font-weight:700}.winner-button.selected{background:#356a57;color:#fff;border-color:#75cea5}
 .history-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:22px}
 .history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px}
 .history-heading span,.history-empty{color:var(--muted);font-size:.84rem}
 .history-empty{margin:0}
 .history-list{display:grid;gap:9px}
 .history-game{display:grid;grid-template-columns:125px minmax(0,1fr) 180px;align-items:center;gap:16px;padding:14px 16px;background:#223349;border-radius:10px}
-.history-number{display:flex;flex-direction:column;gap:3px}
+.history-number{display:flex;flex-direction:column;gap:3px;grid-column:1;grid-row:1 / 3}
 .history-number strong{color:var(--accent);font-size:.77rem;letter-spacing:.1em}
 .history-number small{color:var(--muted);font-size:.72rem}
-.history-match{display:flex;align-items:center;gap:12px;min-width:0}
+.history-match{display:flex;align-items:center;gap:12px;min-width:0;grid-column:2;grid-row:1}
 .history-match div{display:flex;flex-direction:column;min-width:0}
 .history-match small{color:var(--muted);font-size:.72rem}
 .history-match strong{font-size:.94rem;overflow-wrap:anywhere}
 .history-match>span{color:var(--accent);font-weight:900;font-size:.73rem}
-.history-keep{font-size:.77rem;justify-self:end}
-@media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-keep{justify-self:start}}
+.history-keep{font-size:.77rem;justify-self:end;grid-column:3;grid-row:1 / 3}
+@media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-game>*{grid-column:1;grid-row:auto}.history-keep{justify-self:start}}
 @media(max-width:550px){.entry-mark span{font-size:1.2rem;border-width:2px}.entry-mark span small{font-size:.4rem}}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
 </style>
