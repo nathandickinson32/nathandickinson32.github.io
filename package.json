@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node postbuild.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
-     "vue": "^3.4.31",
+    "peerjs": "^1.5.5",
+    "vue": "^3.4.31",
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
