@@ -34,7 +34,7 @@ const verifiedTiers = {
 };
 const rosterByName = Object.fromEntries(rosterData.teams.map(team => [team.name, team]));
 
-const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierOverrides: {}, revision: 0 });
+const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierFilter: 0, tierOverrides: {}, revision: 0 });
 const selectedTeamIndex = ref(0);
 const rosterSearch = ref('');
 const activePlayer = ref(0);
@@ -64,7 +64,9 @@ const used = computed(() => new Set([
   ...state.players.flatMap(p => p.picks),
   ...state.games.filter(game => game.keep).flatMap(game => game.teams)
 ]));
-const available = computed(() => teams.filter(t => !used.value.has(t[0])));
+const available = computed(() => teams.filter(t =>
+  !used.value.has(t[0]) && (!state.tierFilter || teamTier(t[0]) === state.tierFilter)
+));
 const player = computed(() => state.players[activePlayer.value]);
 const bothHaveThree = computed(() => state.players.every(p => p.picks.length >= 3));
 const nextKind = computed(() => player.value.forced ? 'done' : player.value.picks.length < 3 ? 'regular' : bothHaveThree.value ? 'forced' : 'waiting');
@@ -120,6 +122,7 @@ function cleanState(raw) {
     id: raw.id, revision: Number.isInteger(raw.revision) ? raw.revision : 0,
     keepNext: typeof raw.keepNext === 'boolean' ? raw.keepNext : true,
     eraNext: eras.includes(raw.eraNext) ? raw.eraNext : null,
+    tierFilter: [1, 2, 3].includes(raw.tierFilter) ? raw.tierFilter : 0,
     tierOverrides: Object.fromEntries(Object.entries(raw.tierOverrides || {}).filter(([name, tier]) =>
       teams.some(team => team[0] === name) && [1, 2, 3].includes(tier))),
     games: Array.isArray(raw.games) ? raw.games.filter(game =>
@@ -150,7 +153,7 @@ function cleanState(raw) {
 }
 function save() {
   if (!state.id) return;
-  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, eraNext: state.eraNext, tierOverrides: state.tierOverrides, revision: state.revision }));
+  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, eraNext: state.eraNext, tierFilter: state.tierFilter, tierOverrides: state.tierOverrides, revision: state.revision }));
   localStorage.setItem('nba2k26:last', state.id);
   hasSaved.value = true;
 }
@@ -163,6 +166,7 @@ function applyState(raw) {
   state.games = next.games;
   state.keepNext = next.keepNext;
   state.eraNext = next.eraNext;
+  state.tierFilter = next.tierFilter;
   state.tierOverrides = next.tierOverrides;
   state.revision = next.revision;
   save();
@@ -185,6 +189,10 @@ function commit(action) {
   broadcast({ type: 'state', state: JSON.parse(JSON.stringify(state)) });
 }
 function applyAction(action) {
+  if (action.type === 'set-tier-filter' && [0, 1, 2, 3].includes(action.tier)) {
+    state.tierFilter = action.tier;
+    return true;
+  }
   if (action.type === 'set-tier' && teams.some(team => team[0] === action.team) && [0, 1, 2, 3].includes(action.tier)) {
     if (action.tier === 0) delete state.tierOverrides[action.team];
     else state.tierOverrides[action.team] = action.tier;
@@ -360,7 +368,7 @@ function closePeer() {
 function host(id, restore = false) {
   closePeer();
   const saved = restore ? readSaved(id) : null;
-  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierOverrides: {}, revision: 0 });
+  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierFilter: 0, tierOverrides: {}, revision: 0 });
   role.value = 'host';
   status.value = 'Opening session…';
   localStorage.setItem(`nba2k26:host:${id}`, '1');
@@ -431,6 +439,7 @@ function newSession() {
   state.games = [];
   state.keepNext = true;
   state.eraNext = null;
+  state.tierFilter = 0;
   state.tierOverrides = {};
   role.value = '';
   status.value = '';
@@ -487,10 +496,14 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
       <div class="game-grid">
         <section class="wheel-panel" aria-label="Team wheel">
           <div class="wheel-top"><span class="eyebrow">THE DRAW</span><span>{{ available.length }} teams in rotation</span></div>
+          <div class="tier-filter" aria-label="Filter wheel by team tier">
+            <span>Wheel tier</span>
+            <button v-for="tier in [0, 1, 2, 3]" :key="tier" :class="{ selected: state.tierFilter === tier }" :disabled="!connected || spinning" :aria-pressed="state.tierFilter === tier" @click="request({ type: 'set-tier-filter', tier })">{{ tier ? `Tier ${tier}` : 'All' }}</button>
+          </div>
           <div class="wheel-wrap">
             <div class="pointer" aria-hidden="true"></div>
             <svg class="wheel" :style="{ transform: `rotate(${wheelAngle}deg)` }" viewBox="0 0 600 600" role="img" aria-label="Spinning wheel with all 30 NBA teams">
-              <g v-for="slice in wheelSlices" :key="slice.team[1]" :opacity="used.has(slice.team[0]) ? .28 : 1">
+              <g v-for="slice in wheelSlices" :key="slice.team[1]" :opacity="used.has(slice.team[0]) || (state.tierFilter && teamTier(slice.team[0]) !== state.tierFilter) ? .18 : 1">
                 <path :d="slice.path" :fill="slice.team[2]" stroke="#121b2c" stroke-width="2"/>
                 <text :x="slice.label.x" :y="slice.label.y" fill="white" text-anchor="middle" dominant-baseline="central" :transform="`rotate(${(slice.i + .5) * 12}, ${slice.label.x}, ${slice.label.y})`">{{ slice.team[1] }}</text>
               </g>
@@ -500,7 +513,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           </div>
           <div class="wheel-footer">
             <div><span class="eyebrow">SPINNING FOR</span><div class="turn-switch"><button v-for="(p, i) in state.players" :key="i" :class="{ selected: activePlayer === i }" @click="activePlayer = i">{{ p.name }}</button></div></div>
-            <p v-if="spinning">Drawing a team…</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong><br>{{ tierLabel(lastTeam) }} · <a href="#team-ratings">View ratings ↓</a></p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
+            <p v-if="spinning">Drawing a team…</p><p v-else-if="!available.length">No unused teams match this tier. Choose another filter.</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong><br>{{ tierLabel(lastTeam) }} · <a href="#team-ratings">View ratings ↓</a></p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
           </div>
         </section>
 
@@ -603,6 +616,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .history-keep{font-size:.77rem;justify-self:end;grid-column:3;grid-row:1 / 4}
 @media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-game>*{grid-column:1;grid-row:auto}.history-keep{justify-self:start}}
 @media(max-width:550px){.entry-mark span{font-size:1.2rem;border-width:2px}.entry-mark span small{font-size:.4rem}}
+.tier-filter{display:flex;align-items:center;gap:5px;margin-top:13px;flex-wrap:wrap}.tier-filter>span{color:var(--muted);font-size:.72rem;font-weight:750;margin-right:4px}.tier-filter button{border:1px solid #50657c;background:#101d2e;color:#b8c7d8;border-radius:999px;padding:6px 11px;font-size:.72rem;font-weight:800}.tier-filter button.selected{background:var(--accent);border-color:var(--accent);color:#172032}.tier-filter button:disabled{opacity:.55}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
 .team-link{border:0;background:none;color:inherit;padding:0;text-align:left;text-decoration:underline;text-decoration-color:#7894a8;text-underline-offset:3px;font-weight:inherit}.team-name em{display:block;color:#bcd0dc;font-size:.7rem;font-style:normal;font-weight:500;margin-top:2px}.wheel-footer a{color:#ffbf73}.ratings-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:clamp(17px,2.5vw,27px);scroll-margin-top:20px}.ratings-heading{display:flex;justify-content:space-between;align-items:end;gap:15px}.ratings-heading h2{font-size:1.8rem;margin-top:6px}.ratings-heading>span{color:var(--muted);font-size:.82rem}.ratings-note,.ratings-source{color:var(--muted);font-size:.79rem;line-height:1.55}.ratings-note{max-width:900px;margin:11px 0 19px}.ratings-source{margin:17px 0 0}.ratings-panel a{color:#ffbf73}.ratings-layout{display:grid;grid-template-columns:minmax(205px,.55fr) minmax(0,1.45fr);gap:15px;align-items:start}.ranking-list{max-height:690px;overflow-y:auto;border:1px solid var(--edge);border-radius:11px;background:#101d2e}.ranking-list button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;color:#eaf2fa;border:0;border-bottom:1px solid #2a3b50;background:transparent;padding:9px 11px}.ranking-list button.selected{background:#324459;box-shadow:inset 3px 0 #ffad4b}.ranking-list b{font-size:.75rem;color:#ffad4b}.ranking-list span{flex:1;font-size:.8rem;font-weight:700}.ranking-list small{display:block;font-weight:400;color:#a9bbce;margin-top:2px}.ranking-list strong{font-size:.85rem}.roster-card{border:1px solid var(--edge);border-radius:11px;background:#203149;overflow:hidden}.roster-navigation{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#142338}.roster-navigation button{border:1px solid #5b7088;background:#263d56;color:white;border-radius:6px;font-size:1.5rem;line-height:1;padding:3px 13px}.roster-navigation label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.78rem}.roster-navigation select,.tier-control select{background:#1b2e45;color:white;border:1px solid #72849b;border-radius:6px;padding:7px;font:inherit;max-width:230px}.roster-hero{display:flex;justify-content:space-between;gap:12px;padding:21px;align-items:center}.roster-hero h3{margin:6px 0 10px;font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-.035em}.roster-abbr{display:inline-block;padding:5px 8px;border-radius:5px;font-size:.75rem;font-weight:900;color:white}.roster-hero-stat{text-align:right;white-space:nowrap}.roster-hero-stat strong{display:block;color:#ffbd6c;font-size:2.1rem}.roster-hero-stat span{font-size:.72rem;color:var(--muted)}.tier-control{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#304259;padding:12px 20px}.tier-control strong,.tier-control small{display:block}.tier-control small{color:#b5c5d7;font-size:.71rem;margin-top:3px}.tier-control label{display:flex;align-items:center;gap:8px;color:#dce8f3;font-size:.75rem;white-space:nowrap}.tier-control select:disabled{opacity:.6}.roster-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px 9px}.roster-list-heading small{color:var(--muted);font-weight:400}.roster-list-heading input{width:min(45%,210px);font-size:.79rem;padding:7px 9px}.roster-table-wrap{max-height:500px;overflow:auto;margin:0 20px}.roster-table-wrap table{width:100%;border-collapse:collapse;font-size:.85rem}.roster-table-wrap th{text-align:left;color:#a8bcd1;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;position:sticky;top:0;background:#203149}.roster-table-wrap th,.roster-table-wrap td{padding:9px 7px;border-bottom:1px solid #344760}.roster-table-wrap td:first-child{color:#ffbf73;font-weight:700}.roster-table-wrap td:last-child strong{background:#426d65;padding:4px 7px;border-radius:5px}.source-link{display:inline-block;margin:14px 20px 20px;font-size:.78rem}@media(max-width:750px){.ratings-layout{grid-template-columns:1fr}.ranking-list{max-height:215px}.ratings-heading{align-items:start;flex-direction:column}.tier-control{flex-wrap:wrap}}@media(max-width:450px){.roster-navigation select{max-width:190px}.roster-hero{padding:14px}.roster-hero-stat strong{font-size:1.6rem}.roster-list-heading{padding:12px}.roster-table-wrap{margin:0 10px}.tier-control{padding:11px}}
 </style>
