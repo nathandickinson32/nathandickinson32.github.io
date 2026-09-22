@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import Peer from 'peerjs';
+import rosterData from '../data/nba2k26-play-now.json';
 
 const teams = [
   ['Atlanta Hawks', 'ATL', '#c83b40'], ['Boston Celtics', 'BOS', '#16845b'],
@@ -20,8 +21,22 @@ const teams = [
   ['Utah Jazz', 'UTA', '#8277ab'], ['Washington Wizards', 'WAS', '#6285aa']
 ];
 const eras = ['Current', 'All-Time', 'Past Teams'];
+// The visible 2K26 Play Now Online team-select screenshot verifies these 21 teams.
+// Remaining teams are left unset until a player checks the current in-game tier.
+const verifiedTiers = {
+  'Cleveland Cavaliers': 1, 'LA Clippers': 1, 'New York Knicks': 1,
+  'Los Angeles Lakers': 1, 'Dallas Mavericks': 1, 'Denver Nuggets': 1,
+  'Houston Rockets': 1, 'Philadelphia 76ers': 2, 'Milwaukee Bucks': 2,
+  'Boston Celtics': 2, 'Memphis Grizzlies': 2, 'Atlanta Hawks': 2,
+  'Sacramento Kings': 2, 'Orlando Magic': 2, 'Chicago Bulls': 3,
+  'Miami Heat': 3, 'Charlotte Hornets': 3, 'Utah Jazz': 3,
+  'Brooklyn Nets': 3, 'Toronto Raptors': 3, 'Phoenix Suns': 3
+};
+const rosterByName = Object.fromEntries(rosterData.teams.map(team => [team.name, team]));
 
-const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, revision: 0 });
+const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierOverrides: {}, revision: 0 });
+const selectedTeamIndex = ref(0);
+const rosterSearch = ref('');
 const activePlayer = ref(0);
 const role = ref('');
 const status = ref('');
@@ -62,6 +77,23 @@ const wheelSlices = computed(() => teams.map((team, i) => ({
   path: sector(i * 12, (i + 1) * 12),
   label: polar(190, (i + .5) * 12)
 })));
+const rankedTeams = computed(() => rosterData.teams.map(team => ({
+  ...team, topFive: team.players.slice(0, 5).reduce((total, p) => total + p.ovr, 0) / 5
+})).sort((a, b) => b.topFive - a.topFive || a.name.localeCompare(b.name)));
+const selectedTeam = computed(() => teams[selectedTeamIndex.value]);
+const selectedRoster = computed(() => rosterByName[selectedTeam.value[0]]);
+const selectedRank = computed(() => rankedTeams.value.findIndex(team => team.name === selectedTeam.value[0]) + 1);
+const filteredRoster = computed(() => selectedRoster.value.players.filter(p =>
+  p.name.toLowerCase().includes(rosterSearch.value.trim().toLowerCase())
+));
+function teamTier(name) { return state.tierOverrides[name] || verifiedTiers[name] || null; }
+function tierLabel(name) { return teamTier(name) ? `Tier ${teamTier(name)}` : 'Tier unverified'; }
+function browseTeam(name) {
+  const index = teams.findIndex(team => team[0] === name);
+  if (index >= 0) { selectedTeamIndex.value = index; rosterSearch.value = ''; }
+}
+function browseStep(step) { selectedTeamIndex.value = (selectedTeamIndex.value + step + teams.length) % teams.length; rosterSearch.value = ''; }
+watch(lastTeam, name => { if (name) browseTeam(name); });
 
 function polar(radius, deg) {
   const a = (deg - 90) * Math.PI / 180;
@@ -88,6 +120,8 @@ function cleanState(raw) {
     id: raw.id, revision: Number.isInteger(raw.revision) ? raw.revision : 0,
     keepNext: typeof raw.keepNext === 'boolean' ? raw.keepNext : true,
     eraNext: eras.includes(raw.eraNext) ? raw.eraNext : null,
+    tierOverrides: Object.fromEntries(Object.entries(raw.tierOverrides || {}).filter(([name, tier]) =>
+      teams.some(team => team[0] === name) && [1, 2, 3].includes(tier))),
     games: Array.isArray(raw.games) ? raw.games.filter(game =>
       game && typeof game.id === 'string' && Array.isArray(game.teams) &&
       game.teams.length === 2 && game.teams.every(team => teams.some(t => t[0] === team))
@@ -116,7 +150,7 @@ function cleanState(raw) {
 }
 function save() {
   if (!state.id) return;
-  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, eraNext: state.eraNext, revision: state.revision }));
+  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, eraNext: state.eraNext, tierOverrides: state.tierOverrides, revision: state.revision }));
   localStorage.setItem('nba2k26:last', state.id);
   hasSaved.value = true;
 }
@@ -129,6 +163,7 @@ function applyState(raw) {
   state.games = next.games;
   state.keepNext = next.keepNext;
   state.eraNext = next.eraNext;
+  state.tierOverrides = next.tierOverrides;
   state.revision = next.revision;
   save();
 }
@@ -150,6 +185,11 @@ function commit(action) {
   broadcast({ type: 'state', state: JSON.parse(JSON.stringify(state)) });
 }
 function applyAction(action) {
+  if (action.type === 'set-tier' && teams.some(team => team[0] === action.team) && [0, 1, 2, 3].includes(action.tier)) {
+    if (action.tier === 0) delete state.tierOverrides[action.team];
+    else state.tierOverrides[action.team] = action.tier;
+    return true;
+  }
   if (action.type === 'set-next-era' && eras.includes(action.era)) {
     state.eraNext = action.era;
     return true;
@@ -320,7 +360,7 @@ function closePeer() {
 function host(id, restore = false) {
   closePeer();
   const saved = restore ? readSaved(id) : null;
-  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, revision: 0 });
+  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierOverrides: {}, revision: 0 });
   role.value = 'host';
   status.value = 'Opening session…';
   localStorage.setItem(`nba2k26:host:${id}`, '1');
@@ -391,6 +431,7 @@ function newSession() {
   state.games = [];
   state.keepNext = true;
   state.eraNext = null;
+  state.tierOverrides = {};
   role.value = '';
   status.value = '';
   lastTeam.value = null;
@@ -459,7 +500,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           </div>
           <div class="wheel-footer">
             <div><span class="eyebrow">SPINNING FOR</span><div class="turn-switch"><button v-for="(p, i) in state.players" :key="i" :class="{ selected: activePlayer === i }" @click="activePlayer = i">{{ p.name }}</button></div></div>
-            <p v-if="spinning">Drawing a team…</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong> selected</p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
+            <p v-if="spinning">Drawing a team…</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong><br>{{ tierLabel(lastTeam) }} · <a href="#team-ratings">View ratings ↓</a></p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
           </div>
         </section>
 
@@ -473,7 +514,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
               <div v-for="slot in 4" :key="slot" class="pick-row" :class="{ empty: !p.picks[slot - 1], forced: slot === 4 }">
                 <span class="slot-num">{{ slot < 4 ? `0${slot}` : '04' }}</span>
                 <template v-if="p.picks[slot - 1]">
-                  <span class="team-name">{{ p.picks[slot - 1] }} <small v-if="slot === 4">LOCKED</small></span>
+                  <span class="team-name"><button class="team-link" @click="browseTeam(p.picks[slot - 1])">{{ p.picks[slot - 1] }}</button> <em>{{ tierLabel(p.picks[slot - 1]) }}</em> <small v-if="slot === 4">LOCKED</small></span>
                   <button v-if="p.picks.length >= 3 && !p.forced" class="choose-button" :class="{ chosen: p.choice === p.picks[slot - 1] }" :aria-label="`Choose ${p.picks[slot - 1]} for matchup`" @click="choose(i, p.picks[slot - 1])">{{ p.choice === p.picks[slot - 1] ? 'MATCHUP PICK' : 'CHOOSE' }}</button>
                   <button class="remove-button" :aria-label="`Remove ${p.picks[slot - 1]}`" title="Remove team" @click="remove(i, p.picks[slot - 1])">×</button>
                 </template>
@@ -498,7 +539,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
         <div v-else class="history-list">
           <article v-for="game in state.games" :key="game.id" class="history-game">
             <div class="history-number"><strong>GAME {{ game.number }}</strong><small>{{ gameDate(game.playedAt) }}</small></div>
-            <div class="history-match"><div><small>{{ game.names[0] }}</small><strong>{{ game.teams[0] }}</strong></div><span>VS</span><div><small>{{ game.names[1] }}</small><strong>{{ game.teams[1] }}</strong></div></div>
+            <div class="history-match"><div><small>{{ game.names[0] }}</small><strong>{{ game.teams[0] }}</strong><small>{{ tierLabel(game.teams[0]) }}</small></div><span>VS</span><div><small>{{ game.names[1] }}</small><strong>{{ game.teams[1] }}</strong><small>{{ tierLabel(game.teams[1]) }}</small></div></div>
             <label class="history-era">Team era <select :aria-label="`Team era for Game ${game.number}`" :value="game.era || ''" :disabled="!connected || spinning" @change="request({ type: 'set-game-era', id: game.id, era: $event.target.value || null })"><option value="">Not set</option><option v-for="era in eras" :key="era" :value="era">{{ era }}</option></select></label>
             <div class="winner-row"><span>Winner</span><button v-for="index in [0, 1]" :key="index" class="winner-button" :class="{ selected: game.winner === index }" :disabled="!connected || spinning" :aria-pressed="game.winner === index" @click="request({ type: 'set-winner', id: game.id, winner: game.winner === index ? null : index })">{{ game.names[index] }}{{ game.winner === index ? ' ✓' : '' }}</button><small v-if="game.winner === null">Not marked yet</small></div>
             <label class="keep-option history-keep"><input type="checkbox" :checked="game.keep" :disabled="!connected || spinning" @change="request({ type: 'toggle-keep', id: game.id, keep: $event.target.checked })" /> Keep both off wheel</label>
@@ -506,6 +547,24 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
         </div>
       </section>
     </template>
+    <section id="team-ratings" class="ratings-panel" aria-label="NBA 2K26 team and player ratings">
+      <div class="ratings-heading"><div><span class="eyebrow">NBA 2K26 · PLAY NOW ONLINE</span><h2>Teams & player ratings</h2></div><span>30 current teams · 531 players</span></div>
+      <p class="ratings-note">Roster snapshot captured June 26, 2026. Team rank compares the average OVR of each team's five highest rated players. Tiers shown as verified come from a 2K26 team select screenshot; the game may have changed since then. Check your in-game tier and adjust it here for everyone in this session.</p>
+      <div class="ratings-layout">
+        <div class="ranking-list" aria-label="Team ranking by top five overall rating">
+          <button v-for="(team, index) in rankedTeams" :key="team.name" :class="{ selected: selectedTeam[0] === team.name }" @click="browseTeam(team.name)"><b>{{ String(index + 1).padStart(2, '0') }}</b><span>{{ team.name }}<small>{{ tierLabel(team.name) }}</small></span><strong>{{ team.topFive.toFixed(1) }}</strong></button>
+        </div>
+        <div class="roster-card">
+          <div class="roster-navigation"><button aria-label="Previous team" @click="browseStep(-1)">‹</button><label>Team <select :value="selectedTeam[0]" @change="browseTeam($event.target.value)"><option v-for="team in teams" :key="team[1]" :value="team[0]">{{ team[0] }}</option></select></label><button aria-label="Next team" @click="browseStep(1)">›</button></div>
+          <div class="roster-hero"><div><span class="eyebrow">#{{ selectedRank }} OF 30 · TOP FIVE RANK</span><h3>{{ selectedTeam[0] }}</h3><span class="roster-abbr" :style="{ background: selectedTeam[2] }">{{ selectedTeam[1] }}</span></div><div class="roster-hero-stat"><strong>{{ rankedTeams[selectedRank - 1]?.topFive.toFixed(1) }}</strong><span>Top five avg OVR</span></div></div>
+          <div class="tier-control"><div><strong>{{ tierLabel(selectedTeam[0]) }}</strong><small>{{ state.tierOverrides[selectedTeam[0]] ? 'Set by your session' : verifiedTiers[selectedTeam[0]] ? 'From 2K26 team select screenshot' : 'Not visible in the reference screenshot' }}</small></div><label>In-game tier <select :value="state.tierOverrides[selectedTeam[0]] || 0" :disabled="!state.id || !connected" @change="request({ type: 'set-tier', team: selectedTeam[0], tier: Number($event.target.value) })"><option value="0">{{ verifiedTiers[selectedTeam[0]] ? 'Use reference' : 'Unverified' }}</option><option v-for="tier in [1, 2, 3]" :key="tier" :value="tier">Tier {{ tier }}</option></select></label></div>
+          <div class="roster-list-heading"><strong>Player rankings <small>({{ selectedRoster.players.length }})</small></strong><input v-model="rosterSearch" aria-label="Search players on selected team" placeholder="Find a player" /></div>
+          <div class="roster-table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Player</th><th scope="col">Position</th><th scope="col">OVR</th></tr></thead><tbody><tr v-for="p in filteredRoster" :key="p.name"><td>{{ selectedRoster.players.indexOf(p) + 1 }}</td><td>{{ p.name }}</td><td>{{ p.position }}</td><td><strong>{{ p.ovr }}</strong></td></tr></tbody></table><p v-if="!filteredRoster.length" class="ratings-note">No matching players on this team.</p></div>
+          <a :href="selectedRoster.source" target="_blank" rel="noopener noreferrer" class="source-link">View this 2K26 roster source ↗</a>
+        </div>
+      </div>
+      <p class="ratings-source">Ratings: <a :href="rosterData.source" target="_blank" rel="noopener noreferrer">2kAuction's archived NBA 2K26 Play Now Online roster</a>. Reference tiers: <a href="https://www.2kratings.com/teams/dallas-mavericks" target="_blank" rel="noopener noreferrer">2K Ratings game screenshot</a>. Historical and all-time teams use different rosters; these rankings cover the 30 current teams on the wheel.</p>
+    </section>
   </main>
 </template>
 
@@ -545,4 +604,5 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 @media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-game>*{grid-column:1;grid-row:auto}.history-keep{justify-self:start}}
 @media(max-width:550px){.entry-mark span{font-size:1.2rem;border-width:2px}.entry-mark span small{font-size:.4rem}}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
+.team-link{border:0;background:none;color:inherit;padding:0;text-align:left;text-decoration:underline;text-decoration-color:#7894a8;text-underline-offset:3px;font-weight:inherit}.team-name em{display:block;color:#bcd0dc;font-size:.7rem;font-style:normal;font-weight:500;margin-top:2px}.wheel-footer a{color:#ffbf73}.ratings-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:clamp(17px,2.5vw,27px);scroll-margin-top:20px}.ratings-heading{display:flex;justify-content:space-between;align-items:end;gap:15px}.ratings-heading h2{font-size:1.8rem;margin-top:6px}.ratings-heading>span{color:var(--muted);font-size:.82rem}.ratings-note,.ratings-source{color:var(--muted);font-size:.79rem;line-height:1.55}.ratings-note{max-width:900px;margin:11px 0 19px}.ratings-source{margin:17px 0 0}.ratings-panel a{color:#ffbf73}.ratings-layout{display:grid;grid-template-columns:minmax(205px,.55fr) minmax(0,1.45fr);gap:15px;align-items:start}.ranking-list{max-height:690px;overflow-y:auto;border:1px solid var(--edge);border-radius:11px;background:#101d2e}.ranking-list button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;color:#eaf2fa;border:0;border-bottom:1px solid #2a3b50;background:transparent;padding:9px 11px}.ranking-list button.selected{background:#324459;box-shadow:inset 3px 0 #ffad4b}.ranking-list b{font-size:.75rem;color:#ffad4b}.ranking-list span{flex:1;font-size:.8rem;font-weight:700}.ranking-list small{display:block;font-weight:400;color:#a9bbce;margin-top:2px}.ranking-list strong{font-size:.85rem}.roster-card{border:1px solid var(--edge);border-radius:11px;background:#203149;overflow:hidden}.roster-navigation{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#142338}.roster-navigation button{border:1px solid #5b7088;background:#263d56;color:white;border-radius:6px;font-size:1.5rem;line-height:1;padding:3px 13px}.roster-navigation label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.78rem}.roster-navigation select,.tier-control select{background:#1b2e45;color:white;border:1px solid #72849b;border-radius:6px;padding:7px;font:inherit;max-width:230px}.roster-hero{display:flex;justify-content:space-between;gap:12px;padding:21px;align-items:center}.roster-hero h3{margin:6px 0 10px;font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-.035em}.roster-abbr{display:inline-block;padding:5px 8px;border-radius:5px;font-size:.75rem;font-weight:900;color:white}.roster-hero-stat{text-align:right;white-space:nowrap}.roster-hero-stat strong{display:block;color:#ffbd6c;font-size:2.1rem}.roster-hero-stat span{font-size:.72rem;color:var(--muted)}.tier-control{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#304259;padding:12px 20px}.tier-control strong,.tier-control small{display:block}.tier-control small{color:#b5c5d7;font-size:.71rem;margin-top:3px}.tier-control label{display:flex;align-items:center;gap:8px;color:#dce8f3;font-size:.75rem;white-space:nowrap}.tier-control select:disabled{opacity:.6}.roster-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px 9px}.roster-list-heading small{color:var(--muted);font-weight:400}.roster-list-heading input{width:min(45%,210px);font-size:.79rem;padding:7px 9px}.roster-table-wrap{max-height:500px;overflow:auto;margin:0 20px}.roster-table-wrap table{width:100%;border-collapse:collapse;font-size:.85rem}.roster-table-wrap th{text-align:left;color:#a8bcd1;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;position:sticky;top:0;background:#203149}.roster-table-wrap th,.roster-table-wrap td{padding:9px 7px;border-bottom:1px solid #344760}.roster-table-wrap td:first-child{color:#ffbf73;font-weight:700}.roster-table-wrap td:last-child strong{background:#426d65;padding:4px 7px;border-radius:5px}.source-link{display:inline-block;margin:14px 20px 20px;font-size:.78rem}@media(max-width:750px){.ratings-layout{grid-template-columns:1fr}.ranking-list{max-height:215px}.ratings-heading{align-items:start;flex-direction:column}.tier-control{flex-wrap:wrap}}@media(max-width:450px){.roster-navigation select{max-width:190px}.roster-hero{padding:14px}.roster-hero-stat strong{font-size:1.6rem}.roster-list-heading{padding:12px}.roster-table-wrap{margin:0 10px}.tier-control{padding:11px}}
 </style>
