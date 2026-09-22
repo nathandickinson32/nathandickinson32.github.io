@@ -25,6 +25,7 @@ const activePlayer = ref(0);
 const role = ref('');
 const status = ref('');
 const connected = ref(false);
+const participants = ref(0);
 const spinning = ref(false);
 const wheelAngle = ref(0);
 const lastTeam = ref(null);
@@ -130,6 +131,12 @@ function applyState(raw) {
 function broadcast(message) {
   guests = guests.filter(c => c.open);
   guests.forEach(c => c.send(message));
+}
+function updatePresence() {
+  if (role.value !== 'host') return;
+  guests = guests.filter(c => c.open);
+  participants.value = connected.value ? 1 + guests.length : 0;
+  if (connected.value) broadcast({ type: 'presence', count: participants.value });
 }
 function commit(action) {
   if (role.value !== 'host' || spinning.value) return;
@@ -274,12 +281,15 @@ function tick(t) {
 }
 function attachGuest(c) {
   guests.push(c);
-  c.on('open', () => c.send({ type: 'state', state: JSON.parse(JSON.stringify(state)) }));
+  c.on('open', () => {
+    c.send({ type: 'state', state: JSON.parse(JSON.stringify(state)) });
+    updatePresence();
+  });
   c.on('data', data => {
     if (data?.type === 'action') commit(data.action);
     if (data?.type === 'spin-request') startHostSpin(data.player);
   });
-  c.on('close', () => { guests = guests.filter(other => other !== c); });
+  c.on('close', () => { guests = guests.filter(other => other !== c); updatePresence(); });
 }
 function closePeer() {
   clearTimeout(retryTimer);
@@ -289,6 +299,7 @@ function closePeer() {
   connection = null;
   guests = [];
   connected.value = false;
+  participants.value = 0;
 }
 function host(id, restore = false) {
   closePeer();
@@ -299,11 +310,12 @@ function host(id, restore = false) {
   localStorage.setItem(`nba2k26:host:${id}`, '1');
   history.replaceState(null, '', `/nba2k26-random-team?session=${id}`);
   peer = new Peer(`nba2k26-${id}`);
-  peer.on('open', () => { connected.value = true; status.value = 'Session live'; save(); });
+  peer.on('open', () => { connected.value = true; status.value = 'Session live'; save(); updatePresence(); });
   peer.on('connection', attachGuest);
-  peer.on('disconnected', () => { connected.value = false; status.value = 'Reconnecting…'; retryTimer = setTimeout(() => peer?.reconnect(), 2500); });
+  peer.on('disconnected', () => { connected.value = false; participants.value = 0; status.value = 'Reconnecting…'; retryTimer = setTimeout(() => peer?.reconnect(), 2500); });
   peer.on('error', err => {
     connected.value = false;
+    participants.value = 0;
     status.value = err.type === 'unavailable-id' ? 'This session is already open in another tab. Close that tab, then reload here.' : 'Connection lost. Reload to reconnect.';
   });
 }
@@ -326,12 +338,14 @@ function join(input) {
   peer.on('open', () => connectToHost(id));
   peer.on('disconnected', () => {
     connected.value = false;
+    participants.value = 0;
     status.value = 'Connection lost. Reconnecting…';
     retryTimer = setTimeout(() => peer?.reconnect(), 2500);
   });
   peer.on('error', err => {
     if (err.type === 'peer-unavailable') {
       connected.value = false;
+      participants.value = 0;
       status.value = 'The host is offline. Ask them to open this link, then retry.';
     } else status.value = 'Could not connect. Try again.';
   });
@@ -342,9 +356,10 @@ function connectToHost(id) {
   connection.on('data', data => {
     if (data?.type === 'state') applyState(data.state);
     if (data?.type === 'spin') animateSpin(data);
+    if (data?.type === 'presence' && Number.isInteger(data.count) && data.count > 0) participants.value = data.count;
   });
-  connection.on('close', () => { connected.value = false; status.value = 'Host disconnected. Your picks are saved on this device.'; });
-  connection.on('error', () => { connected.value = false; status.value = 'Connection lost. Try again.'; });
+  connection.on('close', () => { connected.value = false; participants.value = 0; status.value = 'Host disconnected. Your picks are saved on this device.'; });
+  connection.on('error', () => { connected.value = false; participants.value = 0; status.value = 'Connection lost. Try again.'; });
 }
 function createSession() { host(secureId()); }
 function retry() { if (state.id) join(state.id); }
@@ -386,6 +401,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
       <div><h1>NBA 2K26 Random Teams</h1></div>
       <div v-if="state.id" class="session-actions">
         <span class="connection" :class="{ online: connected }"><i></i>{{ status }}</span>
+        <span v-if="connected && participants" class="participant-count" aria-live="polite">{{ participants }} {{ participants === 1 ? 'person' : 'people' }} in session</span>
         <button class="subtle-button" @click="newSession">New session</button>
       </div>
     </header>
@@ -489,6 +505,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .record-button{margin-top:16px;width:100%}
 .record-button:disabled{opacity:.48}
 .record-help{color:var(--muted);font-size:.76rem;margin:8px 0 0;line-height:1.35}
+.participant-count{color:#d8f1e6;background:#1e493c;border:1px solid #4a9d7a;border-radius:999px;padding:7px 11px;font-size:.8rem;font-weight:750;white-space:nowrap}
 .winner-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;grid-column:2;grid-row:2;color:var(--muted);font-size:.8rem}.winner-row>span{font-weight:750;margin-right:4px}.winner-row small{font-size:.72rem}.winner-button{border:1px solid #65788c;background:#23344a;color:#d5e0eb;border-radius:7px;padding:7px 10px;font-weight:700}.winner-button.selected{background:#356a57;color:#fff;border-color:#75cea5}
 .history-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:22px}
 .history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px}
