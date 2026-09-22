@@ -19,8 +19,9 @@ const teams = [
   ['San Antonio Spurs', 'SAS', '#8a9ca8'], ['Toronto Raptors', 'TOR', '#bc5066'],
   ['Utah Jazz', 'UTA', '#8277ab'], ['Washington Wizards', 'WAS', '#6285aa']
 ];
+const eras = ['Current', 'All-Time', 'Past Teams'];
 
-const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, revision: 0 });
+const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, revision: 0 });
 const activePlayer = ref(0);
 const role = ref('');
 const status = ref('');
@@ -55,7 +56,7 @@ const nextKind = computed(() => player.value.forced ? 'done' : player.value.pick
 const canSpin = computed(() => Boolean(state.id) && connected.value && !spinning.value && ['regular', 'forced'].includes(nextKind.value) && available.value.length > 0);
 const matchup = computed(() => state.players.map(p => p.choice || p.forced));
 const canRecord = computed(() => connected.value && !spinning.value &&
-  state.players.every(p => p.picks.length >= 3 && p.choice) && matchup.value[0] !== matchup.value[1]);
+  state.players.every(p => p.picks.length >= 3 && p.choice) && matchup.value[0] !== matchup.value[1] && eras.includes(state.eraNext));
 const wheelSlices = computed(() => teams.map((team, i) => ({
   ...{ team, i },
   path: sector(i * 12, (i + 1) * 12),
@@ -86,6 +87,7 @@ function cleanState(raw) {
   return {
     id: raw.id, revision: Number.isInteger(raw.revision) ? raw.revision : 0,
     keepNext: typeof raw.keepNext === 'boolean' ? raw.keepNext : true,
+    eraNext: eras.includes(raw.eraNext) ? raw.eraNext : null,
     games: Array.isArray(raw.games) ? raw.games.filter(game =>
       game && typeof game.id === 'string' && Array.isArray(game.teams) &&
       game.teams.length === 2 && game.teams.every(team => teams.some(t => t[0] === team))
@@ -97,6 +99,7 @@ function cleanState(raw) {
         ? game.names.map((name, index) => String(name).slice(0, 24) || `Player ${index + 1}`)
         : ['Player 1', 'Player 2'],
       keep: Boolean(game.keep),
+      era: eras.includes(game.era) ? game.era : null,
       winner: game.winner === 0 || game.winner === 1 ? game.winner : null,
       playedAt: typeof game.playedAt === 'string' ? game.playedAt : ''
     })) : [],
@@ -113,7 +116,7 @@ function cleanState(raw) {
 }
 function save() {
   if (!state.id) return;
-  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, revision: state.revision }));
+  localStorage.setItem(`nba2k26:${state.id}`, JSON.stringify({ id: state.id, players: state.players, games: state.games, keepNext: state.keepNext, eraNext: state.eraNext, revision: state.revision }));
   localStorage.setItem('nba2k26:last', state.id);
   hasSaved.value = true;
 }
@@ -125,6 +128,7 @@ function applyState(raw) {
   state.players = next.players;
   state.games = next.games;
   state.keepNext = next.keepNext;
+  state.eraNext = next.eraNext;
   state.revision = next.revision;
   save();
 }
@@ -146,6 +150,16 @@ function commit(action) {
   broadcast({ type: 'state', state: JSON.parse(JSON.stringify(state)) });
 }
 function applyAction(action) {
+  if (action.type === 'set-next-era' && eras.includes(action.era)) {
+    state.eraNext = action.era;
+    return true;
+  }
+  if (action.type === 'set-game-era' && (action.era === null || eras.includes(action.era))) {
+    const game = state.games.find(item => item.id === action.id);
+    if (!game) return false;
+    game.era = action.era;
+    return true;
+  }
   if (action.type === 'keep-next' && typeof action.keep === 'boolean') {
     state.keepNext = action.keep;
     return true;
@@ -164,18 +178,20 @@ function applyAction(action) {
   }
   if (action.type === 'save-game') {
     if (!state.players.every(p => p.picks.length >= 3 && p.choice) ||
-        state.players[0].choice === state.players[1].choice) return false;
+        state.players[0].choice === state.players[1].choice || !eras.includes(state.eraNext)) return false;
     state.games.push({
       id: secureId(),
       number: state.games.length + 1,
       teams: state.players.map(p => p.choice),
       names: state.players.map(p => p.name),
       keep: state.keepNext,
+      era: state.eraNext,
       winner: null,
       playedAt: new Date().toISOString()
     });
     state.players.forEach(p => { p.picks = []; p.choice = null; p.forced = null; });
     state.keepNext = true;
+    state.eraNext = null;
     activePlayer.value = 0;
     lastTeam.value = null;
     return true;
@@ -304,7 +320,7 @@ function closePeer() {
 function host(id, restore = false) {
   closePeer();
   const saved = restore ? readSaved(id) : null;
-  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, revision: 0 });
+  applyState(saved || { id, players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, revision: 0 });
   role.value = 'host';
   status.value = 'Opening session…';
   localStorage.setItem(`nba2k26:host:${id}`, '1');
@@ -374,6 +390,7 @@ function newSession() {
   state.players = [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }];
   state.games = [];
   state.keepNext = true;
+  state.eraNext = null;
   role.value = '';
   status.value = '';
   lastTeam.value = null;
@@ -467,9 +484,10 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           <div class="matchup">
             <span class="eyebrow">GAME {{ state.games.length + 1 }}</span>
             <div class="matchup-teams"><strong>{{ matchup[0] || 'Player 1 pick' }}</strong><span>VS</span><strong>{{ matchup[1] || 'Player 2 pick' }}</strong></div>
+            <label class="era-field">Team era <select aria-label="Team era for next game" :value="state.eraNext || ''" :disabled="!connected || spinning" @change="request({ type: 'set-next-era', era: $event.target.value })"><option value="" disabled>Choose an era</option><option v-for="era in eras" :key="era" :value="era">{{ era }}</option></select></label>
             <label class="keep-option"><input type="checkbox" :checked="state.keepNext" :disabled="!connected || spinning" @change="request({ type: 'keep-next', keep: $event.target.checked })" /> Keep both teams off the wheel for future games</label>
             <button class="primary-button record-button" :disabled="!canRecord" @click="recordGame">Record Game {{ state.games.length + 1 }}</button>
-            <p v-if="!canRecord" class="record-help">Draw at least three teams for each player, then choose one team each.</p>
+            <p v-if="!canRecord" class="record-help">Choose an era and draw at least three teams for each player, then choose one team each.</p>
           </div>
           <p class="rule-note">Current picks and teams marked in game history stay off the wheel. Session picks save on your device; keep the host’s tab open for live sharing.</p>
         </section>
@@ -481,6 +499,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           <article v-for="game in state.games" :key="game.id" class="history-game">
             <div class="history-number"><strong>GAME {{ game.number }}</strong><small>{{ gameDate(game.playedAt) }}</small></div>
             <div class="history-match"><div><small>{{ game.names[0] }}</small><strong>{{ game.teams[0] }}</strong></div><span>VS</span><div><small>{{ game.names[1] }}</small><strong>{{ game.teams[1] }}</strong></div></div>
+            <label class="history-era">Team era <select :aria-label="`Team era for Game ${game.number}`" :value="game.era || ''" :disabled="!connected || spinning" @change="request({ type: 'set-game-era', id: game.id, era: $event.target.value || null })"><option value="">Not set</option><option v-for="era in eras" :key="era" :value="era">{{ era }}</option></select></label>
             <div class="winner-row"><span>Winner</span><button v-for="index in [0, 1]" :key="index" class="winner-button" :class="{ selected: game.winner === index }" :disabled="!connected || spinning" :aria-pressed="game.winner === index" @click="request({ type: 'set-winner', id: game.id, winner: game.winner === index ? null : index })">{{ game.names[index] }}{{ game.winner === index ? ' ✓' : '' }}</button><small v-if="game.winner === null">Not marked yet</small></div>
             <label class="keep-option history-keep"><input type="checkbox" :checked="game.keep" :disabled="!connected || spinning" @change="request({ type: 'toggle-keep', id: game.id, keep: $event.target.checked })" /> Keep both off wheel</label>
           </article>
@@ -506,14 +525,15 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .record-button:disabled{opacity:.48}
 .record-help{color:var(--muted);font-size:.76rem;margin:8px 0 0;line-height:1.35}
 .participant-count{color:#d8f1e6;background:#1e493c;border:1px solid #4a9d7a;border-radius:999px;padding:7px 11px;font-size:.8rem;font-weight:750;white-space:nowrap}
-.winner-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;grid-column:2;grid-row:2;color:var(--muted);font-size:.8rem}.winner-row>span{font-weight:750;margin-right:4px}.winner-row small{font-size:.72rem}.winner-button{border:1px solid #65788c;background:#23344a;color:#d5e0eb;border-radius:7px;padding:7px 10px;font-weight:700}.winner-button.selected{background:#356a57;color:#fff;border-color:#75cea5}
+.era-field,.history-era{display:flex;align-items:center;gap:10px;color:#d5e0eb;font-size:.84rem;font-weight:700}.era-field{margin-top:16px}.history-era{grid-column:2;grid-row:2;font-size:.78rem}.era-field select,.history-era select{background:#162439;border:1px solid #65788c;border-radius:7px;color:#fff;padding:7px 9px;font:inherit;min-width:0}.era-field select:disabled,.history-era select:disabled{opacity:.55}.winner-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;grid-column:2;grid-row:3;color:var(--muted);font-size:.8rem}.winner-row>span{font-weight:750;margin-right:4px}.winner-row small{font-size:.72rem}.winner-button{border:1px solid #65788c;background:#23344a;color:#d5e0eb;border-radius:7px;padding:7px 10px;font-weight:700}.winner-button.selected{background:#356a57;color:#fff;border-color:#75cea5}
+.era-field select:focus-visible,.history-era select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .history-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:22px}
 .history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:15px}
 .history-heading span,.history-empty{color:var(--muted);font-size:.84rem}
 .history-empty{margin:0}
 .history-list{display:grid;gap:9px}
 .history-game{display:grid;grid-template-columns:125px minmax(0,1fr) 180px;align-items:center;gap:16px;padding:14px 16px;background:#223349;border-radius:10px}
-.history-number{display:flex;flex-direction:column;gap:3px;grid-column:1;grid-row:1 / 3}
+.history-number{display:flex;flex-direction:column;gap:3px;grid-column:1;grid-row:1 / 4}
 .history-number strong{color:var(--accent);font-size:.77rem;letter-spacing:.1em}
 .history-number small{color:var(--muted);font-size:.72rem}
 .history-match{display:flex;align-items:center;gap:12px;min-width:0;grid-column:2;grid-row:1}
@@ -521,7 +541,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .history-match small{color:var(--muted);font-size:.72rem}
 .history-match strong{font-size:.94rem;overflow-wrap:anywhere}
 .history-match>span{color:var(--accent);font-weight:900;font-size:.73rem}
-.history-keep{font-size:.77rem;justify-self:end;grid-column:3;grid-row:1 / 3}
+.history-keep{font-size:.77rem;justify-self:end;grid-column:3;grid-row:1 / 4}
 @media(max-width:700px){.history-game{grid-template-columns:1fr;gap:9px}.history-number{flex-direction:row;align-items:center;gap:10px}.history-game>*{grid-column:1;grid-row:auto}.history-keep{justify-self:start}}
 @media(max-width:550px){.entry-mark span{font-size:1.2rem;border-width:2px}.entry-mark span small{font-size:.4rem}}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
