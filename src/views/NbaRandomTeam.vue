@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import Peer from 'peerjs';
 import rosterData from '../data/nba2k26-play-now.json';
 
@@ -37,6 +37,7 @@ const rosterByName = Object.fromEntries(rosterData.teams.map(team => [team.name,
 const state = reactive({ id: '', players: [{ name: 'Player 1', picks: [], choice: null, forced: null }, { name: 'Player 2', picks: [], choice: null, forced: null }], games: [], keepNext: true, eraNext: null, tierFilter: 0, tierOverrides: {}, revision: 0 });
 const selectedTeamIndex = ref(0);
 const rosterSearch = ref('');
+const ratingsOpen = ref(false);
 const activePlayer = ref(0);
 const role = ref('');
 const status = ref('');
@@ -67,6 +68,7 @@ const used = computed(() => new Set([
 const available = computed(() => teams.filter(t =>
   !used.value.has(t[0]) && (!state.tierFilter || teamTier(t[0]) === state.tierFilter)
 ));
+const unusedCount = computed(() => teams.filter(team => !used.value.has(team[0])).length);
 const player = computed(() => state.players[activePlayer.value]);
 const bothHaveThree = computed(() => state.players.every(p => p.picks.length >= 3));
 const nextKind = computed(() => player.value.forced ? 'done' : player.value.picks.length < 3 ? 'regular' : bothHaveThree.value ? 'forced' : 'waiting');
@@ -88,6 +90,27 @@ const selectedRank = computed(() => rankedTeams.value.findIndex(team => team.nam
 const filteredRoster = computed(() => selectedRoster.value.players.filter(p =>
   p.name.toLowerCase().includes(rosterSearch.value.trim().toLowerCase())
 ));
+const drawnTeams = computed(() => state.players.flatMap((p, playerIndex) =>
+  p.picks.map((name, pickIndex) => ({ name, playerIndex, pickIndex, playerName: p.name, chosen: p.choice === name }))
+));
+const selectedDrawnIndex = computed(() => drawnTeams.value.findIndex(item => item.name === selectedTeam.value[0]));
+const tierCounts = computed(() => [1, 2, 3].map(tier => teams.filter(team => teamTier(team[0]) === tier && !used.value.has(team[0])).length));
+const sessionStep = computed(() => {
+  if (!state.players.every(p => p.picks.length >= 3)) return 1;
+  if (!state.players.every(p => p.choice)) return 2;
+  return 3;
+});
+const recordHelp = computed(() => {
+  if (!state.players.every(p => p.picks.length >= 3)) return 'Draw three teams for each player first.';
+  if (!state.players.every(p => p.choice)) return 'Choose one matchup team for each player.';
+  if (matchup.value[0] === matchup.value[1]) return 'Players must choose different teams.';
+  if (!eras.includes(state.eraNext)) return 'Choose Current, All-Time, or Past Teams.';
+  return 'Ready to record this game.';
+});
+const records = computed(() => state.players.map((_, index) => ({
+  wins: state.games.filter(game => game.winner === index).length,
+  losses: state.games.filter(game => game.winner !== null && game.winner !== index).length
+})));
 function teamTier(name) { return state.tierOverrides[name] || verifiedTiers[name] || null; }
 function tierLabel(name) { return teamTier(name) ? `Tier ${teamTier(name)}` : 'Tier unverified'; }
 function browseTeam(name) {
@@ -95,6 +118,21 @@ function browseTeam(name) {
   if (index >= 0) { selectedTeamIndex.value = index; rosterSearch.value = ''; }
 }
 function browseStep(step) { selectedTeamIndex.value = (selectedTeamIndex.value + step + teams.length) % teams.length; rosterSearch.value = ''; }
+function browseDrawnStep(step) {
+  if (!drawnTeams.value.length) return;
+  const current = selectedDrawnIndex.value >= 0 ? selectedDrawnIndex.value : 0;
+  browseTeam(drawnTeams.value[(current + step + drawnTeams.value.length) % drawnTeams.value.length].name);
+}
+async function openRatings(name = null) {
+  if (name) browseTeam(name);
+  ratingsOpen.value = true;
+  await nextTick();
+  document.getElementById('team-ratings')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+}
+function openDrawnRosters() {
+  const first = drawnTeams.value.find(item => item.chosen) || drawnTeams.value[0];
+  openRatings(first?.name || null);
+}
 watch(lastTeam, name => { if (name) browseTeam(name); });
 
 function polar(radius, deg) {
@@ -313,7 +351,8 @@ function animateSpin(message, isHost = false) {
   const targetMod = (360 - (index + .5) * 12) % 360;
   const currentMod = ((start % 360) + 360) % 360;
   const advance = ((targetMod - currentMod + 360) % 360) + 360 * 7;
-  animation = { start, end: start + advance, startedAt: Date.now(), endsAt: Math.max(Date.now() + 200, message.endsAt), isHost, message };
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  animation = { start, end: start + advance, startedAt: Date.now(), endsAt: reducedMotion ? Date.now() + 350 : Math.max(Date.now() + 200, message.endsAt), isHost, message };
 }
 function completeSpin(message) {
   pendingResult = null;
@@ -425,11 +464,11 @@ function connectToHost(id) {
   connection.on('close', () => { connected.value = false; participants.value = 0; status.value = 'Host disconnected. Your picks are saved on this device.'; });
   connection.on('error', () => { connected.value = false; participants.value = 0; status.value = 'Connection lost. Try again.'; });
 }
-function createSession() { host(secureId()); }
+function createSession() { ratingsOpen.value = false; host(secureId()); }
 function retry() { if (state.id) join(state.id); }
 function resume() {
   const id = localStorage.getItem('nba2k26:last');
-  if (id && readSaved(id)) host(id, true);
+  if (id && readSaved(id)) { ratingsOpen.value = false; host(id, true); }
 }
 function newSession() {
   closePeer();
@@ -441,6 +480,7 @@ function newSession() {
   state.eraNext = null;
   state.tierFilter = 0;
   state.tierOverrides = {};
+  ratingsOpen.value = false;
   role.value = '';
   status.value = '';
   lastTeam.value = null;
@@ -465,10 +505,11 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 <template>
   <main class="nba-page">
     <header class="page-heading">
-      <div><h1>NBA 2K26 Random Teams</h1></div>
+      <div><span class="eyebrow">LIVE MATCHUP TRACKER</span><h1>NBA 2K26 Random Teams</h1><p class="page-subtitle">Draw teams, choose the matchup, and keep the whole session together.</p></div>
       <div v-if="state.id" class="session-actions">
-        <span class="connection" :class="{ online: connected }"><i></i>{{ status }}</span>
+        <span class="connection" :class="{ online: connected }" role="status" aria-live="polite"><i></i>{{ status }}</span>
         <span v-if="connected && participants" class="participant-count" aria-live="polite">{{ participants }} {{ participants === 1 ? 'person' : 'people' }} in session</span>
+        <button class="subtle-button" @click="openRatings()">Team ratings</button>
         <button class="subtle-button" @click="newSession">New session</button>
       </div>
     </header>
@@ -480,8 +521,9 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
       </div>
       <div>
         <h2>Three picks each. One optional fourth.</h2>
-        <p>Spin for three teams each, choose a matchup, and record every game. After both players have three teams, either can take an optional fourth spin, but that team must be used.</p>
-        <div class="entry-buttons"><button class="primary-button" @click="createSession">Start a session</button><button v-if="hasSaved" class="outline-button" @click="resume">Resume last session</button></div>
+        <p>Start a shared room, spin three teams for each player, then choose and record your matchup. A fourth spin is optional—but it becomes the locked-in team.</p>
+        <ol class="how-it-works"><li><b>1</b><span><strong>Draw</strong> three teams each</span></li><li><b>2</b><span><strong>Choose</strong> one matchup each</span></li><li><b>3</b><span><strong>Record</strong> the game and winner</span></li></ol>
+        <div class="entry-buttons"><button class="primary-button" @click="createSession">Start a session</button><button v-if="hasSaved" class="outline-button" @click="resume">Resume last session</button><button class="text-button" @click="openRatings()">Browse team ratings</button></div>
         <form class="join-form" @submit.prevent="join(roomInput.trim().toLowerCase())"><label for="room">Have a session link or code?</label><div><input id="room" v-model="roomInput" placeholder="Paste session code" /><button class="outline-button" type="submit">Join</button></div></form>
         <p v-if="status" class="feedback">{{ status }}</p>
       </div>
@@ -489,16 +531,19 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 
     <template v-else>
       <div class="share-strip">
-        <div><strong>Session {{ state.id.slice(0, 6).toUpperCase() }}</strong><span>Share this link to see the same picks live.</span></div>
+        <div><strong>Session {{ state.id.slice(0, 6).toUpperCase() }}</strong><span>Share once—picks, tiers, games, and winners update live.</span></div>
         <div class="share-controls"><input aria-label="Session link" :value="roomUrl" readonly @focus="$event.target.select()" /><button class="outline-button" @click="copyLink">{{ copied ? 'Copied!' : 'Copy link' }}</button><button v-if="!connected && role === 'guest'" class="outline-button" @click="retry">Retry</button></div>
       </div>
+      <nav class="session-progress" aria-label="Game setup progress">
+        <div v-for="(label, index) in ['Draw teams', 'Choose matchup', 'Record game']" :key="label" :class="{ active: sessionStep === index + 1, complete: sessionStep > index + 1 }"><span>{{ sessionStep > index + 1 ? '✓' : index + 1 }}</span><strong>{{ label }}</strong></div>
+      </nav>
 
       <div class="game-grid">
         <section class="wheel-panel" aria-label="Team wheel">
           <div class="wheel-top"><span class="eyebrow">THE DRAW</span><span>{{ available.length }} teams in rotation</span></div>
           <div class="tier-filter" aria-label="Filter wheel by team tier">
             <span>Wheel tier</span>
-            <button v-for="tier in [0, 1, 2, 3]" :key="tier" :class="{ selected: state.tierFilter === tier }" :disabled="!connected || spinning" :aria-pressed="state.tierFilter === tier" @click="request({ type: 'set-tier-filter', tier })">{{ tier ? `Tier ${tier}` : 'All' }}</button>
+            <button v-for="tier in [0, 1, 2, 3]" :key="tier" :class="{ selected: state.tierFilter === tier }" :disabled="!connected || spinning" :aria-pressed="state.tierFilter === tier" @click="request({ type: 'set-tier-filter', tier })"><span>{{ tier ? `Tier ${tier}` : 'All' }}</span><small>{{ tier ? tierCounts[tier - 1] : unusedCount }}</small></button>
           </div>
           <div class="wheel-wrap">
             <div class="pointer" aria-hidden="true"></div>
@@ -511,23 +556,28 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
             </svg>
             <button class="spin-button" :disabled="!canSpin" @click="beginSpin" :aria-label="`Spin for ${player.name}`"><span>{{ spinning ? 'SPINNING' : 'SPIN' }}</span><small>{{ spinning ? '…' : nextKind === 'forced' ? '4TH PICK' : nextKind === 'waiting' ? 'WAITING' : nextKind === 'done' ? 'DONE' : 'TAP TO DRAW' }}</small></button>
           </div>
+          <div v-if="lastTeam && !spinning" class="result-card" aria-live="polite">
+            <span class="result-abbr" :style="{ background: teams.find(team => team[0] === lastTeam)?.[2] }">{{ teams.find(team => team[0] === lastTeam)?.[1] }}</span>
+            <div><small>JUST DRAWN FOR {{ state.players[activePlayer].name.toUpperCase() }}</small><strong>{{ lastTeam }}</strong><span>{{ tierLabel(lastTeam) }}</span></div>
+            <button @click="openRatings(lastTeam)">View roster</button>
+          </div>
           <div class="wheel-footer">
             <div><span class="eyebrow">SPINNING FOR</span><div class="turn-switch"><button v-for="(p, i) in state.players" :key="i" :class="{ selected: activePlayer === i }" @click="activePlayer = i">{{ p.name }}</button></div></div>
-            <p v-if="spinning">Drawing a team…</p><p v-else-if="!available.length">No unused teams match this tier. Choose another filter.</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="lastTeam"><strong>{{ lastTeam }}</strong><br>{{ tierLabel(lastTeam) }} · <a href="#team-ratings">View ratings ↓</a></p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>Three picks each, then choose or take a fourth.</p>
+            <p v-if="spinning">Drawing a team…</p><p v-else-if="!available.length">No unused teams match this tier. Choose another filter.</p><p v-else-if="nextKind === 'waiting'">Both players need three teams before a fourth spin.</p><p v-else-if="nextKind === 'forced'">Fourth spin is locked in automatically.</p><p v-else-if="nextKind === 'done'">This player has all four picks.</p><p v-else>{{ player.picks.length }}/3 regular picks drawn.</p>
           </div>
         </section>
 
         <section class="players-panel" aria-label="Player selections">
           <div v-for="(p, i) in state.players" :key="i" class="player-card" :class="{ active: activePlayer === i }">
             <div class="player-head">
-              <div><span class="eyebrow">PLAYER {{ i + 1 }}</span><div v-if="editingName === i" class="name-edit"><input v-model="nameInput" maxlength="24" :aria-label="`Player ${i + 1} name`" @keyup.enter="setName(i)" /><button @click="setName(i)">Save</button></div><h2 v-else>{{ p.name }} <button class="edit-name" :aria-label="`Edit ${p.name}'s name`" @click="setName(i)">✎</button></h2></div>
+              <div><span class="eyebrow">PLAYER {{ i + 1 }} · {{ Math.min(p.picks.length, 3) }}/3 DRAWN</span><div v-if="editingName === i" class="name-edit"><input v-model="nameInput" maxlength="24" :aria-label="`Player ${i + 1} name`" @keyup.enter="setName(i)" /><button @click="setName(i)">Save</button></div><h2 v-else>{{ p.name }} <small class="record-chip">{{ records[i].wins }}–{{ records[i].losses }}</small> <button class="edit-name" :aria-label="`Edit ${p.name}'s name`" @click="setName(i)">✎</button></h2></div>
               <button class="pick-player" @click="activePlayer = i">Spin for {{ p.name }}</button>
             </div>
             <div class="pick-list">
               <div v-for="slot in 4" :key="slot" class="pick-row" :class="{ empty: !p.picks[slot - 1], forced: slot === 4 }">
                 <span class="slot-num">{{ slot < 4 ? `0${slot}` : '04' }}</span>
                 <template v-if="p.picks[slot - 1]">
-                  <span class="team-name"><button class="team-link" @click="browseTeam(p.picks[slot - 1])">{{ p.picks[slot - 1] }}</button> <em>{{ tierLabel(p.picks[slot - 1]) }}</em> <small v-if="slot === 4">LOCKED</small></span>
+                  <span class="team-name"><button class="team-link" @click="openRatings(p.picks[slot - 1])">{{ p.picks[slot - 1] }}</button> <em>{{ tierLabel(p.picks[slot - 1]) }}</em> <small v-if="slot === 4">LOCKED</small></span>
                   <button v-if="p.picks.length >= 3 && !p.forced" class="choose-button" :class="{ chosen: p.choice === p.picks[slot - 1] }" :aria-label="`Choose ${p.picks[slot - 1]} for matchup`" @click="choose(i, p.picks[slot - 1])">{{ p.choice === p.picks[slot - 1] ? 'MATCHUP PICK' : 'CHOOSE' }}</button>
                   <button class="remove-button" :aria-label="`Remove ${p.picks[slot - 1]}`" title="Remove team" @click="remove(i, p.picks[slot - 1])">×</button>
                 </template>
@@ -538,16 +588,17 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
           <div class="matchup">
             <span class="eyebrow">GAME {{ state.games.length + 1 }}</span>
             <div class="matchup-teams"><strong>{{ matchup[0] || 'Player 1 pick' }}</strong><span>VS</span><strong>{{ matchup[1] || 'Player 2 pick' }}</strong></div>
+            <button v-if="drawnTeams.length" class="compare-button" @click="openDrawnRosters"><span>▦</span> Compare {{ drawnTeams.length }} drawn {{ drawnTeams.length === 1 ? 'roster' : 'rosters' }}</button>
             <label class="era-field">Team era <select aria-label="Team era for next game" :value="state.eraNext || ''" :disabled="!connected || spinning" @change="request({ type: 'set-next-era', era: $event.target.value })"><option value="" disabled>Choose an era</option><option v-for="era in eras" :key="era" :value="era">{{ era }}</option></select></label>
             <label class="keep-option"><input type="checkbox" :checked="state.keepNext" :disabled="!connected || spinning" @change="request({ type: 'keep-next', keep: $event.target.checked })" /> Keep both teams off the wheel for future games</label>
             <button class="primary-button record-button" :disabled="!canRecord" @click="recordGame">Record Game {{ state.games.length + 1 }}</button>
-            <p v-if="!canRecord" class="record-help">Choose an era and draw at least three teams for each player, then choose one team each.</p>
+            <p class="record-help" :class="{ ready: canRecord }">{{ recordHelp }}</p>
           </div>
           <p class="rule-note">Current picks and teams marked in game history stay off the wheel. Session picks save on your device; keep the host’s tab open for live sharing.</p>
         </section>
       </div>
       <section class="history-panel" aria-label="Games played">
-        <div class="history-heading"><h2>Games played</h2><span>{{ state.games.length }} recorded</span></div>
+        <div class="history-heading"><div><span class="eyebrow">SESSION SCOREBOARD</span><h2>Games played</h2></div><div class="scoreboard"><span v-for="(p, i) in state.players" :key="i"><b>{{ p.name }}</b><strong>{{ records[i].wins }}–{{ records[i].losses }}</strong></span><em>{{ state.games.length }} recorded</em></div></div>
         <p v-if="!state.games.length" class="history-empty">Your first matchup will appear here after you record it.</p>
         <div v-else class="history-list">
           <article v-for="game in state.games" :key="game.id" class="history-game">
@@ -560,8 +611,14 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
         </div>
       </section>
     </template>
-    <section id="team-ratings" class="ratings-panel" aria-label="NBA 2K26 team and player ratings">
-      <div class="ratings-heading"><div><span class="eyebrow">NBA 2K26 · PLAY NOW ONLINE</span><h2>Teams & player ratings</h2></div><span>30 current teams · 531 players</span></div>
+    <section v-if="ratingsOpen" id="team-ratings" class="ratings-panel" aria-label="NBA 2K26 team and player ratings">
+      <div class="ratings-heading"><div><span class="eyebrow">NBA 2K26 · PLAY NOW ONLINE</span><h2>Teams & player ratings</h2></div><div class="ratings-heading-actions"><span>30 current teams · 531 players</span><button class="subtle-button" @click="ratingsOpen = false">Close ratings</button></div></div>
+      <div v-if="drawnTeams.length" class="drawn-roster-browser">
+        <div class="drawn-browser-heading"><div><span class="eyebrow">YOUR CURRENT DRAW</span><strong>Flip through only the teams you picked</strong><small>{{ selectedDrawnIndex >= 0 ? `Viewing ${selectedDrawnIndex + 1} of ${drawnTeams.length}` : `${drawnTeams.length} rosters ready` }}</small></div><div class="drawn-arrows"><button aria-label="Previous drawn team roster" @click="browseDrawnStep(-1)">‹</button><button aria-label="Next drawn team roster" @click="browseDrawnStep(1)">›</button></div></div>
+        <div class="drawn-player-groups">
+          <div v-for="(p, playerIndex) in state.players" :key="playerIndex"><span>{{ p.name }}</span><div><button v-for="team in p.picks" :key="team" :class="{ selected: selectedTeam[0] === team, chosen: p.choice === team }" @click="browseTeam(team)"><b>{{ teams.find(item => item[0] === team)?.[1] }}</b><span>{{ team }}</span><small>{{ tierLabel(team) }}{{ p.choice === team ? ' · Matchup pick' : '' }}</small></button></div></div>
+        </div>
+      </div>
       <p class="ratings-note">Roster snapshot captured June 26, 2026. Team rank compares the average OVR of each team's five highest rated players. Tiers shown as verified come from a 2K26 team select screenshot; the game may have changed since then. Check your in-game tier and adjust it here for everyone in this session.</p>
       <div class="ratings-layout">
         <div class="ranking-list" aria-label="Team ranking by top five overall rating">
@@ -619,4 +676,8 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); closePeer(); });
 .tier-filter{display:flex;align-items:center;gap:5px;margin-top:13px;flex-wrap:wrap}.tier-filter>span{color:var(--muted);font-size:.72rem;font-weight:750;margin-right:4px}.tier-filter button{border:1px solid #50657c;background:#101d2e;color:#b8c7d8;border-radius:999px;padding:6px 11px;font-size:.72rem;font-weight:800}.tier-filter button.selected{background:var(--accent);border-color:var(--accent);color:#172032}.tier-filter button:disabled{opacity:.55}
 @media(prefers-reduced-motion:reduce){.wheel{filter:none}}
 .team-link{border:0;background:none;color:inherit;padding:0;text-align:left;text-decoration:underline;text-decoration-color:#7894a8;text-underline-offset:3px;font-weight:inherit}.team-name em{display:block;color:#bcd0dc;font-size:.7rem;font-style:normal;font-weight:500;margin-top:2px}.wheel-footer a{color:#ffbf73}.ratings-panel{margin-top:19px;background:#172438;border:1px solid var(--edge);border-radius:18px;padding:clamp(17px,2.5vw,27px);scroll-margin-top:20px}.ratings-heading{display:flex;justify-content:space-between;align-items:end;gap:15px}.ratings-heading h2{font-size:1.8rem;margin-top:6px}.ratings-heading>span{color:var(--muted);font-size:.82rem}.ratings-note,.ratings-source{color:var(--muted);font-size:.79rem;line-height:1.55}.ratings-note{max-width:900px;margin:11px 0 19px}.ratings-source{margin:17px 0 0}.ratings-panel a{color:#ffbf73}.ratings-layout{display:grid;grid-template-columns:minmax(205px,.55fr) minmax(0,1.45fr);gap:15px;align-items:start}.ranking-list{max-height:690px;overflow-y:auto;border:1px solid var(--edge);border-radius:11px;background:#101d2e}.ranking-list button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;color:#eaf2fa;border:0;border-bottom:1px solid #2a3b50;background:transparent;padding:9px 11px}.ranking-list button.selected{background:#324459;box-shadow:inset 3px 0 #ffad4b}.ranking-list b{font-size:.75rem;color:#ffad4b}.ranking-list span{flex:1;font-size:.8rem;font-weight:700}.ranking-list small{display:block;font-weight:400;color:#a9bbce;margin-top:2px}.ranking-list strong{font-size:.85rem}.roster-card{border:1px solid var(--edge);border-radius:11px;background:#203149;overflow:hidden}.roster-navigation{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#142338}.roster-navigation button{border:1px solid #5b7088;background:#263d56;color:white;border-radius:6px;font-size:1.5rem;line-height:1;padding:3px 13px}.roster-navigation label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.78rem}.roster-navigation select,.tier-control select{background:#1b2e45;color:white;border:1px solid #72849b;border-radius:6px;padding:7px;font:inherit;max-width:230px}.roster-hero{display:flex;justify-content:space-between;gap:12px;padding:21px;align-items:center}.roster-hero h3{margin:6px 0 10px;font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-.035em}.roster-abbr{display:inline-block;padding:5px 8px;border-radius:5px;font-size:.75rem;font-weight:900;color:white}.roster-hero-stat{text-align:right;white-space:nowrap}.roster-hero-stat strong{display:block;color:#ffbd6c;font-size:2.1rem}.roster-hero-stat span{font-size:.72rem;color:var(--muted)}.tier-control{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#304259;padding:12px 20px}.tier-control strong,.tier-control small{display:block}.tier-control small{color:#b5c5d7;font-size:.71rem;margin-top:3px}.tier-control label{display:flex;align-items:center;gap:8px;color:#dce8f3;font-size:.75rem;white-space:nowrap}.tier-control select:disabled{opacity:.6}.roster-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px 9px}.roster-list-heading small{color:var(--muted);font-weight:400}.roster-list-heading input{width:min(45%,210px);font-size:.79rem;padding:7px 9px}.roster-table-wrap{max-height:500px;overflow:auto;margin:0 20px}.roster-table-wrap table{width:100%;border-collapse:collapse;font-size:.85rem}.roster-table-wrap th{text-align:left;color:#a8bcd1;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;position:sticky;top:0;background:#203149}.roster-table-wrap th,.roster-table-wrap td{padding:9px 7px;border-bottom:1px solid #344760}.roster-table-wrap td:first-child{color:#ffbf73;font-weight:700}.roster-table-wrap td:last-child strong{background:#426d65;padding:4px 7px;border-radius:5px}.source-link{display:inline-block;margin:14px 20px 20px;font-size:.78rem}@media(max-width:750px){.ratings-layout{grid-template-columns:1fr}.ranking-list{max-height:215px}.ratings-heading{align-items:start;flex-direction:column}.tier-control{flex-wrap:wrap}}@media(max-width:450px){.roster-navigation select{max-width:190px}.roster-hero{padding:14px}.roster-hero-stat strong{font-size:1.6rem}.roster-list-heading{padding:12px}.roster-table-wrap{margin:0 10px}.tier-control{padding:11px}}
+.page-subtitle{margin:10px 0 0;color:var(--muted);font-size:.94rem}.nba-page button,.nba-page select,.nba-page input{min-height:42px}.nba-page button:focus-visible,.nba-page input:focus-visible,.nba-page select:focus-visible,.nba-page a:focus-visible{outline:3px solid #ffd08d;outline-offset:3px}.session-actions{justify-content:flex-end}.text-button{border:0;background:transparent;color:#ffc477;padding:10px 7px;font-weight:750;text-decoration:underline;text-underline-offset:4px}.how-it-works{list-style:none;padding:0;margin:22px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:620px}.how-it-works li{display:flex;align-items:center;gap:9px;padding:11px;background:#152338;border:1px solid #2e4057;border-radius:10px;color:var(--muted);font-size:.76rem}.how-it-works b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#ffad4b;color:#142034;flex:none}.how-it-works strong{display:block;color:#fff;font-size:.8rem}.session-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 19px}.session-progress div{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:10px;border:1px solid #293a50;background:#121f31;color:#8395aa}.session-progress span{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;border:1px solid #50637a;font-size:.75rem;font-weight:900}.session-progress strong{font-size:.78rem}.session-progress .active{color:#fff;border-color:#c98037;background:#2b2a28}.session-progress .active span{background:var(--accent);border-color:var(--accent);color:#152134}.session-progress .complete{color:#aee3cd}.session-progress .complete span{background:#356a57;border-color:#75cea5;color:white}.tier-filter button{display:inline-flex;align-items:center;gap:7px;min-height:36px}.tier-filter button small{display:grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:999px;background:#ffffff16;color:inherit;font-size:.62rem}.result-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:linear-gradient(135deg,#32465e,#26374d);border:1px solid #607a94;border-radius:12px;padding:12px;margin:4px 0 17px}.result-abbr{display:grid;place-items:center;width:46px;height:46px;border-radius:9px;color:white;font-weight:950;font-size:.75rem;box-shadow:inset 0 0 0 1px #ffffff38}.result-card div{display:flex;flex-direction:column;min-width:0}.result-card small{color:#ffbe70;font-size:.61rem;font-weight:850;letter-spacing:.08em}.result-card strong{font-size:1rem;line-height:1.25}.result-card div span{font-size:.7rem;color:#bdcddd}.result-card button{border:1px solid #71869b;background:#152337;color:white;border-radius:8px;padding:7px 10px;font-size:.72rem;font-weight:750}.record-chip{font-size:.65rem;background:#31465b;color:#bcd0e2;border:1px solid #50677f;border-radius:999px;padding:3px 7px;vertical-align:middle;letter-spacing:0}.record-help.ready{color:#8ee1bc}.history-heading{align-items:end}.history-heading h2{margin-top:5px}.scoreboard{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.scoreboard>span{display:flex;gap:8px;align-items:center;background:#26384e;border:1px solid #40556d;border-radius:8px;padding:7px 9px}.scoreboard b{font-size:.72rem;color:#c1d0df}.scoreboard strong{font-size:.86rem;color:#ffbf73}.scoreboard em{font-size:.73rem;color:var(--muted);font-style:normal}.ratings-heading-actions{display:flex;align-items:center;gap:12px}.ratings-heading-actions>span{color:var(--muted);font-size:.82rem}.ratings-heading-actions button{white-space:nowrap}
+.compare-button{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;border:1px solid #73889e;border-radius:9px;background:#17283b;color:#fff;padding:9px 12px;font-weight:780;font-size:.8rem}.compare-button span{color:#ffbd6a;font-size:1rem}.drawn-roster-browser{margin:18px 0;background:#101e30;border:1px solid #40556d;border-radius:14px;padding:15px}.drawn-browser-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.drawn-browser-heading>div:first-child{display:flex;flex-direction:column;gap:3px}.drawn-browser-heading strong{font-size:1rem}.drawn-browser-heading small{color:var(--muted);font-size:.71rem}.drawn-arrows{display:flex;gap:6px}.drawn-arrows button{display:grid;place-items:center;width:42px;border:1px solid #64788e;border-radius:8px;background:#263a51;color:#fff;font-size:1.45rem}.drawn-player-groups{display:grid;grid-template-columns:1fr 1fr;gap:12px}.drawn-player-groups>div{min-width:0}.drawn-player-groups>div>span{display:block;color:#aebfd0;font-size:.68rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}.drawn-player-groups>div>div{display:grid;gap:6px}.drawn-player-groups button{display:grid;grid-template-columns:auto 1fr;column-gap:9px;text-align:left;align-items:center;border:1px solid #344a61;background:#1b2c41;color:#eef5fb;border-radius:9px;padding:8px 9px}.drawn-player-groups button:hover{border-color:#7e96ae}.drawn-player-groups button.selected{border-color:#ffb75f;background:#3b352d;box-shadow:inset 3px 0 #ffad4b}.drawn-player-groups button.chosen{box-shadow:inset 3px 0 #76d1aa}.drawn-player-groups button.selected.chosen{box-shadow:inset 3px 0 #ffad4b, inset 6px 0 #76d1aa}.drawn-player-groups button b{grid-row:1 / 3;display:grid;place-items:center;width:34px;height:34px;border-radius:7px;background:#30465d;color:#ffbd6a;font-size:.68rem}.drawn-player-groups button>span{font-size:.78rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drawn-player-groups button small{color:#a9b9ca;font-size:.64rem}
+@media(max-width:850px){.page-heading{display:block}.session-actions{justify-content:flex-start;margin-top:16px}.session-progress{position:sticky;top:8px;z-index:5;background:#0d1726e8;padding:7px;border-radius:12px;backdrop-filter:blur(10px)}}
+@media(max-width:550px){.nba-page{margin:0;padding:18px 12px}.page-subtitle{font-size:.82rem}.entry{padding-top:4px}.how-it-works{grid-template-columns:1fr}.entry-buttons{align-items:stretch}.entry-buttons button{flex:1}.join-form>div{display:grid;grid-template-columns:1fr auto}.join-form input{width:100%}.session-progress{gap:4px}.session-progress div{justify-content:center;padding:8px 4px}.session-progress strong{font-size:.62rem}.session-progress span{width:23px;height:23px}.share-controls input{display:none}.share-controls button{flex:1}.tier-filter>span{width:100%}.tier-filter button{flex:1;justify-content:center}.result-card{grid-template-columns:auto 1fr}.result-card button{grid-column:1 / -1;width:100%}.player-head{align-items:flex-start}.pick-player{white-space:normal;max-width:110px}.scoreboard{justify-content:flex-start}.history-heading{align-items:flex-start;flex-direction:column}.ratings-heading-actions{width:100%;justify-content:space-between}.ratings-heading-actions>span{font-size:.72rem}.drawn-roster-browser{padding:12px}.drawn-player-groups{grid-template-columns:1fr}.drawn-player-groups>div>div{display:flex;overflow-x:auto;padding-bottom:5px;scroll-snap-type:x mandatory}.drawn-player-groups button{min-width:210px;scroll-snap-align:start}.roster-list-heading{align-items:stretch;flex-direction:column}.roster-list-heading input{width:100%;max-width:none}}
 </style>
